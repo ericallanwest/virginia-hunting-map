@@ -198,6 +198,14 @@ export function renderDetails({ located, regs, iso, includeYouth, subArea, latLn
 const DAY = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const weekdayText = (days: number[]) => days.map((d) => DAY[d]).join(', ');
 
+/** Exception days (a rule's extraDays / closedDays) that fall within its dates, as text. */
+function daysText(days: [string, string][] | undefined, within: [string, string][], ly: number, pre: string, post: string): string {
+  const inside = (days ?? []).filter(([a, b]) =>
+    within.some(([s, e]) => resolve(a, ly) <= resolve(e, ly) && resolve(b, ly) >= resolve(s, ly)),
+  );
+  return inside.length ? `${pre}${inside.map(fmtRange).join(', ')}${post}` : '';
+}
+
 const HOURS_LABEL: Record<Hours, string> = {
   'half-hour': '½ hour before sunrise to ½ hour after sunset',
   'until-noon': '½ hour before sunrise until noon',
@@ -269,7 +277,7 @@ function timeline(seasons: PlaceSeason[], iso: string, ly: number, species: stri
             : ' · antlered only'
           : '';
       return `<div class="tl-row">
-        <div class="tl-label">${esc(s.rule.label)}<span>${dateText}${esText}${s.rule.partialNote ? ' · part of area' : ''}${s.rule.weekdays ? ` · ${weekdayText(s.rule.weekdays)} only` : ''}</span></div>
+        <div class="tl-label">${esc(s.rule.label)}<span>${dateText}${esText}${s.rule.partialNote ? ' · part of area' : ''}${s.rule.weekdays ? ` · ${weekdayText(s.rule.weekdays)} only` : ''}${daysText(s.rule.extraDays, s.dates, ly, ' (also ', ')')}${daysText(s.rule.closedDays, s.dates, ly, ' · closed ', '')}</span></div>
         <div class="tl-track">${bars}${es}</div>
       </div>`;
     })
