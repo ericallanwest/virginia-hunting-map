@@ -1,4 +1,4 @@
-# Virginia Big Game Seasons Map
+# Virginia Hunting Seasons Map
 
 An interactive map of Virginia big game hunting regulations. Pick a species, a date (defaults to
 today), and a place — county, city, town, public land, or street address — and see what is legal
@@ -7,7 +7,7 @@ antler point restrictions, bonus-permit validity, and dog rules.
 
 ![Deer seasons on Nov 27: National Forest bucks-only (gold) next to either-sex private land (green)](docs/screenshots/deer-nov27.png)
 
-**Status:** Deer, Bear, Turkey, and Elk for the 2026–27 license year. See [docs/ROADMAP.md](docs/ROADMAP.md).
+**Status:** Big game (deer, bear, turkey, elk), small game (squirrel, rabbit, grouse, quail, pheasant, crow, groundhog), and furbearers (bobcat, coyote, fox, raccoon, opossum, skunk) for the 2026–27 license year, plus local firearm ordinances. See [docs/ROADMAP.md](docs/ROADMAP.md).
 
 > Unofficial. Regulations are summarized from
 > [Virginia DWR's published regulations](https://dwr.virginia.gov/hunting/regulations/). Always
@@ -40,7 +40,8 @@ npm run build:geo       # simplifies/clips/splits them into public/data/*.geojso
 
 ```
 sources/regs/*.html        snapshot of the DWR regulation pages (diff these each license year)
-src/regs/*-2026.ts         2026–27 deer, bear, turkey, elk regulations, written as declarative rules
+src/regs/*-2026.ts         2026–27 regulations (big game, small game, furbearers) as declarative rules
+src/regs/local*.ts         local firearm ordinances (text + hand-reviewed map effects)
 src/regs/engine.ts         evaluates (place, date) against the rules
 src/regs/virginia.ts       Blue Ridge east/west, independent-city → county, split jurisdictions
 public/data/*.geojson      counties + independent cities, towns, public lands (split by county)

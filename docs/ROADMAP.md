@@ -52,6 +52,18 @@
 - [x] Outside the Elk Management Zone, derived from the deer rules (any elk on any open deer day).
 - [x] Inside the zone, the Oct 10–16 lottery hunt (shown as lottery/quota).
 
+## Phase 5 — Small game and furbearers (done)
+
+- [x] Big Game / Small Game / Furbearer picker with per-group species buttons.
+- [x] Small game: squirrel (gray/red and fox, spring season), rabbit, grouse (west of I-95, mapped),
+      quail (closed on public land west of the Blue Ridge), pheasant, crow (Mon/Wed/Fri/Sat),
+      groundhog (continuous on private land).
+- [x] Furbearers: bobcat (archery + firearms; no dogs during deer firearms season in listed counties
+      and the National Forest), coyote and skunk (continuous except NF/DWR land), red and gray fox
+      (closed counties, chase seasons), raccoon (chase seasons), opossum.
+- [ ] Furbearer trapping seasons (https://dwr.virginia.gov/hunting/regulations/furbearertrapping/).
+- [ ] Migratory game birds (dove, waterfowl, woodcock) — federal frameworks.
+
 ## Later ideas
 
 - Bring in DWR's annual regulation PDF and diff it automatically each year to flag changed rules.

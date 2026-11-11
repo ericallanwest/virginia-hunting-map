@@ -6,7 +6,13 @@
  * a concrete Place + date against every rule and reports what is open.
  */
 
-export type Species = 'deer' | 'bear' | 'turkey' | 'elk';
+export type Species =
+  // Big game
+  | 'deer' | 'bear' | 'turkey' | 'elk'
+  // Small game
+  | 'squirrel' | 'rabbit' | 'grouse' | 'quail' | 'pheasant' | 'crow' | 'groundhog'
+  // Furbearers
+  | 'bobcat' | 'coyote' | 'fox' | 'raccoon' | 'opossum' | 'skunk';
 
 /** Land-ownership class. 'private' also covers public land not specifically listed. */
 export type Land =
@@ -99,6 +105,8 @@ export interface SeasonRule {
   esGroup?: string;
   /** Opportunity limited to youth (≤15) and apprentice license holders. */
   youthOnly?: boolean;
+  /** Open only on these days of the week (0 = Sunday … 6 = Saturday), e.g. crow. */
+  weekdays?: number[];
   /** Hunting with dogs is allowed in this season (subject to the species' DogRules and Sundays). */
   dogs?: boolean;
   /** The rule covers only part of a matched jurisdiction we can't map; this says which part. */
@@ -128,6 +136,8 @@ export interface DogRule {
   /** Limit to these season types (default: all seasons that allow dogs). */
   seasonTypes?: SeasonType[];
   partial?: string;
+  /** Only while a deer firearms season is open at the place (bobcat and fox dog rules). */
+  duringDeerFirearms?: boolean;
   note?: string;
 }
 

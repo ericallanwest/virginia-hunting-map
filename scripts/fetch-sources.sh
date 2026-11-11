@@ -35,6 +35,10 @@ done
 curl -sSL -o rails/tl_2023_us_rails.zip "https://www2.census.gov/geo/tiger/TIGER2023/RAILS/tl_2023_us_rails.zip" --create-dirs
 (cd rails && unzip -oq tl_2023_us_rails.zip)
 
+# --- Census TIGER primary roads (I-95 for the grouse line) ---
+curl -sSL -o roads/tl_2023_us_primaryroads.zip "https://www2.census.gov/geo/tiger/TIGER2023/PRIMARYROADS/tl_2023_us_primaryroads.zip"
+(cd roads && unzip -oq tl_2023_us_primaryroads.zip)
+
 # --- DWR Wildlife Management Area boundaries ---
 curl -sS "https://services.dwr.virginia.gov/arcgis/rest/services/HUB_Layers/DWR_WMA_Boundaries/FeatureServer/0/query?where=1%3D1&outFields=WMA_NAME,Tract_Name,Property_Type,Owner,Property_Class,ACRES&outSR=4326&f=geojson" -o wma.geojson
 

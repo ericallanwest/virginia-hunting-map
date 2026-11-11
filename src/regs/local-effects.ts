@@ -33,7 +33,12 @@ export interface LocalEffectRule {
 
 const FIREARMS: LocalWeapon[] = ['rifle', 'pistol', 'shotgun', 'muzzleloader'];
 const ALL: LocalWeapon[] = [...FIREARMS, 'archery'];
-const NOT_DEER: Species[] = ['bear', 'turkey', 'elk'];
+const ALL_SPECIES: Species[] = [
+  'deer', 'bear', 'turkey', 'elk', 'squirrel', 'rabbit', 'grouse', 'quail', 'pheasant', 'crow', 'groundhog',
+  'bobcat', 'coyote', 'fox', 'raccoon', 'opossum', 'skunk',
+];
+const NOT_DEER = ALL_SPECIES.filter((s) => s !== 'deer');
+const GAME_BIRDS: Species[] = ['turkey', 'grouse', 'quail', 'pheasant'];
 const BIG: Species[] = ['deer', 'bear', 'elk']; // need .23 caliber+ rifles under state rules
 const SPRING_TURKEY = ['turkey-spring-noon', 'turkey-spring-allday', 'turkey-youth-spring'];
 
@@ -93,8 +98,8 @@ export const LOCAL_EFFECTS: LocalEffectRule[] = [
   { jurisdiction: 'city:Falls Church', species: 'all', ban: ALL, section: 'Sec. 28-212', note: 'Hunting is unlawful within the city.' },
   { jurisdiction: 'city:Fairfax', species: 'all', ban: ALL, section: 'Sec. 54-175', note: 'Hunting with any weapon is prohibited unless authorized by city council.' },
   { jurisdiction: 'city:Hampton', species: 'all', ban: ALL, section: 'Sec. 40-18(b)', note: 'Hunting is prohibited except waterfowl from licensed blinds or under a state wildlife-reduction permit.' },
-  { jurisdiction: 'city:Buena Vista', species: ['turkey'], ban: ALL, section: 'Sec. 6-131(b)(1)', note: 'Hunting any wild bird (including turkey) is prohibited in the city.' },
-  { jurisdiction: 'city:Williamsburg', species: ['turkey'], ban: ALL, section: 'Sec. 4-10', note: 'The city is a bird sanctuary: no killing game birds, including turkey.' },
+  { jurisdiction: 'city:Buena Vista', species: [...GAME_BIRDS, 'crow'], ban: ALL, section: 'Sec. 6-131(b)(1)', note: 'Hunting any wild bird (including turkey) is prohibited in the city.' },
+  { jurisdiction: 'city:Williamsburg', species: GAME_BIRDS, ban: ALL, section: 'Sec. 4-10', note: 'The city is a bird sanctuary: no killing game birds, including turkey.' },
 
   // --- Archery limits ---------------------------------------------------------------
   { jurisdiction: 'city:Bristol', species: 'all', ban: ['archery'], section: 'Sec. 62-36', note: 'Bows and crossbows may only be shot on approved archery ranges.' },

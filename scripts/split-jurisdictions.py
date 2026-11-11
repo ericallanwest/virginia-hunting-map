@@ -11,6 +11,7 @@ Lines (see PARTITIONS at the bottom):
   State Rt. 16      - Grayson, Smyth. New River - Carroll, Grayson.
   Campbell, Pittsylvania - the Norfolk Southern main line (Lynchburg-Danville).
   Amherst, Nelson   - US 29 and State Rt. 151.
+  I-95              - every jurisdiction it crosses (grouse is open only west of I-95).
   Wythe             - the area bounded by Rt. 21, I-81, the New River and Cripple Creek,
                       plus land southeast of the New River.
   City of Suffolk   - the "Dismal Swamp Line", 4VAC15-20-40: State Highway 10
@@ -112,6 +113,85 @@ def suffolk():
     junction = nearest_points(r642, r604)[0]
     return chain(r10, cut_at(r642, junction, "north"), cut_at(r604, junction, "south"))
 
+
+# ---------------------------------------------------------------------------
+# I-95 (grouse season is "west of I-95"): one route from the Woodrow Wilson Bridge
+# to the North Carolina line, traced through TIGER primary roads.
+# ---------------------------------------------------------------------------
+PRIMARY = "sources/geo/roads/tl_2023_us_primaryroads"
+_i95 = None
+
+
+def shortest_path(segments, start, goal, join=0.002):
+    """Shortest path through a network of line segments ((coords, cost-multiplier) pairs)."""
+    import heapq
+
+    key = lambda c: (round(c[0], 5), round(c[1], 5))
+    graph, ends = {}, []
+    for coords, mult in segments:
+        pts = [key(c) for c in coords]
+        for a, b in zip(pts, pts[1:]):
+            d = ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5 * mult
+            graph.setdefault(a, []).append((b, d))
+            graph.setdefault(b, []).append((a, d))
+        ends += [pts[0], pts[-1]]
+    for i, a in enumerate(ends):  # join segment ends that stop just short of each other
+        for b in ends[i + 1 :]:
+            d = ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5
+            if 0 < d < join:
+                graph[a].append((b, d * 3))
+                graph[b].append((a, d * 3))
+    nodes = list(graph)
+    near = lambda p: min(nodes, key=lambda n: (n[0] - p[0]) ** 2 + (n[1] - p[1]) ** 2)
+    s, g = near(start), near(goal)
+    dist, prev, heap = {s: 0}, {}, [(0, s)]
+    while heap:
+        d, n = heapq.heappop(heap)
+        if n == g:
+            break
+        if d > dist[n]:
+            continue
+        for m, w in graph[n]:
+            if d + w < dist.get(m, 1e9):
+                dist[m], prev[m] = d + w, n
+                heapq.heappush(heap, (d + w, m))
+    if g not in prev:
+        sys.exit(f"no path from {start} to {goal}")
+    path, n = [g], g
+    while n != s:
+        n = prev[n]
+        path.append(n)
+    return LineString(path[::-1])
+
+
+def i95():
+    global _i95
+    if _i95 is None:
+        r = shapefile.Reader(PRIMARY)
+        segs = []
+        for s, rec in zip(r.shapes(), r.records()):
+            if rec["FULLNAME"] != "I- 95":
+                continue
+            x0, y0, x1, y1 = s.bbox
+            if x1 < -78.5 or x0 > -76.5 or y1 < 36.4 or y0 > 39.0:
+                continue
+            segs.append((s.points, 1))
+        _i95 = shortest_path(segs, (-77.04, 38.795), (-77.53, 36.545))  # Wilson Bridge -> NC line
+    return _i95
+
+
+def by_i95(poly):
+    """west/east of I-95 ('w95'/'e95'), by side of the north->south route."""
+    line = north_to_south(i95()).simplify(0.0002)
+    return [("w95" if side(line, pc) == "west" else "e95", pc) for pc in split(poly, extend(line)).geoms]
+
+
+I95_JURISDICTIONS = [
+    "city:Alexandria", "city:Colonial Heights", "city:Emporia", "city:Fredericksburg", "city:Petersburg",
+    "city:Richmond", "county:Caroline", "county:Chesterfield", "county:Fairfax", "county:Greensville",
+    "county:Hanover", "county:Henrico", "county:Prince George", "county:Prince William", "county:Spotsylvania",
+    "county:Stafford", "county:Sussex",
+]
 
 # ---------------------------------------------------------------------------
 # Generic lines: a named road (TIGER roads) or river (TIGER linear water).
@@ -336,6 +416,10 @@ PARTITIONS = {
         )
     ],
 }
+
+
+for _jid in I95_JURISDICTIONS:
+    PARTITIONS.setdefault(_jid, []).append(by_i95)
 
 
 def main():

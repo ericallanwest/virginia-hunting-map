@@ -2,6 +2,7 @@ import { inRanges, licenseYearOf, resolve } from './dates';
 import type { DateRange, InfoRule, Land, Place, SeasonRule, SeasonType, Selector, SpeciesRegs, Take, Where } from './types';
 import { CITY_PARENT, splitFor } from './virginia';
 import { localEffect, type LocalEffect } from './local';
+import { deer2026 } from './deer-2026';
 
 // ---------------------------------------------------------------------------
 // Selector matching
@@ -187,6 +188,7 @@ export function evaluate(regs: SpeciesRegs, place: Place, iso: string, opts: { i
   if (licenseYearOf(iso) === ly) {
     for (const s of seasonsForPlace(regs, place)) {
       if (!inRanges(iso, s.dates, ly)) continue;
+      if (s.rule.weekdays && !s.rule.weekdays.includes(weekday(iso))) continue;
       const eff = localEffect(place, regs.species, s.rule);
       const o: OpenSeason = { rule: s.rule, take: dayTake(s, iso, ly), note: s.note, weapon: s.rule.type === 'chase' ? 'none' : eff.weapon, local: eff.applied };
       if (s.rule.dogs && o.take !== 'check') Object.assign(o, dogStatus(regs, s.rule, place, iso));
@@ -215,6 +217,7 @@ export function dogStatus(regs: SpeciesRegs, rule: SeasonRule, place: Place, iso
   for (const r of regs.dogRules ?? []) {
     if (r.seasonTypes && !r.seasonTypes.includes(rule.type)) continue;
     if (r.dates && !inRanges(iso, r.dates, regs.licenseYear)) continue;
+    if (r.duringDeerFirearms && !deerFirearmsOpen(place, iso)) continue;
     const m = matchDegree(r.where, place);
     if (m === 'none') continue;
     if (m === 'full' && !r.partial) return { dogs: 'no', dogsNote: r.note };
@@ -251,8 +254,8 @@ export function summarize(all: OpenSeason[]): Summary {
     : takes.size > 1
       ? 'mixed'
       : [...takes][0];
-  // Dogs are only summarized for species whose seasons model them (bear, turkey).
-  const modelsDogs = definite.some((o) => o.dogs) || definite.some((o) => o.rule.species === 'bear');
+  // Dogs are only summarized for species whose seasons model them.
+  const modelsDogs = definite.some((o) => o.dogs);
   const dogSet = new Set(definite.map((o) => o.dogs ?? 'no'));
   const dogs: DogStatus | undefined = !modelsDogs ? undefined : dogSet.has('yes') ? 'yes' : dogSet.has('varies') ? 'varies' : 'no';
   return dogs ? { status: 'open', weapon, take, dogs } : { status: 'open', weapon, take };
@@ -263,6 +266,8 @@ export function nextChange(regs: SpeciesRegs, place: Place, iso: string): string
   const ly = regs.licenseYear;
   const edges = new Set<string>();
   for (const s of seasonsForPlace(regs, place)) {
+    // Day-of-week seasons change status from one day to the next.
+    if (s.rule.weekdays && inRanges(nextDay(iso), s.dates, ly)) edges.add(nextDay(iso));
     for (const [a, b] of s.dates) {
       edges.add(resolve(a, ly));
       edges.add(nextDay(resolve(b, ly)));
@@ -274,6 +279,16 @@ export function nextChange(regs: SpeciesRegs, place: Place, iso: string): string
       }
   }
   return [...edges].filter((e) => e > iso).sort()[0];
+}
+
+export const weekday = (iso: string) => new Date(`${iso}T12:00:00Z`).getUTCDay();
+
+/** Is a deer firearms season (general or antlerless) open here today? Used by bobcat/fox dog rules. */
+function deerFirearmsOpen(place: Place, iso: string): boolean {
+  if (licenseYearOf(iso) !== deer2026.licenseYear) return false;
+  return seasonsForPlace(deer2026, place).some(
+    (s) => (s.rule.type === 'firearms' || s.rule.type === 'antlerless_firearms') && s.take !== 'check' && inRanges(iso, s.dates, deer2026.licenseYear),
+  );
 }
 
 export function nextDay(iso: string): string {

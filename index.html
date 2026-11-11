@@ -3,18 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Virginia Big Game Seasons Map</title>
+    <title>Virginia Hunting Seasons Map</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦌</text></svg>" />
-    <meta name="description" content="See Virginia big game hunting seasons, either-sex days, and bag limits on a map for any date and location." />
+    <meta name="description" content="See Virginia big game, small game, and furbearer hunting seasons, either-sex days, bag limits, and local ordinances on a map for any date and location." />
   </head>
   <body>
     <aside id="sidebar">
       <header>
-        <h1>Virginia Big Game Seasons</h1>
+        <h1>Virginia Hunting Seasons</h1>
         <p class="tagline">What's legal where, on any day.</p>
       </header>
 
       <div class="controls">
+        <div class="seg group" id="group" role="radiogroup" aria-label="Game group"></div>
         <div class="seg species" id="species" role="radiogroup" aria-label="Species"></div>
 
         <div class="date-row">
@@ -52,7 +53,7 @@
       </div>
 
       <footer>
-        Unofficial tool. Regulations summarized from Virginia DWR's published 2026–27 deer, bear, turkey, and elk regulations; boundaries from the
+        Unofficial tool. Regulations summarized from Virginia DWR's published 2026–27 big game, small game, and furbearer regulations; boundaries from the
         U.S. Census, USDA Forest Service, Virginia DWR, and Virginia DCR. Always confirm with the official regulations, posted
         property rules, and local ordinances.
       </footer>

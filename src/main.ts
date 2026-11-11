@@ -6,7 +6,7 @@ import { legendFor, type View } from './legend';
 import { createMap, RegulationLayers } from './map';
 import { dayOfLicenseYear, licenseYearOf, resolve, todayISO } from './regs/dates';
 import { nextDay } from './regs/engine';
-import { availableYears, regsFor, SPECIES, speciesInfo } from './regs/index';
+import { availableYears, GROUPS, regsFor, SPECIES, speciesInfo, type Group } from './regs/index';
 import type { Species } from './regs/types';
 
 // ---------------------------------------------------------------------------
@@ -152,20 +152,45 @@ function openSheet() {
 // ---------------------------------------------------------------------------
 // Controls
 // ---------------------------------------------------------------------------
+/** Group row (Big Game / Small Game / Furbearer) above that group's species buttons. */
 function buildSpeciesPicker() {
-  const el = $('#species');
-  el.innerHTML = SPECIES.map(
-    (s) =>
-      `<button type="button" role="radio" data-species="${s.id}" aria-checked="${s.id === state.species}" ${s.available ? '' : 'disabled title="Coming soon"'}>${s.label}${s.available ? '' : '<small>soon</small>'}</button>`,
-  ).join('');
-  el.addEventListener('click', (e) => {
-    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-species]');
-    if (!b || b.disabled) return;
-    state.species = b.dataset.species as Species;
-    el.querySelectorAll('[data-species]').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
+  const groupEl = $('#group');
+  const speciesEl = $('#species');
+  // Remember the last species chosen in each group so switching groups back restores it.
+  const lastInGroup: Partial<Record<Group, Species>> = { [speciesInfo(state.species).group]: state.species };
+
+  const render = () => {
+    const group = speciesInfo(state.species).group;
+    groupEl.innerHTML = GROUPS.map(
+      (g) => `<button type="button" role="radio" data-group="${g.id}" aria-checked="${g.id === group}">${g.label}</button>`,
+    ).join('');
+    speciesEl.innerHTML = SPECIES.filter((s) => s.group === group)
+      .map(
+        (s) =>
+          `<button type="button" role="radio" data-species="${s.id}" aria-checked="${s.id === state.species}" ${s.available ? '' : 'disabled title="Coming soon"'}>${s.label}${s.available ? '' : '<small>soon</small>'}</button>`,
+      )
+      .join('');
+  };
+  const choose = (species: Species) => {
+    state.species = species;
+    lastInGroup[speciesInfo(species).group] = species;
+    render();
     buildViewPicker();
     refresh();
+  };
+
+  groupEl.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-group]');
+    if (!b) return;
+    const g = b.dataset.group as Group;
+    if (g === speciesInfo(state.species).group) return;
+    choose(lastInGroup[g] ?? SPECIES.find((s) => s.group === g && s.available)!.id);
   });
+  speciesEl.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-species]');
+    if (b && !b.disabled) choose(b.dataset.species as Species);
+  });
+  render();
 }
 
 function buildLegend() {

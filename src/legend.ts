@@ -32,10 +32,11 @@ export function legendFor(species: Species, view: View): Category[] {
     ];
   }
   if (view === 'dogs') {
+    const dogs = species === 'bear' ? 'hounds' : 'dogs';
     return [
-      { key: 'yes', label: 'Open — hounds allowed', color: 'var(--c-either)' },
+      { key: 'yes', label: `Open — ${dogs} allowed`, color: 'var(--c-either)' },
       // 'varies' (hounds allowed in only part of an area) needs an unmapped split; all are mapped now.
-      { key: 'no', label: 'Open — no hounds', color: 'var(--c-muzzleloader)' },
+      { key: 'no', label: `Open — no ${dogs}`, color: 'var(--c-muzzleloader)' },
       CHECK,
       CLOSED,
     ];
@@ -48,7 +49,7 @@ export function categoryOf(s: Summary, species: Species, view: View): Category {
   const legend = legendFor(species, view);
   if (s.status === 'closed') return CLOSED;
   if (s.status === 'check') return CHECK;
-  const key = view === 'weapon' ? s.weapon : view === 'dogs' ? s.dogs : s.take === 'mixed' ? 'either-sex' : s.take;
+  const key = view === 'weapon' ? s.weapon : view === 'dogs' ? s.dogs ?? 'no' : s.take === 'mixed' ? 'either-sex' : s.take;
   return legend.find((c) => c.key === key) ?? CHECK;
 }
 

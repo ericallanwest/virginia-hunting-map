@@ -19,6 +19,7 @@ $MS "$SRC/cb_2023_us_county_500k/cb_2023_us_county_500k.shp" \
 # Split counties along the lines the regulations use (Rts. 613/731, Dismal Swamp line, I-81,
 # State Rt. 16, the New River, the Norfolk Southern main line, US 29, Rt. 151, and the Wythe hound area); see scripts/split-jurisdictions.py.
 python3 scripts/split-jurisdictions.py "$OUT/jurisdictions.geojson"
+python3 scripts/i95-sides.py
 
 # Virginia outline used to clip statewide layers.
 $MS "$OUT/jurisdictions.geojson" -dissolve -o "$SRC/va-outline.geojson" format=geojson
@@ -38,7 +39,7 @@ $MS "$SRC/usfs.geojson" -clip "$SRC/va-outline.geojson" \
   -filter-fields land,name -o "$SRC/_nf.geojson" format=geojson
 
 $MS "$SRC/wma.geojson" \
-  -filter "Property_Type === 'WMA' || WMA_NAME === 'Crooked Creek'" \
+  -filter "Property_Type === 'WMA' || WMA_NAME === 'Crooked Creek' || WMA_NAME === 'Lake Robertson'" \
   -each "land = 'dwr'; name = WMA_NAME.replace('Mountian','Mountain').replace(/^Coastal Forest - .*/, 'Coastal Forest').replace(/^Mockhorn$/, 'Mockhorn Island') + ' WMA'" \
   -dissolve fields=name copy-fields=land \
   -o "$SRC/_wma.geojson" format=geojson

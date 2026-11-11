@@ -29,7 +29,8 @@ const TAKE_LABEL: Record<DayTake, string> = {
 };
 
 const TAKE_ANY: Partial<Record<string, string>> = { bear: 'Any legal bear', elk: 'Any elk', deer: 'Any deer', turkey: 'Any turkey' };
-const takeLabel = (t: DayTake, species: string) => (t === 'any' ? TAKE_ANY[species] ?? TAKE_LABEL.any : TAKE_LABEL[t]);
+// Small game and furbearers have no sex/antler rules, so 'any' needs no badge there.
+const takeLabel = (t: DayTake, species: string) => (t === 'any' ? TAKE_ANY[species] ?? '' : TAKE_LABEL[t]);
 
 const LOCAL_LABEL: Record<string, string> = {
   firearms: 'Local limits apply',
@@ -98,7 +99,7 @@ export function renderDetails({ located, regs, iso, includeYouth, subArea }: Det
         .map(
           (o) => `<li class="${(o.rule.youthOnly && !includeYouth) || o.rule.type === 'chase' ? 'muted' : ''}">
             <span class="weapon w-${WEAPON_OF[o.rule.type]}">${esc(o.rule.label)}</span>
-            <span class="take t-${o.take}">${takeLabel(o.take, regs.species)}</span>
+            ${takeLabel(o.take, regs.species) ? `<span class="take t-${o.take}">${takeLabel(o.take, regs.species)}</span>` : ''}
             ${o.dogs ? `<span class="tag dogs-${o.dogs}">${DOGS_LABEL[o.dogs]}</span>` : ''}
             ${o.local.length ? `<span class="tag local">${LOCAL_LABEL[o.weapon]}</span>` : ''}
             ${o.local.map((e) => `<div class="note">${esc(e.note)} (${esc(e.jurisdiction.split(':')[1])} ${esc(e.section)})</div>`).join('')}
@@ -171,9 +172,12 @@ export function renderDetails({ located, regs, iso, includeYouth, subArea }: Det
       ${infoHtml}
       ${youthReg}
     </section>
-    <p class="small source">Source: <a href="${regs.source}" target="_blank" rel="noopener">DWR ${regs.species} regulations</a>. Always confirm with the official regulations before hunting.</p>
+    <p class="small source">Source: <a href="${regs.source}" target="_blank" rel="noopener">DWR regulations</a>. Always confirm with the official regulations before hunting.</p>
   `;
 }
+
+const DAY = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const weekdayText = (days: number[]) => days.map((d) => DAY[d]).join(', ');
 
 export function fmtDate(iso: string): string {
   const [y, m, d] = iso.split('-').map(Number);
@@ -181,12 +185,12 @@ export function fmtDate(iso: string): string {
 }
 
 // ---------------------------------------------------------------------------
-// Timeline: Aug 1 -> May 31 of the license year
+// Timeline: the full license year, Jul 1 -> Jun 30
 // ---------------------------------------------------------------------------
 function timeline(seasons: PlaceSeason[], iso: string, ly: number, species: string): string {
   if (!seasons.length) return '<p class="small">No seasons at this location.</p>';
-  const start = dayOfLicenseYear(resolve('08-01', ly));
-  const end = dayOfLicenseYear(resolve('05-31', ly)) + 1;
+  const start = dayOfLicenseYear(resolve('07-01', ly));
+  const end = dayOfLicenseYear(resolve('06-30', ly)) + 1;
   const pct = (isoDay: string) => ((dayOfLicenseYear(isoDay) - start) / (end - start)) * 100;
   const span = ([a, b]: [string, string], cls: string, title: string) => {
     const l = pct(resolve(a, ly));
@@ -211,13 +215,13 @@ function timeline(seasons: PlaceSeason[], iso: string, ly: number, species: stri
             : ' · antlered only'
           : '';
       return `<div class="tl-row">
-        <div class="tl-label">${esc(s.rule.label)}<span>${dateText}${esText}${s.rule.partialNote ? ' · part of area' : ''}</span></div>
+        <div class="tl-label">${esc(s.rule.label)}<span>${dateText}${esText}${s.rule.partialNote ? ' · part of area' : ''}${s.rule.weekdays ? ` · ${weekdayText(s.rule.weekdays)} only` : ''}</span></div>
         <div class="tl-track">${bars}${es}</div>
       </div>`;
     })
     .join('');
 
-  const months = ['08-01', '09-01', '10-01', '11-01', '12-01', '01-01', '02-01', '03-01', '04-01', '05-01']
+  const months = ['07-01', '09-01', '11-01', '01-01', '03-01', '05-01']
     .map((m) => `<span style="left:${pct(resolve(m, ly))}%">${fmt(m).split(' ')[0]}</span>`)
     .join('');
   const now = pct(iso);
@@ -227,7 +231,7 @@ function timeline(seasons: PlaceSeason[], iso: string, ly: number, species: stri
     <div class="tl-rows">${rows}<div class="tl-row tl-axis"><div class="tl-label"></div><div class="tl-track">${months}</div></div>
       <div class="tl-overlay">${marker}</div></div>
     <div class="tl-key">${[...new Set(seasons.flatMap((s) => (s.take === 'by-days' ? ['either-sex', 'antlered'] : [s.take])))]
-      .map((t) => `<span><i class="t-${t}"></i>${takeLabel(t as DayTake, species)}</span>`)
+      .map((t) => `<span><i class="t-${t}"></i>${takeLabel(t as DayTake, species) || 'Open'}</span>`)
       .join('')}</div>
   </div>`;
 }

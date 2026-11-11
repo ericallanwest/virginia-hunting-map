@@ -126,6 +126,15 @@ SPLITS.push(
   },
 );
 
+// I-95 (grouse is open only west of I-95); mapped by scripts/split-jurisdictions.py.
+for (const id of [
+  'city:Alexandria', 'city:Colonial Heights', 'city:Emporia', 'city:Fredericksburg', 'city:Petersburg', 'city:Richmond',
+  'county:Caroline', 'county:Chesterfield', 'county:Fairfax', 'county:Greensville', 'county:Hanover', 'county:Henrico',
+  'county:Prince George', 'county:Prince William', 'county:Spotsylvania', 'county:Stafford', 'county:Sussex',
+]) {
+  SPLITS.push({ jurisdiction: id, line: 'I-95', parts: { w95: 'West of I-95', e95: 'East of I-95' }, mapped: true });
+}
+
 /** Human label for a (possibly combined, e.g. 's81+w16') side of a split jurisdiction. */
 export function sideLabel(jurisdictionId: string, subArea: string | undefined): string | undefined {
   const split = splitFor(jurisdictionId);
