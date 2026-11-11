@@ -162,9 +162,8 @@ seasons.push(
     ],
     [['08-01', '09-26']],
   ),
-  chase({ counties: ['Grayson'] }, [['08-01', '09-26']], undefined, 'Only in Grayson County east of State Rt. 16.'),
-  chase({ counties: ['Roanoke', 'Washington'] }, [['08-01', '09-26']], undefined, 'Only north of I-81.'),
-  chase({ counties: ['Smyth'] }, [['08-01', '09-26']], undefined, 'Only in Smyth County east of State Rt. 16 and north of I-81.'),
+  // Parts of counties (lines mapped in scripts/split-jurisdictions.py)
+  chase({ counties: ['Grayson/e16', 'Roanoke/n81', 'Washington/n81', 'Smyth/e16+n81'] }, [['08-01', '09-26']]),
   chase({ properties: ['Cavalier WMA'] }, [['08-08', '08-22']]),
   chase(
     {
@@ -203,14 +202,11 @@ const dogRules: DogRule[] = [
     seasonTypes: ['firearms'],
     note: 'Dogs may not be used during the firearms bear season here.',
   },
-  { where: { counties: ['Carroll'] }, seasonTypes: ['firearms'], partial: 'in Carroll County east of the New River during the firearms season.' },
-  { where: { counties: ['Grayson'] }, seasonTypes: ['firearms'], partial: 'in Grayson County east of the New River during the firearms season.' },
-  { where: { counties: ['Montgomery', 'Pulaski', 'Roanoke'] }, seasonTypes: ['firearms'], partial: 'south of I-81 during the firearms season.' },
   {
-    where: { counties: ['Wythe'] },
+    // Parts of counties (lines mapped in scripts/split-jurisdictions.py)
+    where: { counties: ['Carroll/enr', 'Grayson/enr', 'Montgomery/s81', 'Pulaski/s81', 'Roanoke/s81', 'Wythe/senr'] },
     seasonTypes: ['firearms'],
-    partial:
-      'during the firearms season in Wythe County southeast of the New River (the area bounded by Rt. 21, I-81, the county line, the New River, and Cripple Creek).',
+    note: 'Dogs may not be used during the firearms bear season in this part of the county.',
   },
   { where: { properties: NO_DOG_WMAS }, note: 'Dogs may not be used to hunt bears on this WMA.' },
   { where: { properties: ['Cavalier WMA'] }, note: 'Dogs may only be used here during the Aug 8–22 hound training season.' },
@@ -223,9 +219,11 @@ const dogRules: DogRule[] = [
     seasonTypes: ['youth'],
     note: 'No dogs here on the youth & apprentice weekend.',
   },
-  { where: { counties: ['Grayson'] }, seasonTypes: ['youth'], partial: 'in Grayson County west of State Rt. 16 on the youth weekend.' },
-  { where: { counties: ['Roanoke', 'Washington'] }, seasonTypes: ['youth'], partial: 'south of I-81 on the youth weekend.' },
-  { where: { counties: ['Smyth'] }, seasonTypes: ['youth'], partial: 'in Smyth County south of I-81 and west of State Rt. 16 on the youth weekend.' },
+  {
+    where: { counties: ['Grayson/w16', 'Roanoke/s81', 'Washington/s81', 'Smyth/s81+w16'] },
+    seasonTypes: ['youth'],
+    note: 'No dogs in this part of the county on the youth & apprentice weekend.',
+  },
 ];
 
 // Facts --------------------------------------------------------------------

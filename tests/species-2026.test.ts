@@ -74,12 +74,32 @@ describe('bear scenarios (2026-27)', () => {
     expect(open(bear, { county: 'Accomack' }, '2026-10-05')).toEqual(['archery:any']);
     expect(open(bear, { county: 'Accomack' }, '2026-12-01')).toEqual([]);
   });
-  it('hounds: Fairfax no, Roanoke County varies (south of I-81), Campbell depends on side of the railroad', () => {
+  it('hounds: Fairfax no; Roanoke County south of I-81 no, north yes; Campbell depends on side of the railroad', () => {
     expect(open(bear, { county: 'Fairfax' }, '2026-12-01')).toEqual(['firearms:any:dogs-no']);
-    expect(open(bear, { county: 'Roanoke' }, '2026-12-01')).toEqual(['firearms:any:dogs-varies']);
+    expect(open(bear, { county: 'Roanoke', subArea: 's81' }, '2026-12-01')).toEqual(['firearms:any:dogs-no']);
+    expect(open(bear, { county: 'Roanoke', subArea: 'n81' }, '2026-12-01')).toEqual(['firearms:any:dogs-yes']);
     expect(open(bear, { county: 'Campbell' }, '2026-12-01')).toEqual(['firearms:any:dogs-varies']);
     expect(open(bear, { county: 'Campbell', subArea: 'west' }, '2026-12-01')).toEqual(['firearms:any:dogs-no']);
     expect(open(bear, { county: 'Campbell', subArea: 'east' }, '2026-12-01')).toEqual(['firearms:any:dogs-yes']);
+  });
+  it('hounds: Wythe SE area, Grayson & Carroll east of the New River', () => {
+    expect(open(bear, { county: 'Wythe', subArea: 'senr' }, '2026-12-01')).toEqual(['firearms:any:dogs-no']);
+    expect(open(bear, { county: 'Wythe', subArea: 'other' }, '2026-12-01')).toEqual(['firearms:any:dogs-yes']);
+    expect(open(bear, { county: 'Grayson', subArea: 'enr+e16' }, '2026-12-01')).toEqual(['firearms:any:dogs-no']);
+    expect(open(bear, { county: 'Grayson', subArea: 'wnr+e16' }, '2026-12-01')).toEqual(['firearms:any:dogs-yes']);
+    expect(open(bear, { county: 'Carroll', subArea: 'wnr' }, '2026-12-01')).toEqual(['firearms:any:dogs-yes']);
+  });
+  it('hound training: Smyth only east of Rt. 16 and north of I-81', () => {
+    const chase = (sub: string) => evaluate(bear, place({ county: 'Smyth', subArea: sub }), '2026-08-15').open.map((o) => o.rule.type);
+    expect(chase('n81+e16')).toEqual(['chase']);
+    expect(chase('n81+w16')).toEqual([]);
+    expect(chase('s81+e16')).toEqual([]);
+  });
+  it('youth weekend: no dogs in Smyth south of I-81 and west of Rt. 16', () => {
+    const dogs = (sub: string) =>
+      evaluate(bear, place({ county: 'Smyth', subArea: sub }), '2026-10-10', { includeYouth: true }).open.find((o) => o.rule.youthOnly)?.dogs;
+    expect(dogs('s81+w16')).toBe('no');
+    expect(dogs('s81+e16')).toBe('yes');
   });
   it('no hounds on dog-restricted WMAs', () => {
     expect(open(bear, { county: 'Amelia', land: 'dwr', property: 'Amelia WMA' }, '2026-12-01')).toEqual(['firearms:any:dogs-no']);

@@ -37,7 +37,7 @@
       firearms-season counties, WMAs, Cavalier, youth-weekend exceptions); partial-county rules show
       as "varies". New "Hounds" map view.
 - [x] Hound training (chase) seasons in the details/timeline (never counted as open).
-- [ ] Map the I-81 / New River / Rt. 16 lines so partial hound rules resolve exactly.
+- [x] Map the I-81 / New River / Rt. 16 lines (and the Wythe hound area) so hound rules resolve exactly.
 
 ## Phase 3 — Turkey (done)
 

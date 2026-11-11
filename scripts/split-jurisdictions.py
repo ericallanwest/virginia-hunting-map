@@ -2,10 +2,15 @@
 
 Reads public/data/jurisdictions.geojson and Census TIGER road files in
 sources/geo/roads, and rewrites jurisdictions.geojson so split jurisdictions
-become one feature per side, each with a `subArea` property ('east'/'west').
+become one feature per side, each with a `subArea` property: a token per
+line, joined with '+' when a county is cut by two lines (e.g. 's81+w16').
 
-Lines:
+Lines (see PARTITIONS at the bottom):
   Rockingham County - Routes 613 and 731 (as used in the deer regulations).
+  I-81              - Montgomery, Pulaski, Roanoke, Washington, Smyth (bear hound rules).
+  State Rt. 16      - Grayson, Smyth. New River - Carroll, Grayson.
+  Wythe             - the area bounded by Rt. 21, I-81, the New River and Cripple Creek,
+                      plus land southeast of the New River.
   City of Suffolk   - the "Dismal Swamp Line", 4VAC15-20-40: State Highway 10
       from the Isle of Wight line to the (old) Suffolk corporate limits, through
       them to SR 642 (White Marsh Road), along 642 to SR 604 (Desert Road), then
@@ -106,7 +111,152 @@ def suffolk():
     return chain(r10, cut_at(r642, junction, "north"), cut_at(r604, junction, "south"))
 
 
-LINES = {"county:Rockingham": rockingham, "city:Suffolk": suffolk}
+# ---------------------------------------------------------------------------
+# Generic lines: a named road (TIGER roads) or river (TIGER linear water).
+# Where a river widens, TIGER stores it as area water and the line has gaps;
+# parts are joined in order along the line's main direction, bridging gaps.
+# ---------------------------------------------------------------------------
+WATER = "sources/geo/water/tl_2023_{}_linearwater"
+
+
+def features(path, names):
+    r = shapefile.Reader(path)
+    return [shape(s.__geo_interface__) for s, rec in zip(r.shapes(), r.records()) if rec["FULLNAME"] in names]
+
+
+def joined(parts):
+    merged = linemerge(unary_union(parts)) if len(parts) > 1 else parts[0]
+    lines = list(merged.geoms) if isinstance(merged, MultiLineString) else [merged]
+    xs = [c[0] for l in lines for c in l.coords]
+    ys = [c[1] for l in lines for c in l.coords]
+    axis = 0 if max(xs) - min(xs) >= max(ys) - min(ys) else 1
+    # Divided highways have a line per direction: keep only parts that extend
+    # the stretch already covered (one carriageway), longest first.
+    span = lambda l: (min(c[axis] for c in l.coords), max(c[axis] for c in l.coords))
+    kept = []
+    for l in sorted(lines, key=lambda l: -l.length):
+        lo, hi = span(l)
+        covered = sum(max(0, min(hi, khi) - max(lo, klo)) for klo, khi in map(span, kept))
+        if covered < 0.5 * (hi - lo):
+            kept.append(l)
+    kept.sort(key=lambda l: span(l)[0])
+    return chain(*kept) if len(kept) > 1 else kept[0]
+
+
+def route(fips, *names):
+    return joined(features(ROADS.format(fips), set(names)))
+
+
+def river(fips, *names):
+    return joined(features(WATER.format(fips), set(names)))
+
+
+def sign(line, poly):
+    p = poly.representative_point()
+    d = line.project(p)
+    a = line.interpolate(max(d - 0.002, 0))
+    b = line.interpolate(min(d + 0.002, line.length))
+    return (b.x - a.x) * (p.y - a.y) - (b.y - a.y) * (p.x - a.x) > 0
+
+
+def by_line(line, refs):
+    """Partition by one line. `refs` maps two tokens to a (lon, lat) known to be on that side."""
+    line = line.simplify(0.0002)
+
+    def part(poly):
+        pieces = list(split(poly, extend(line, 0.05)).geoms)
+        sign_of = {}
+        for tok, pt in refs.items():
+            hit = next((pc for pc in pieces if pc.contains(Point(pt))), None)
+            if hit is None:
+                sys.exit(f"reference point for {tok} not inside the jurisdiction")
+            sign_of[sign(line, hit)] = tok
+        if len(sign_of) != 2:
+            sys.exit(f"reference points {refs} fell on the same side")
+        return [(next(t for t, pt in refs.items() if pc.contains(Point(pt))) if any(pc.contains(Point(pt)) for pt in refs.values()) else sign_of[sign(line, pc)], pc) for pc in pieces]
+
+    return part
+
+
+def to_boundary(line, poly, reach=0.03):
+    """Connect each loose end of `line` to the county border when it stops just short of it."""
+    c = list(line.coords)
+    border = poly.boundary
+    for i in (0, -1):
+        end = Point(c[i])
+        if 0 < border.distance(end) < reach:
+            pt = nearest_points(end, border)[1].coords[0]
+            c = [pt] + c if i == 0 else c + [pt]
+    return LineString(c)
+
+
+def by_faces(lines, token, refs, other):
+    """Partition by several lines: faces containing a reference point get `token`, the rest `other`."""
+    lines = [l.simplify(0.0002) for l in lines]
+
+    def part(poly):
+        faces = [poly]
+        for l in lines:
+            l = to_boundary(l, poly)
+            faces = [f for face in faces for f in split(face, extend(l, 0.003)).geoms]
+        return [(token if any(f.contains(Point(pt)) for pt in refs) else other, f) for f in faces]
+
+    return part
+
+
+def by_side_ew(line_fn):
+    """Original east/west split (Rockingham, Suffolk): side of a north->south line."""
+
+    def part(poly):
+        line = north_to_south(line_fn()).simplify(0.0002)  # ~20 m; matches the map's detail
+        return [(side(line, pc), pc) for pc in split(poly, extend(line)).geoms]
+
+    return part
+
+
+I81 = lambda fips: route(fips, "I- 81")
+
+
+def cripple_to_new_river():
+    """Cripple Creek flows into the New River; TIGER's creek line stops just short of it."""
+    creek, nr = river("51197", "Cripple Crk"), river("51197", "New Riv")
+    c = list(creek.coords)
+    if c[0][0] > c[-1][0]:
+        c.reverse()  # west -> east, ending at the confluence
+    mouth = nearest_points(Point(c[-1]), nr)[1]
+    return LineString(c + [mouth.coords[0]])
+
+PARTITIONS = {
+    "county:Rockingham": [by_side_ew(rockingham)],
+    "city:Suffolk": [by_side_ew(suffolk)],
+    # I-81
+    "county:Montgomery": [by_line(I81("51121"), {"s81": (-80.40, 37.05), "n81": (-80.35, 37.25)})],
+    "county:Pulaski": [by_line(I81("51155"), {"s81": (-80.75, 36.95), "n81": (-80.75, 37.10)})],
+    "county:Roanoke": [by_line(I81("51161"), {"s81": (-80.05, 37.22), "n81": (-80.05, 37.38)})],
+    "county:Washington": [by_line(I81("51191"), {"s81": (-81.95, 36.65), "n81": (-81.95, 36.80)})],
+    # I-81 and State Rt. 16
+    "county:Smyth": [
+        by_line(I81("51173"), {"s81": (-81.55, 36.72), "n81": (-81.55, 36.92)}),
+        by_line(route("51173", "State Rte 16"), {"e16": (-81.40, 36.95), "w16": (-81.65, 36.85)}),
+    ],
+    # New River and State Rt. 16
+    "county:Grayson": [
+        by_line(river("51077", "New Riv"), {"enr": (-80.98, 36.62), "wnr": (-81.20, 36.70)}),
+        by_line(route("51077", "State Rte 16"), {"e16": (-81.20, 36.68), "w16": (-81.55, 36.65)}),
+    ],
+    # New River
+    "county:Carroll": [by_line(river("51035", "New Riv"), {"enr": (-80.75, 36.75), "wnr": (-80.975, 36.79)})],
+    # Wythe: "southeast of the New River or that part bounded by Rt. 21 on the west, I-81 on the
+    # north, the county line on the east, the New River on the southeast and Cripple Creek on the south"
+    "county:Wythe": [
+        by_faces(
+            [I81("51197"), route("51197", "US Hwy 21"), cripple_to_new_river(), river("51197", "New Riv")],
+            "senr",
+            [(-80.98, 36.92), (-80.86, 36.856)],  # inside the bounded area; southeast of the New River
+            "other",
+        )
+    ],
+}
 
 
 def main():
@@ -114,21 +264,33 @@ def main():
     out = []
     for f in fc["features"]:
         jid = f["properties"]["id"]
-        if jid not in LINES:
+        if jid not in PARTITIONS:
             out.append(f)
             continue
-        line = north_to_south(LINES[jid]()).simplify(0.0002)  # ~20 m; matches the map's detail
         poly = shape(f["geometry"])
-        pieces = split(poly, extend(line)).geoms
-        by_side = {}
-        for piece in pieces:
-            by_side.setdefault(side(line, piece), []).append(piece)
-        if set(by_side) != {"east", "west"}:
-            sys.exit(f"{jid}: split produced sides {sorted(by_side)}")
-        for s, polys in sorted(by_side.items()):
+        # Intersect the partitions: each resulting piece carries one token per line, joined by '+'.
+        pieces = [((), poly)]
+        for part in PARTITIONS[jid]:
+            # Each line partitions the whole county; intersect with the pieces so far.
+            sides = {}
+            for tok, sub in part(poly):
+                sides[tok] = unary_union([sides[tok], sub]) if tok in sides else sub
+            nxt = []
+            for toks, pc in pieces:
+                for tok, side_poly in sides.items():
+                    sub = pc.intersection(side_poly)
+                    if sub.area > 1e-6 * poly.area:
+                        nxt.append((toks + (tok,), sub))
+            pieces = nxt
+        by_tok = {}
+        for toks, pc in pieces:
+            by_tok.setdefault("+".join(toks), []).append(pc)
+        if len(by_tok) < 2:
+            sys.exit(f"{jid}: split produced only {sorted(by_tok)}")
+        for tok, polys in sorted(by_tok.items()):
             g = set_precision(unary_union(polys), 1e-5)
-            out.append({"type": "Feature", "properties": {**f["properties"], "subArea": s}, "geometry": mapping(g)})
-            print(f"{jid} {s}: {len(polys)} piece(s), {g.area / poly.area:.0%} of area")
+            out.append({"type": "Feature", "properties": {**f["properties"], "subArea": tok}, "geometry": mapping(g)})
+            print(f"{jid} {tok}: {len(polys)} piece(s), {g.area / poly.area:.0%} of area")
     fc["features"] = out
     json.dump(fc, open(JUR, "w"), separators=(",", ":"))
 

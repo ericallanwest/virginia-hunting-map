@@ -62,11 +62,16 @@ encoded with the literal reading noted. Resolve these (ideally with DWR), then a
     with a shorter season (e.g. a town in Rockingham, where archery opens Oct 17) gets Oct 3 – Jan 2.
     *Encoded:* literally.
 
-14. **Hound restrictions for part of a county** — south of I-81 (Montgomery, Pulaski, Roanoke,
-    Washington), east of the New River (Carroll, Grayson), around State Rt. 16 (Grayson, Smyth), and
-    the Wythe area bounded by Rt. 21 / I-81 / the New River / Cripple Creek. *Encoded:* shown as
-    "dogs vary by area" with the exact wording. Mapping these lines (as was done for Rockingham and
-    Suffolk) would make them exact.
+14. **Hound restrictions for part of a county** are mapped (`scripts/split-jurisdictions.py`) from
+    Census TIGER roads and rivers: I-81 (Montgomery, Pulaski, Roanoke, Washington, Smyth), State Rt. 16
+    (Grayson, Smyth), the New River (Carroll, Grayson), and the Wythe area bounded by Rt. 21, I-81,
+    the county line, the New River, and Cripple Creek, plus land southeast of the river. Assumptions:
+    - Where the New River widens, TIGER has no centerline; those gaps are bridged with straight
+      segments, and Cripple Creek is joined to the river at its mouth.
+    - **Grayson "east of the New River"** is taken as the river's east/south bank, which includes the
+      strip between the river and the North Carolina line west of where the river turns north.
+      If DWR means only the area east of the northward stretch (toward Galax), that strip should
+      flip sides.
 
 15. **"Counties west of the Blue Ridge"** (no hounds Nov 23–29). *Encoded:* the 31 western counties
     and the towns in them; independent cities in the west are not included.

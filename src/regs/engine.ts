@@ -10,7 +10,11 @@ import { CITY_PARENT, splitFor } from './virginia';
 function nameMatches(entry: string, name: string | undefined, subArea: string | undefined): boolean {
   if (!name) return false;
   const [base, side] = entry.split('/');
-  return base === name && (side === undefined || side === subArea);
+  if (base !== name) return false;
+  if (side === undefined) return true;
+  // Sides are '+'-joined tokens ('s81+w16'); every token in the entry must be on the place's side.
+  const have = (subArea ?? '').split('+');
+  return side.split('+').every((t) => have.includes(t));
 }
 
 const anyName = (list: string[] | undefined, name: string | undefined, sub: string | undefined) =>

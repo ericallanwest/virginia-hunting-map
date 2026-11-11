@@ -20,11 +20,15 @@ for f in cb_2023_us_county_500k cb_2023_51_place_500k; do
   mkdir -p "$f" && (cd "$f" && unzip -oq "../$f.zip")
 done
 
-# --- Census TIGER roads for split lines (Rockingham 51165, Suffolk 51800) ---
-mkdir -p roads
-for f in 51165 51800; do
+# --- Census TIGER roads and rivers for split lines (see scripts/split-jurisdictions.py) ---
+# Rockingham 51165, Suffolk 51800, Carroll 51035, Grayson 51077, Montgomery 51121,
+# Pulaski 51155, Roanoke 51161, Smyth 51173, Washington 51191, Wythe 51197
+mkdir -p roads water
+for f in 51165 51800 51035 51077 51121 51155 51161 51173 51191 51197; do
   curl -sSL -o "roads/tl_2023_${f}_roads.zip" "https://www2.census.gov/geo/tiger/TIGER2023/ROADS/tl_2023_${f}_roads.zip"
   (cd roads && unzip -oq "tl_2023_${f}_roads.zip")
+  curl -sSL -o "water/tl_2023_${f}_linearwater.zip" "https://www2.census.gov/geo/tiger/TIGER2023/LINEARWATER/tl_2023_${f}_linearwater.zip"
+  (cd water && unzip -oq "tl_2023_${f}_linearwater.zip")
 done
 
 # --- DWR Wildlife Management Area boundaries ---

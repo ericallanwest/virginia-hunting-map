@@ -16,7 +16,8 @@ $MS "$SRC/cb_2023_us_county_500k/cb_2023_us_county_500k.shp" \
   -simplify 12% keep-shapes \
   -o "$OUT/jurisdictions.geojson" precision=0.00001 format=geojson
 
-# Split Rockingham (Rts. 613/731) and Suffolk (Dismal Swamp line) into east/west pieces.
+# Split counties along the lines the regulations use (Rts. 613/731, Dismal Swamp line, I-81,
+# State Rt. 16, the New River, and the Wythe hound area); see scripts/split-jurisdictions.py.
 python3 scripts/split-jurisdictions.py "$OUT/jurisdictions.geojson"
 
 # Virginia outline used to clip statewide layers.

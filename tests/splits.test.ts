@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { deer2026 } from '../src/regs/deer-2026';
 import { evaluate } from '../src/regs/engine';
 import type { Place } from '../src/regs/types';
-import { regionOf } from '../src/regs/virginia';
+import { regionOf, SPLITS } from '../src/regs/virginia';
 
 const jurisdictions = JSON.parse(readFileSync('public/data/jurisdictions.geojson', 'utf8')).features;
 
@@ -15,6 +15,7 @@ function at(lng: number, lat: number) {
 }
 
 describe('split-line geometry', () => {
+  // Points are chosen well away from each line.
   it('Rockingham is split along Routes 613/731', () => {
     expect(at(-78.976, 38.786)).toBe('county:Rockingham/west'); // Bergton
     expect(at(-78.92, 38.65)).toBe('county:Rockingham/west'); // Fulks Run
@@ -31,9 +32,45 @@ describe('split-line geometry', () => {
     expect(at(-76.52, 36.84)).toBe('city:Suffolk/east'); // north Suffolk
   });
 
-  it('every split piece is labelled and the other jurisdictions are not', () => {
-    const split = jurisdictions.filter((j: any) => j.properties.subArea).map((j: any) => `${j.properties.id}/${j.properties.subArea}`);
-    expect(split.sort()).toEqual(['city:Suffolk/east', 'city:Suffolk/west', 'county:Rockingham/east', 'county:Rockingham/west']);
+  it('I-81 splits Montgomery, Pulaski, Roanoke, and Washington', () => {
+    expect(at(-80.40, 37.02)).toBe('county:Montgomery/s81');
+    expect(at(-80.35, 37.28)).toBe('county:Montgomery/n81'); // north of Blacksburg
+    expect(at(-80.75, 36.95)).toBe('county:Pulaski/s81');
+    expect(at(-80.75, 37.10)).toBe('county:Pulaski/n81');
+    expect(at(-80.05, 37.20)).toBe('county:Roanoke/s81');
+    expect(at(-80.05, 37.38)).toBe('county:Roanoke/n81');
+    expect(at(-81.95, 36.65)).toBe('county:Washington/s81');
+    expect(at(-81.95, 36.82)).toBe('county:Washington/n81');
+  });
+
+  it('I-81 and Rt. 16 quarter Smyth', () => {
+    expect(at(-81.40, 36.95)).toBe('county:Smyth/n81+e16');
+    expect(at(-81.70, 36.90)).toBe('county:Smyth/n81+w16');
+    expect(at(-81.35, 36.78)).toBe('county:Smyth/s81+e16');
+    expect(at(-81.60, 36.70)).toBe('county:Smyth/s81+w16');
+  });
+
+  it('the New River and Rt. 16 divide Grayson; the New River divides Carroll', () => {
+    expect(at(-80.98, 36.62)).toBe('county:Grayson/enr+e16');
+    expect(at(-81.20, 36.70)).toBe('county:Grayson/wnr+e16');
+    expect(at(-81.55, 36.65)).toBe('county:Grayson/wnr+w16');
+    expect(at(-80.75, 36.75)).toBe('county:Carroll/enr');
+    expect(at(-80.975, 36.79)).toBe('county:Carroll/wnr');
+  });
+
+  it('Wythe: the Rt. 21 / I-81 / New River / Cripple Creek area and land southeast of the river', () => {
+    expect(at(-80.98, 36.92)).toBe('county:Wythe/senr'); // inside the bounded area
+    expect(at(-80.86, 36.856)).toBe('county:Wythe/senr'); // southeast of the New River
+    expect(at(-81.25, 37.00)).toBe('county:Wythe/other'); // north of I-81
+    expect(at(-81.25, 36.90)).toBe('county:Wythe/other'); // west of Rt. 21
+    expect(at(-81.12, 36.80)).toBe('county:Wythe/other'); // south of Cripple Creek, east of Rt. 21
+  });
+
+  it('only the mapped split jurisdictions have sides', () => {
+    const ids = new Set(jurisdictions.filter((j: any) => j.properties.subArea).map((j: any) => j.properties.id));
+    expect([...ids].sort()).toEqual(
+      SPLITS.filter((s) => s.mapped).map((s) => s.jurisdiction).sort(),
+    );
   });
 
   it('a point east of the Dismal Swamp line gets the Oct 1 firearms season, west does not', () => {

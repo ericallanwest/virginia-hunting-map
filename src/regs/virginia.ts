@@ -99,4 +99,35 @@ export const SPLITS: Split[] = [
   },
 ];
 
+// Lines used by the bear hound rules, mapped by scripts/split-jurisdictions.py.
+// A county cut by two lines has pieces like 's81+w16'; `parts` labels each token.
+const I81 = { s81: 'South of I-81', n81: 'North of I-81' };
+const NEW_RIVER = { enr: 'East of the New River', wnr: 'West of the New River' };
+const RT16 = { e16: 'East of State Rt. 16', w16: 'West of State Rt. 16' };
+for (const c of ['Montgomery', 'Pulaski', 'Roanoke', 'Washington']) {
+  SPLITS.push({ jurisdiction: `county:${c}`, line: 'I-81', parts: I81, mapped: true });
+}
+SPLITS.push(
+  { jurisdiction: 'county:Smyth', line: 'I-81 and State Rt. 16', parts: { ...I81, ...RT16 }, mapped: true },
+  { jurisdiction: 'county:Grayson', line: 'the New River and State Rt. 16', parts: { ...NEW_RIVER, ...RT16 }, mapped: true },
+  { jurisdiction: 'county:Carroll', line: 'the New River', parts: NEW_RIVER, mapped: true },
+  {
+    jurisdiction: 'county:Wythe',
+    line: 'Rt. 21, I-81, the New River, and Cripple Creek',
+    parts: {
+      senr: 'Southeast area (east of Rt. 21, south of I-81, north of Cripple Creek, or southeast of the New River)',
+      other: 'Outside the southeast area',
+    },
+    mapped: true,
+  },
+);
+
+/** Human label for a (possibly combined, e.g. 's81+w16') side of a split jurisdiction. */
+export function sideLabel(jurisdictionId: string, subArea: string | undefined): string | undefined {
+  const split = splitFor(jurisdictionId);
+  if (!split || !subArea) return undefined;
+  const labels = subArea.split('+').map((t) => split.parts[t]).filter(Boolean);
+  return labels.length ? labels.join(', ') : undefined;
+}
+
 export const splitFor = (jurisdictionId: string) => SPLITS.find((s) => s.jurisdiction === jurisdictionId);

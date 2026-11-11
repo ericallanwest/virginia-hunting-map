@@ -1,7 +1,7 @@
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import type { Feature, FeatureCollection, MultiPolygon, Polygon } from 'geojson';
 import type { Land, Place } from './regs/types';
-import { CITY_PARENT, regionOf, splitFor } from './regs/virginia';
+import { CITY_PARENT, regionOf, sideLabel } from './regs/virginia';
 
 export type Poly = Feature<Polygon | MultiPolygon, Record<string, any>>;
 export interface Layers {
@@ -81,6 +81,6 @@ export function jurisdictionLabel(id: string | undefined, subArea?: string): str
   if (!id) return '';
   const [type, name] = id.split(':');
   const base = type === 'city' ? `City of ${name}` : `${name} County`;
-  const side = subArea && splitFor(id)?.parts[subArea];
+  const side = sideLabel(id, subArea);
   return side ? `${base} (${side[0].toLowerCase()}${side.slice(1)})` : base;
 }
