@@ -129,6 +129,10 @@ const infos: InfoRule[] = [
   info('closed-fall', 'access', CLOSED_FALL, 'No fall turkey season here (firearms or archery). The spring season is open statewide.'),
   info('camp-peary', 'local', { counties: ['York'] },
     'Camp Peary has the longer fall season (through Dec 26 and Jan 9–23); the rest of York County closes Dec 12.'),
+  // Legal Use of Firearms and Archery Tackle
+  info('weapons', 'methods', { statewide: true },
+    'Turkey may be hunted with shotguns (up to 10 gauge), rifles and pistols of any caliber, muzzleloaders, air guns, and archery tackle. Spring: no shot larger than #2.'),
+  info('road', 'methods', { statewide: true }, 'No shooting a firearm, muzzleloader, arrowgun, or bow in, across, or within the right-of-way of any road.'),
   info('report', 'methods', { statewide: true }, 'All fall and spring turkeys must be reported (phone, app, or online).'),
   info('local-cities-towns', 'local', [{ anyCity: true }, { anyTown: true }],
     'Cities and towns set their own weapon restrictions — check local firearms ordinances.'),

@@ -1,6 +1,7 @@
 import { inRanges, licenseYearOf, resolve } from './dates';
 import type { DateRange, InfoRule, Land, Place, SeasonRule, SeasonType, Selector, SpeciesRegs, Take, Where } from './types';
 import { CITY_PARENT, splitFor } from './virginia';
+import { localEffect, type LocalEffect } from './local';
 
 // ---------------------------------------------------------------------------
 // Selector matching
@@ -51,7 +52,8 @@ export const matches = (sel: Selector, p: Place) =>
 // Evaluation
 // ---------------------------------------------------------------------------
 
-export type Weapon = 'firearms' | 'muzzleloader' | 'archery' | 'none';
+/** 'shotgun' = firearms season where local ordinances ban rifles (shotguns/muzzleloaders still OK). */
+export type Weapon = 'firearms' | 'shotgun' | 'muzzleloader' | 'archery' | 'none';
 export const WEAPON_OF: Record<SeasonType, Weapon> = {
   chase: 'none',
   youth: 'firearms',
@@ -70,6 +72,10 @@ export type DogStatus = 'yes' | 'no' | 'varies';
 export interface OpenSeason {
   rule: SeasonRule;
   take: DayTake;
+  /** Weapon class actually usable here after local ordinances. */
+  weapon: Weapon;
+  /** Locality-wide ordinances that narrowed the weapons (empty if none). */
+  local: LocalEffect['applied'];
   dogs?: DogStatus;
   dogsNote?: string;
   /** Extra explanation for this place (e.g. why a fallback applied). */
@@ -181,7 +187,8 @@ export function evaluate(regs: SpeciesRegs, place: Place, iso: string, opts: { i
   if (licenseYearOf(iso) === ly) {
     for (const s of seasonsForPlace(regs, place)) {
       if (!inRanges(iso, s.dates, ly)) continue;
-      const o: OpenSeason = { rule: s.rule, take: dayTake(s, iso, ly), note: s.note };
+      const eff = localEffect(place, regs.species, s.rule.type);
+      const o: OpenSeason = { rule: s.rule, take: dayTake(s, iso, ly), note: s.note, weapon: s.rule.type === 'chase' ? 'none' : eff.weapon, local: eff.applied };
       if (s.rule.dogs && o.take !== 'check') Object.assign(o, dogStatus(regs, s.rule, place, iso));
       open.push(o);
     }
@@ -199,7 +206,7 @@ export function dayTake(s: PlaceSeason, iso: string, ly: number): DayTake {
   return inRanges(iso, s.eitherSexDays, ly) ? 'either-sex' : 'antlered';
 }
 
-const WEAPON_RANK: Weapon[] = ['none', 'archery', 'muzzleloader', 'firearms'];
+const WEAPON_RANK: Weapon[] = ['none', 'archery', 'muzzleloader', 'shotgun', 'firearms'];
 
 /** Dog use for an open season at a place/date, after Sundays and the species' DogRules. */
 export function dogStatus(regs: SpeciesRegs, rule: SeasonRule, place: Place, iso: string): { dogs: DogStatus; dogsNote?: string } {
@@ -229,13 +236,14 @@ export function matchDegree(sel: Selector, place: Place): 'full' | 'partial' | '
 }
 
 export function summarize(all: OpenSeason[]): Summary {
-  const open = all.filter((o) => o.rule.type !== 'chase');
+  // Hound training takes nothing; a season whose every weapon is banned locally can't be hunted.
+  const open = all.filter((o) => o.rule.type !== 'chase' && o.weapon !== 'none');
   const definite = open.filter((o) => o.take !== 'check' && o.take !== 'quota');
   if (definite.length === 0) {
     return open.length ? { status: 'check', take: open[0].take } : { status: 'closed' };
   }
   const weapon = definite
-    .map((o) => WEAPON_OF[o.rule.type])
+    .map((o) => o.weapon)
     .reduce((a, b) => (WEAPON_RANK.indexOf(b) > WEAPON_RANK.indexOf(a) ? b : a));
   const takes = new Set(definite.map((o) => o.take));
   const take: Summary['take'] = takes.has('either-sex')

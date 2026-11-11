@@ -24,6 +24,7 @@ export function legendFor(species: Species, view: View): Category[] {
   if (view === 'weapon') {
     return [
       { key: 'firearms', label: 'Firearms', color: 'var(--c-firearms)' },
+      { key: 'shotgun', label: 'Firearms, no rifles (local ordinance)', color: 'var(--c-shotgun)' },
       { key: 'muzzleloader', label: 'Muzzleloader (+ archery)', color: 'var(--c-muzzleloader)' },
       { key: 'archery', label: 'Archery only', color: 'var(--c-archery)' },
       CHECK,

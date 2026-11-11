@@ -2,6 +2,7 @@ import { dayOfLicenseYear, fmt, fmtRange, resolve } from './regs/dates';
 import { evaluate, nextChange, seasonsForPlace, WEAPON_OF, type DayTake, type PlaceSeason } from './regs/engine';
 import type { InfoTopic, Place, SpeciesRegs } from './regs/types';
 import { splitFor } from './regs/virginia';
+import { localFor } from './regs/local';
 import { jurisdictionLabel, type Located } from './geo';
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
@@ -29,6 +30,14 @@ const TAKE_LABEL: Record<DayTake, string> = {
 
 const TAKE_ANY: Partial<Record<string, string>> = { bear: 'Any legal bear', elk: 'Any elk', deer: 'Any deer', turkey: 'Any turkey' };
 const takeLabel = (t: DayTake, species: string) => (t === 'any' ? TAKE_ANY[species] ?? TAKE_LABEL.any : TAKE_LABEL[t]);
+
+const LOCAL_LABEL: Record<string, string> = {
+  firearms: 'Local limits apply',
+  shotgun: 'Local ordinance: no rifles',
+  muzzleloader: 'Local ordinance: muzzleloader/archery only',
+  archery: 'Local ordinance: archery only',
+  none: 'Local ordinance: no legal weapon',
+};
 
 const DOGS_LABEL = { yes: 'Dogs allowed', no: 'No dogs', varies: 'Dogs: varies by area' } as const;
 
@@ -91,6 +100,8 @@ export function renderDetails({ located, regs, iso, includeYouth, subArea }: Det
             <span class="weapon w-${WEAPON_OF[o.rule.type]}">${esc(o.rule.label)}</span>
             <span class="take t-${o.take}">${takeLabel(o.take, regs.species)}</span>
             ${o.dogs ? `<span class="tag dogs-${o.dogs}">${DOGS_LABEL[o.dogs]}</span>` : ''}
+            ${o.local.length ? `<span class="tag local">${LOCAL_LABEL[o.weapon]}</span>` : ''}
+            ${o.local.map(({ ord, r }) => `<div class="note">${esc(r.summary)} (${esc(ord.jurisdiction.split(':')[1])} ${esc(r.section)})</div>`).join('')}
             ${o.rule.youthOnly ? '<span class="tag">Youth/apprentice only</span>' : ''}
             ${o.rule.partialNote ? `<div class="note"><strong>${esc(o.rule.partialNote)}</strong></div>` : ''}
             ${o.dogsNote ? `<div class="note">${esc(o.dogsNote)}</div>` : ''}
@@ -112,6 +123,23 @@ export function renderDetails({ located, regs, iso, includeYouth, subArea }: Det
         : '';
     })
     .join('');
+
+  const ords = localFor(place);
+  const localHtml = ords.length
+    ? `<div class="fact"><h4>Local ordinances</h4>${ords
+        .map(
+          (ord) => `<p class="small">${esc(ord.jurisdiction.replace(/^(county|city|town):(.*)$/, (_, t, n) => (t === 'county' ? `${n} County` : t === 'city' ? `City of ${n}` : `Town of ${n}`)))} — <a href="${ord.url}" target="_blank" rel="noopener">DWR summary</a></p>
+          ${[...ord.restrictions]
+            .sort((a, b) => (a.scope === b.scope ? 0 : a.scope === 'entire' ? -1 : 1))
+            .map(
+              (r) => `<div class="ord ${r.scope}"><span class="scope">${r.scope === 'entire' ? 'Throughout' : esc(r.area || 'Part of locality')}</span>
+                <div>${esc(r.summary)}${r.exceptions ? ` <span class="small">Exceptions: ${esc(r.exceptions)}</span>` : ''}</div>
+                <q>${esc(r.quote)} — ${esc(r.section)}</q></div>`,
+            )
+            .join('')}`,
+        )
+        .join('')}</div>`
+    : '';
 
   const youthReg =
     regs.species === 'deer' && place.land !== 'state_park'
@@ -135,6 +163,7 @@ export function renderDetails({ located, regs, iso, includeYouth, subArea }: Det
       ${timeline(seasons, iso, regs.licenseYear, regs.species)}
     </section>
     <section class="facts">
+      ${localHtml}
       ${infoHtml}
       ${youthReg}
     </section>

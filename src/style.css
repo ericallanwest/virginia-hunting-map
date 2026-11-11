@@ -7,6 +7,7 @@
   --accent: #2f5d45;
 
   --c-firearms: #d4622a;
+  --c-shotgun: #e39b4f;
   --c-muzzleloader: #3a6db3;
   --c-archery: #4f9a5c;
   --c-either: #2c7d55;
@@ -105,6 +106,12 @@ h4 { margin: 0 0 2px; font-size: 0.85rem; }
 .weapon { font-weight: 600; flex: 1 1 auto; }
 .weapon::before { content: ''; display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: 0; }
 .w-firearms::before { background: var(--c-firearms); }
+.w-shotgun::before { background: var(--c-shotgun); }
+.tag.local { background: #ece4f6; color: #4b2d73; }
+.ord { border-left: 3px solid var(--line); padding-left: 8px; margin: 6px 0; }
+.ord.entire { border-color: #8e7cc3; }
+.ord q { display: block; font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+.ord .scope { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
 .w-muzzleloader::before { background: var(--c-muzzleloader); }
 .w-archery::before { background: var(--c-archery); }
 .take, .tag { font-size: 0.75rem; font-weight: 600; padding: 2px 8px; border-radius: 99px; color: #fff; white-space: nowrap; }

@@ -568,6 +568,13 @@ const infos: InfoRule[] = [
     'Firearms hunting is restricted by location and parcel size (contact Fairfax County Police Wildlife Management). No parcel-size limits for archery.'),
   info('local-cities-towns', 'local', [{ anyCity: true }, { anyTown: true }],
     'Cities and towns set their own weapon restrictions — check local firearms ordinances.'),
+  // Legal Use of Firearms and Archery Tackle (https://dwr.virginia.gov/hunting/regulations/legal-use-of-firearms-and-archery-tackle/)
+  info('weapons', 'methods', { statewide: true },
+    'Legal for deer: rifles/pistols .23 caliber or larger (pistols ≥350 ft-lb), shotguns up to 10 gauge, muzzleloading rifles .40 caliber or larger, air guns .35 caliber or larger, and archery tackle with 7/8-inch broadheads.'),
+  info('weapons-overlap', 'methods', { statewide: true },
+    'Muzzleloaders, arrowguns, and archery tackle may also be used during firearms seasons, and archery tackle during muzzleloader seasons (subject to local ordinances).'),
+  info('road', 'methods', { statewide: true }, 'No shooting a firearm, muzzleloader, arrowgun, or bow in, across, or within the right-of-way of any road.'),
+  info('boat', 'methods', { statewide: true }, 'Deer may not be killed from a boat or other watercraft.'),
   info('access-nps', 'access', { land: ['nps'] },
     'National Park Service land — hunting is prohibited.'),
   info('access-state-park', 'access', { land: ['state_park'] },

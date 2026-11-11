@@ -243,6 +243,10 @@ const infos: InfoRule[] = [
   info('report', 'methods', { statewide: true }, 'Report your harvest (Go Outdoors Virginia app, website, or phone) and submit a tooth.'),
   info('mange', 'methods', { statewide: true },
     'Avoid harvesting bears showing signs of mange. A harvested mangy bear must still be tagged and reported; email bearmange@dwr.virginia.gov for a possible replacement tag.'),
+  // Legal Use of Firearms and Archery Tackle
+  info('weapons', 'methods', { statewide: true },
+    'Legal for bear: rifles/pistols .23 caliber or larger (pistols ≥350 ft-lb), shotguns up to 10 gauge, muzzleloading rifles .40 caliber or larger, and archery tackle with 7/8-inch broadheads. No air guns or slingbows.'),
+  info('road', 'methods', { statewide: true }, 'No shooting a firearm, muzzleloader, arrowgun, or bow in, across, or within the right-of-way of any road.'),
   info('dogs-sunday', 'dogs', { statewide: true }, 'No hunting bears with dogs on Sundays, and no bear hunting within 200 yards of a place of worship on Sundays.'),
   info('dogs-archery', 'dogs', { statewide: true }, 'No dogs (other than tracking dogs on a lead) during archery or muzzleloader seasons.'),
   info('local-cities-towns', 'local', [{ anyCity: true }, { anyTown: true }],

@@ -56,7 +56,7 @@ const infos: InfoRule[] = [
   info('bag', 'bag', { statewide: true, not: [NOT_EMZ] },
     '1 elk per day. An elk counts toward your deer bag: antlered = your either-sex (buck) limit, antlerless = your antlerless limit. Not on DCAP, DMAP, or DPOP tags.'),
   info('methods', 'methods', { statewide: true, not: [NOT_EMZ] },
-    'Use the weapons legal for deer in that season — except no slingbows or air rifles.'),
+    'Use the weapons legal for deer in that season — rifles/pistols .23 caliber or larger, shotguns, muzzleloading rifles .40 caliber or larger, archery — except no slingbows or air guns.'),
   info('report', 'methods', { statewide: true },
     'Report like a deer (as an elk), then call DWR at (804) 367-0044 to arrange biological sampling. Keep evidence of sex until reported.'),
   info('emz', 'access', { counties: EMZ },
