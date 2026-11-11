@@ -4,6 +4,7 @@ import { CITY_PARENT, splitFor } from './virginia';
 import { localEffect, type LocalEffect } from './local';
 import { regsFor } from './registry';
 import { MILITARY_CLOSED_NOTE, MILITARY_PROGRAM_NOTE, baseSeasonNote, baseSeasons, baseYear, militaryProgram } from './military';
+import { REFUGE_CLOSED_NOTE, REFUGE_NOTE, refugeFor, refugeSpeciesClosedNote } from './refuges';
 
 // ---------------------------------------------------------------------------
 // Selector matching
@@ -110,6 +111,7 @@ export interface Evaluation {
 /** Season rules that apply to the place at all (any date), with public-land fallbacks resolved. */
 export function seasonsForPlace(regs: SpeciesRegs, place: Place): PlaceSeason[] {
   if (place.land === 'military') return militarySeasons(regs, place);
+  if (place.land === 'refuge') return refugeSeasons(regs, place);
   const out: PlaceSeason[] = [];
   if (place.land !== 'private' && regs.unlistedPublicPolicy[place.land]?.status === 'closed') return out;
   const firearmsTypes: SeasonType[] = ['firearms', 'antlerless_firearms'];
@@ -182,6 +184,34 @@ function militarySeasons(regs: SpeciesRegs, place: Place): PlaceSeason[] {
     .map((rule) => ({ ...toPlaceSeason(regs, rule, asPrivate), take: 'check' as const, note: MILITARY_PROGRAM_NOTE }));
 }
 
+/**
+ * National Wildlife Refuges: open only for the species a refuge allows, within the state
+ * seasons for the surrounding county, and always subject to the refuge's own permit and
+ * rules ("check"). Closed refuges and species a refuge doesn't allow are closed.
+ */
+function refugeSeasons(regs: SpeciesRegs, place: Place): PlaceSeason[] {
+  const refuge = refugeFor(place);
+  if (!refuge?.species.includes(regs.species)) return [];
+  const asPrivate: Place = { ...place, land: 'private', property: undefined };
+  return regs.seasons
+    .filter((rule) => matches(rule.where, asPrivate))
+    .map((rule) => ({ ...toPlaceSeason(regs, rule, asPrivate), take: 'check' as const, note: REFUGE_NOTE }));
+}
+
+const refugeClosed = (regs: SpeciesRegs, place: Place) =>
+  place.land === 'refuge' && !refugeFor(place)?.species.includes(regs.species);
+
+function refugeInfo(regs: SpeciesRegs, place: Place): InfoRule[] {
+  if (place.land !== 'refuge') return [];
+  const refuge = refugeFor(place);
+  const text = !refuge
+    ? REFUGE_CLOSED_NOTE
+    : !refuge.species.includes(regs.species)
+      ? `${refugeSpeciesClosedNote(regs.species)} Refuge hunting: ${refuge.url}`
+      : `${REFUGE_NOTE} ${refuge.note} Refuge hunting: ${refuge.url}`;
+  return [{ id: `${regs.species}-refuge`, species: regs.species, topic: 'access', text, where: {} }];
+}
+
 /** The military access note for a place, as an info rule (shown with the other facts). */
 function militaryInfo(regs: SpeciesRegs, place: Place): InfoRule[] {
   if (place.land !== 'military') return [];
@@ -237,10 +267,12 @@ export function evaluate(regs: SpeciesRegs, place: Place, iso: string, opts: { i
   }
   const info = [
     ...militaryInfo(regs, place),
+    ...refugeInfo(regs, place),
     ...regs.info.filter((i) => matches(i.where, place) && (!i.dates || inRanges(iso, i.dates, ly))),
   ];
   const closedLand =
     (place.land === 'military' && !militaryProgram(place)) ||
+    refugeClosed(regs, place) ||
     (place.land !== 'private' && regs.unlistedPublicPolicy[place.land]?.status === 'closed');
   if (closedLand) return { open, info: info.filter((i) => i.topic === 'access'), summary: { status: 'closed' } };
   const counted = open.filter((o) => opts.includeYouth || !o.rule.youthOnly);

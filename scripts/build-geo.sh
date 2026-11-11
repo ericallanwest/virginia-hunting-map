@@ -42,7 +42,7 @@ $MS "$SRC/tl_2023_51_place/tl_2023_51_place.shp" \
   -o "$OUT/towns.geojson" precision=0.00001 format=geojson
 
 # 3. Public lands with their own deer rules.
-#    land: national_forest | dwr | state_forest | state_park | army_corps | nps | military
+#    land: national_forest | dwr | state_forest | state_park | army_corps | nps | military | refuge
 $MS "$SRC/usfs.geojson" -clip "$SRC/va-outline.geojson" \
   -each "land = 'national_forest'; name = 'George Washington & Jefferson National Forest'" \
   -filter-fields land,name -o "$SRC/_nf.geojson" format=geojson
@@ -72,7 +72,14 @@ $MS sources/military/military.geojson \
   -each "land = 'military'" \
   -filter-fields land,name -o "$SRC/_mil.geojson" format=geojson
 
-$MS -i "$SRC/_nf.geojson" "$SRC/_wma.geojson" "$SRC/_state.geojson" "$SRC/_nps.geojson" "$SRC/_mil.geojson" combine-files \
+# National Wildlife Refuges (committed in sources/refuges; see its README). Rappahannock
+# units are named separately because some are closed (src/regs/refuges.ts, refugeName).
+$MS sources/refuges/refuges.geojson \
+  -each "land = 'refuge'; name = unit ? name + ' — ' + unit + ' Unit' : name" \
+  -dissolve fields=name copy-fields=land \
+  -o "$SRC/_nwr.geojson" format=geojson
+
+$MS -i "$SRC/_nf.geojson" "$SRC/_wma.geojson" "$SRC/_state.geojson" "$SRC/_nps.geojson" "$SRC/_mil.geojson" "$SRC/_nwr.geojson" combine-files \
   -merge-layers force \
   -filter-fields land,name \
   -o "$SRC/_public.geojson" format=geojson

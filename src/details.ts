@@ -18,6 +18,7 @@ const LAND_LABEL: Record<Place['land'], string> = {
   army_corps: 'Army Corps of Engineers land',
   nps: 'National Park Service land',
   military: 'Military installation',
+  refuge: 'National Wildlife Refuge',
 };
 
 const TAKE_LABEL: Record<DayTake, string> = {

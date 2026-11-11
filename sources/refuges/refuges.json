@@ -1,0 +1,199 @@
+[
+  {
+    "name": "Back Bay National Wildlife Refuge",
+    "open_to_hunting": false,
+    "species": [],
+    "method": "None in practice. 50 CFR 32.65(a) allows a deer and feral hog hunt. When one is held, it is a single October hunt run with False Cape State Park: up to 116 hunters, chosen by state lottery, each assigned a one-day hunt in a set zone, plus stand-by hunters.",
+    "url": "https://www.fws.gov/refuge/back-bay/visit-us/activities/hunting",
+    "notes": "FWS hunt page (checked 2026-11-11): \"No deer hunt was conducted in 2017-2026.\" The refuge decides each year whether to hold one. No 2026-27 hunt was announced, and the October window has passed. Feral hogs are no longer on the refuge. Waterfowl hunting is banned on all refuge lands and on waters inside the Presidential Proclamation Boundary. DWR's Back Bay floating-blind quota waterfowl hunt (2025-26 digest, 'Quota Hunts') is on the state waters of Back Bay, not on refuge land. A few acres overlap False Cape State Park at the shared edge (boundary slivers).",
+    "sources": [
+      "https://www.fws.gov/refuge/back-bay/visit-us/activities/hunting",
+      "https://www.ecfr.gov/current/title-50/chapter-I/subchapter-C/part-32/subpart-B/section-32.65",
+      "https://dwr.virginia.gov/hunting/regulations/publiclands/"
+    ]
+  },
+  {
+    "name": "Chincoteague National Wildlife Refuge",
+    "open_to_hunting": true,
+    "species": ["white-tailed deer", "sika deer", "wild turkey", "coyote", "raccoon", "opossum", "fox", "waterfowl", "coot", "snipe", "gallinule", "dove", "woodcock", "crow", "rail"],
+    "method": "Refuge permit plus state seasons. Every hunter needs the refuge brochure/permit, issued through RecAccess (chincoteague.recaccess.com; needs a Login.gov account). There is no lottery for deer, sika or furbearers. Turkey (spring and fall) needs a refuge turkey quota permit.",
+    "url": "https://www.fws.gov/refuge/chincoteague/visit-us/activities/hunting",
+    "notes": "Only designated areas are open. Deer, sika, coyote, raccoon, opossum and fox: Assateague Island (Virginia portion), daily except Sundays during the state season, starting Oct 3, 2026. Migratory birds: parts of Wildcat Marsh, Assawoman Island, Metompkin Island and Morris Island, boat access only, state seasons within Sep 16 - Mar 14. CFR conditions: archery-only areas; no hunting within 100 ft of buildings, roads or trails; no deer drives; no dogs for deer, sika or upland game; portable stands removed daily; sign in and out at the check station. The Maryland part of the refuge is not mapped. This polygon overlaps the NPS Assateague Island National Seashore layer by about 8,700 ac; the app already leaves Assateague out of the NPS layer.",
+    "sources": [
+      "https://www.fws.gov/refuge/chincoteague/visit-us/activities/hunting",
+      "https://www.ecfr.gov/current/title-50/chapter-I/subchapter-C/part-32/subpart-B/section-32.65",
+      "https://chincoteague.recaccess.com/"
+    ]
+  },
+  {
+    "name": "Eastern Shore of Virginia National Wildlife Refuge",
+    "open_to_hunting": true,
+    "species": ["white-tailed deer (archery only)", "wild turkey (spring mentor-led hunt only)", "coyote", "raccoon", "opossum", "fox", "rabbit", "squirrel", "quail", "waterfowl", "rail", "snipe", "gallinule", "coot", "woodcock", "dove", "crow"],
+    "method": "Refuge permit plus state seasons. Get the refuge brochure/permit through RecAccess (chincoteague.recaccess.com). Hunting follows state seasons within Sep 1 - Feb 28. No lottery, except the mentor-led spring turkey hunt.",
+    "url": "https://www.fws.gov/refuge/eastern-shore-virginia/visit-us/activities/hunting",
+    "notes": "Main part of the refuge: archery hunting only, for deer, coyote, raccoon, opossum and fox, daily except Sundays. Other refuge tracts (not named on the page) are open for small game, waterfowl and other migratory birds. CFR: everyone in the vehicle or party must hold the signed brochure and be hunting; no hunting within 100 ft of buildings, roads or improved trails; no deer drives; stands removed daily; dogs allowed only as State and Northampton County rules permit. Not on DWR's list of refuges open to hunting, although FWS and the CFR both open it.",
+    "sources": [
+      "https://www.fws.gov/refuge/eastern-shore-virginia/visit-us/activities/hunting",
+      "https://www.ecfr.gov/current/title-50/chapter-I/subchapter-C/part-32/subpart-B/section-32.65"
+    ]
+  },
+  {
+    "name": "Fisherman Island National Wildlife Refuge",
+    "open_to_hunting": true,
+    "species": ["waterfowl", "rail", "snipe", "gallinule/moorhen", "coot", "woodcock", "dove", "crow"],
+    "method": "Refuge permit plus state seasons. Get the refuge brochure/permit through RecAccess (chincoteague.recaccess.com). State seasons within Sep 1 - Feb 28. Boat only.",
+    "url": "https://www.fws.gov/refuge/fisherman-island/visit-us/activities/hunting",
+    "notes": "Migratory birds only. 50 CFR 32.65(f): \"We allow hunting and hunter access by boat only. We prohibit hunting from land.\" Retrieving dogs may pick up birds on shore. The island itself is otherwise closed to the public, so the land shown on the map is not huntable on foot. Not on DWR's list of refuges open to hunting.",
+    "sources": [
+      "https://www.fws.gov/refuge/fisherman-island/visit-us/activities/hunting",
+      "https://www.ecfr.gov/current/title-50/chapter-I/subchapter-C/part-32/subpart-B/section-32.65"
+    ]
+  },
+  {
+    "name": "Wallops Island National Wildlife Refuge",
+    "open_to_hunting": true,
+    "species": ["white-tailed deer", "wild turkey (quota permit)", "rabbit", "squirrel", "coyote", "raccoon", "opossum", "fox", "waterfowl", "rail", "coot", "snipe", "gallinule", "dove", "woodcock", "crow"],
+    "method": "Refuge permit plus state seasons. Get the refuge brochure/permit through RecAccess (chincoteague.recaccess.com). Hunting is daily, during state seasons within Sep 16 - Mar 14. Turkey needs a refuge turkey quota permit.",
+    "url": "https://www.fws.gov/refuge/wallops-island/visit-us/activities/hunting",
+    "notes": "This is the FWS refuge on the mainland next to NASA Wallops Flight Facility; it is not NASA or Navy land. CFR: no hunting within 100 ft of buildings, roads or trails; no deer drives; no dogs for deer, turkey or upland game; no upland hunting at night; portable stands removed daily. Not on DWR's list of refuges open to hunting.",
+    "sources": [
+      "https://www.fws.gov/refuge/wallops-island/visit-us/activities/hunting",
+      "https://www.ecfr.gov/current/title-50/chapter-I/subchapter-C/part-32/subpart-B/section-32.65"
+    ]
+  },
+  {
+    "name": "Great Dismal Swamp National Wildlife Refuge",
+    "open_to_hunting": true,
+    "species": ["white-tailed deer", "black bear", "wild turkey", "gray squirrel", "coyote"],
+    "method": "Refuge hunt permit (FWS Form 3-2439) for every hunter, from greatdismalswamp.recaccess.com. Neither the FWS page nor the CFR mentions a lottery. Hunting is Thursdays, Fridays and Saturdays only, within state seasons.",
+    "url": "https://www.fws.gov/refuge/great-dismal-swamp/visit-us/activities/hunting",
+    "notes": "FWS page: \"open on Thursdays, Fridays, and Saturdays from October 1 through the first Saturday in January.\" Some areas close early or stay closed for weather or road conditions. The newest brochure online is the August 2021 edition: shotgun, muzzleloader or archery only, no rifles, no dogs, no baiting, no shooting within 150 ft of roads or trails; bow-only units at HQ, Washington and Railroad; 'The Blocks' closed; turkey limited to some units and closed in Chesapeake; no fox squirrels in Virginia units; non-lead ammunition required for all species from 2026; bear harvests reported within 24 h; Big Game Harvest Report due Feb 15. No 2026-27 brochure was found, so confirm details on RecAccess. Only the Virginia part (about 86,500 of 114,000 ac) is mapped. Two DWR deer-season zones cross the refuge (Suffolk east/west of the Dismal Swamp line, and Chesapeake).",
+    "sources": [
+      "https://www.fws.gov/refuge/great-dismal-swamp/visit-us/activities/hunting",
+      "https://www.ecfr.gov/current/title-50/chapter-I/subchapter-C/part-32/subpart-B/section-32.65",
+      "https://www.fws.gov/sites/default/files/documents/GDS%20Hunt%20Regs%20and%20Map%202021.pdf",
+      "https://greatdismalswamp.recaccess.com/"
+    ]
+  },
+  {
+    "name": "Nansemond National Wildlife Refuge",
+    "open_to_hunting": false,
+    "species": [],
+    "method": "Closed.",
+    "url": "https://www.fws.gov/refuge/nansemond",
+    "notes": "FWS: \"a satellite refuge managed by Great Dismal Swamp NWR and is not open to the public\"; \"an unstaffed refuge closed to visitation.\" It is not listed in 50 CFR 32.65.",
+    "sources": [
+      "https://www.fws.gov/refuge/nansemond",
+      "https://www.ecfr.gov/current/title-50/chapter-I/subchapter-C/part-32/subpart-B/section-32.65"
+    ]
+  },
+  {
+    "name": "Elizabeth Hartwell Mason Neck National Wildlife Refuge",
+    "open_to_hunting": true,
+    "species": ["white-tailed deer"],
+    "method": "Managed hunt with refuge permit, first-come first-served, no lottery in 2026. Run jointly with Mason Neck State Park. Buy permits for a specific date and parking lot at potomacriverrefugehunts.recaccess.com (on sale Sep 19, 2026 at noon; $20, or $10 for Senior/Access pass holders, plus $5). Before buying, hunters must pass the online orientation video and test; before the hunt, they must qualify their firearm and ammunition at a range.",
+    "url": "https://www.fws.gov/refuge/elizabeth-hartwell-mason-neck/visit-us/activities/hunting",
+    "notes": "2026 hunts: Nov 17 and Dec 1; bonus/youth hunt Dec 8; scout day Nov 14. Shotgun with slugs only (no buckshot); no dogs, no drives; one antlered deer per permit, DMAP antlerless tags issued on site. Everyone on refuge or park land during a hunt must hold a permit; the refuge is closed to other users on hunt days. CFR 32.65(d) also allows incidental take of coyote, but the 2026 fact sheet lists only deer. The mapped area includes about 790 ac FWS manages under lease (FWS interest type 'Lease') along with its fee land. DWR's 2025-26 digest (State Parks) says the Mason Neck State Park hunt \"is run in conjunction with the Potomac River National Wildlife Refuge Complex.\"",
+    "sources": [
+      "https://www.fws.gov/refuge/elizabeth-hartwell-mason-neck/visit-us/activities/hunting",
+      "https://www.fws.gov/sites/default/files/documents/2026-10/masonneckhunt2026infosheetfinal_pdf-1.pdf",
+      "https://www.ecfr.gov/current/title-50/chapter-I/subchapter-C/part-32/subpart-B/section-32.65",
+      "https://potomacriverrefugehunts.recaccess.com/"
+    ]
+  },
+  {
+    "name": "Occoquan Bay National Wildlife Refuge",
+    "open_to_hunting": true,
+    "species": ["white-tailed deer", "fox", "coyote", "wild turkey (mentor-led hunt only)"],
+    "method": "Lottery, then a refuge permit, through potomacriverrefugehunts.recaccess.com. The 2026 application closed Sep 6 ($10, or $5 for pass holders, plus $5). Drawn hunters must complete the online orientation and test, buy a permit ($20, or $10 for pass holders, plus $5) and qualify their firearm at a range. Unclaimed permits go on sale Oct 2; stand-by hunters are admitted at the gate if space allows.",
+    "url": "https://www.fws.gov/refuge/occoquan-bay/visit-us/activities/hunting",
+    "notes": "2026 hunts: Nov 18 and Dec 3; bonus/youth hunt Dec 10; scout day Nov 7. Shotgun with slugs only; no dogs, no drives; one antlered deer per permit; DMAP antlerless tags issued on site; non-toxic ammunition for fox and coyote. CFR 32.65(j) also allows incidental take of groundhog, rabbit and squirrel during the deer hunt, but the 2026 fact sheet lists deer, fox and coyote. Lies inside Prince William County's no-discharge area '(2) Woodbridge/Lake Ridge/Dale City/Montclair' in the app's local-areas layer; the refuge hunt is a federal managed hunt there.",
+    "sources": [
+      "https://www.fws.gov/refuge/occoquan-bay/visit-us/activities/hunting",
+      "https://www.fws.gov/sites/default/files/documents/2026-10/occoquanbayhunt2026infosheetfinal_pdf-1.pdf",
+      "https://www.ecfr.gov/current/title-50/chapter-I/subchapter-C/part-32/subpart-B/section-32.65"
+    ]
+  },
+  {
+    "name": "Featherstone National Wildlife Refuge",
+    "open_to_hunting": true,
+    "species": ["waterfowl"],
+    "method": "State season. No refuge permit is required (2025-26 brochure). Hunting is from boats only.",
+    "url": "https://www.fws.gov/refuge/featherstone/visit-us/activities/hunting",
+    "notes": "Waterfowl only, in the Farm Creek unit (non-motorized boats only) and the Neabsco Creek unit (motorized boats allowed). The hunt units cannot be reached by land, and the refuge has no boat launch. Floating blinds only, not attached to land or marsh. Hunters must yield to state-licensed permanent blinds and their 500-yard buffers. The land on the map is not huntable on foot. The newest brochure online is for 2025-26; no 2026-27 edition was found. Not on DWR's list of refuges open to hunting.",
+    "sources": [
+      "https://www.fws.gov/refuge/featherstone/visit-us/activities/hunting",
+      "https://www.fws.gov/sites/default/files/documents/2025-11/featherstonewaterfowlhunt2025-2026.pdf",
+      "https://www.ecfr.gov/current/title-50/chapter-I/subchapter-C/part-32/subpart-B/section-32.65"
+    ]
+  },
+  {
+    "name": "James River National Wildlife Refuge",
+    "open_to_hunting": true,
+    "species": ["white-tailed deer", "wild turkey", "coyote", "bobcat", "red fox", "raccoon", "skunk", "opossum", "rabbit", "groundhog", "squirrel", "waterfowl (mentor-led hunts only)"],
+    "method": "Free daily reservation, first-come first-served, at jamesrivernwr.recaccess.com, made up to 48 h before the hunt; each day has a hunter cap. Spring turkey and winter small game are quota hunts on the same site ($30 permit).",
+    "url": "https://www.fws.gov/refuge/james-river/visit-us/activities/hunting",
+    "notes": "2026-27 general deer hunts: Saturdays and Sundays only, Oct 3, 2026 - Jan 3, 2027 (archery, muzzleloader or shotgun, as the state season allows). Other species may be taken only on deer hunt dates, by the same methods. About 4,000 ac are open; safety zones are closed, including a 200-yard no-hunt zone on the eastern boundary. The northern hunt areas close after Dec 6 for nesting eagles. No dogs; still hunting only; muzzleloader and slug-gun hunters must use a stand at least 10 ft high; portable stands removed daily. Youth/apprentice weekends: Sep 26-27, 2026 and Apr 3-4, 2027. The FWS web page calls spring turkey a lottery, but the 2026/27 fact sheet says first-come first-served.",
+    "sources": [
+      "https://www.fws.gov/refuge/james-river/visit-us/activities/hunting",
+      "https://www.fws.gov/sites/default/files/documents/2026-08/jrnwr-hunt-2026-27-general-regulations-508-compliant.pdf",
+      "https://www.fws.gov/sites/default/files/documents/2026-09/2026_27-jrnwr-deer-hunt-dates-flyer.pdf",
+      "https://www.ecfr.gov/current/title-50/chapter-I/subchapter-C/part-32/subpart-B/section-32.65"
+    ]
+  },
+  {
+    "name": "Presquile National Wildlife Refuge",
+    "open_to_hunting": true,
+    "species": ["white-tailed deer", "wild turkey (fall)", "coyote", "red fox", "bobcat", "raccoon", "skunk", "squirrel", "rabbit", "groundhog", "opossum"],
+    "method": "Quota permit, first-come first-served in 2026, through presquilenwr.recaccess.com (opened Sep 21, 2026; $30 covers the permit holder and one guest).",
+    "url": "https://www.fws.gov/refuge/presquile/visit-us/activities/hunting",
+    "notes": "2026 hunts: Oct 3 (archery); Nov 21, Nov 27 and Dec 5 (shotgun). Two deer per day. Other species may be taken only on hunt days, when state seasons allow. Stand hunting only; no dogs, no drives. The refuge is an island: arrive by your own boat and dock only at the designated landings. No shooting within 300 ft of buildings. No hunters under 12. The CFR and the FWS web page still describe a lottery (102 hunters, 3 shotgun days, $5 + $20); the 2026 fact sheet says first-come first-served with four hunts, and that is what is used here.",
+    "sources": [
+      "https://www.fws.gov/refuge/presquile/visit-us/activities/hunting",
+      "https://www.fws.gov/sites/default/files/documents/2026-08/presquile-hunt-fact-sheet-2026.pdf",
+      "https://www.ecfr.gov/current/title-50/chapter-I/subchapter-C/part-32/subpart-B/section-32.65"
+    ]
+  },
+  {
+    "name": "Plum Tree Island National Wildlife Refuge",
+    "open_to_hunting": true,
+    "species": ["duck", "merganser", "coot", "brant", "dark goose", "light goose"],
+    "method": "State season, from refuge blinds only. No refuge permit or fee; the three designated blinds on the Cow Island unit are first-come first-served.",
+    "url": "https://www.fws.gov/refuge/plum-tree-island/visit-us/activities/hunting",
+    "notes": "Only the three stationary blinds on the 211-acre Cow Island unit (northwest end of the refuge) are open. The rest of the island is a former bombing range (Formerly Used Defense Site) with unexploded ordnance and is closed. No scouting on land. Refuge season (2026-27): the 2nd and 3rd segments of the state duck season, Nov 18-29, 2026 and Dec 19, 2026 - Jan 31, 2027. No refuge hunting during the September teal season or the October segment. The mapped polygon is the whole refuge, so most of it should be shown as closed.",
+    "sources": [
+      "https://www.fws.gov/refuge/plum-tree-island/visit-us/activities/hunting",
+      "https://www.fws.gov/sites/default/files/documents/2026-10/r5_va_eastern-virginia-rivers-complex_alldocs_2026.pdf",
+      "https://www.ecfr.gov/current/title-50/chapter-I/subchapter-C/part-32/subpart-B/section-32.65"
+    ]
+  },
+  {
+    "name": "Rappahannock River Valley National Wildlife Refuge",
+    "open_to_hunting": true,
+    "species": ["white-tailed deer", "wild turkey", "coyote", "bobcat", "gray squirrel", "rabbit", "groundhog", "red fox", "skunk", "raccoon", "opossum", "waterfowl"],
+    "method": "Refuge permits, first-come first-served, at rappahannock.recaccess.com (fall permits went on sale Aug 2, 2026; $25-$40). Franklin, Mothershead and Wright need no permit, only the free online check-in. Cat Point Creek waterfowl blinds are by lottery (drawn Oct 11). Every hunter except waterfowl hunters must check in and out online.",
+    "url": "https://www.fws.gov/refuge/rappahannock-river-valley/visit-us/activities/hunting",
+    "units_open": ["Cat Point Creek", "Fones Cliffs", "Franklin", "Hutchinson", "Kennedy", "Laurel Grove", "Mothershead", "Port Royal", "Tayloe", "Thomas", "Toby's Point", "Wellford", "Wilna", "Wright"],
+    "units_closed": ["Island Farm", "Peter", "Styer/Bishop"],
+    "notes": "Open units, seasons and weapons vary by unit (2026/27 hunter letter, Table 2). Port Royal is archery only (Oct 3-30). Thomas and Wellford are archery only. Franklin and Mothershead have archery plus small game (Dec 16 - Feb 28). Wright is open daily through all deer seasons and small game on check-in. Cat Point Creek is archery plus waterfowl. Shoreline waterfowl spots are at Wilna (1 area) and Toby's Point (2 areas). No Sunday hunting on any unit. Shotgun, muzzleloader or archery only (no rifles, handguns or airguns). Still hunting only; dogs only for waterfowl. Island Farm opens only when blinds are installed (2026 hunting plan); Peter and Styer/Bishop are not in the hunt program. FWS maps Wilna and Wright as one polygon ('Wilna/Wright Units'), but the rules differ: Wilna needs a permit, Wright only check-in. The refuge's conservation easements (Menokin, Wellford Easement, Laneview, Jones Top Creek, Fones Cliffs easements; about 4,100 ac) are private land and are not mapped. In the GeoJSON, each feature carries a 'unit' property.",
+    "sources": [
+      "https://www.fws.gov/refuge/rappahannock-river-valley/visit-us/activities/hunting",
+      "https://www.fws.gov/sites/default/files/documents/2026-10/2026-hunter-letter-finalv2-508compliant_0.pdf",
+      "https://www.fws.gov/sites/default/files/documents/2026-10/r5_va_eastern-virginia-rivers-complex_alldocs_2026.pdf",
+      "https://www.ecfr.gov/current/title-50/chapter-I/subchapter-C/part-32/subpart-B/section-32.65"
+    ]
+  },
+  {
+    "name": "Mackay Island National Wildlife Refuge",
+    "open_to_hunting": true,
+    "species": ["white-tailed deer", "coyote (incidental)", "feral hog (incidental)", "waterfowl (assigned blinds)"],
+    "method": "Signed refuge hunt permit (cut from the 2026 regulations brochure); no reservations. Fixed deer-hunt dates. Waterfowl is from assigned blinds and needs a North Carolina Waterfowl Hunt Permit or a signed brochure.",
+    "url": "https://www.fws.gov/refuge/mackay-island/visit-us/activities/hunting",
+    "notes": "This is a North Carolina refuge; about 887 of its 8,700 ac lie in Virginia Beach, north of the state line along Back Bay, and only that part is mapped. Its regulations are in 50 CFR 32.52(e), not 32.65. 2026 deer hunt dates: Oct 22-25, Oct 29 - Nov 2, Nov 5-8, Nov 12-15 and Nov 26-29. Shotgun, muzzleloader, pistol, crossbow or bow; no other rifles; no dogs; portable stands only; no loaded firearm within 50 ft of gravel roads. Carry the license for the state you are hunting in and check deer in through that state. Sunday hunting follows each state's rules. The brochure's 2026 hunting map shades the Virginia portion (marsh north of the state line around Flynns Folly and Bull Bay) as 'Open During All Hunts'. It is mostly marsh, so access is largely by boat. A 31-acre sliver overlaps DWR's Princess Anne WMA (Pocahontas tract) at the shared edge.",
+    "sources": [
+      "https://www.fws.gov/refuge/mackay-island/visit-us/activities/hunting",
+      "https://www.fws.gov/sites/default/files/documents/2026-07/mackay-island-hunt-regs-2026_virtual.pdf",
+      "https://www.ecfr.gov/current/title-50/chapter-I/subchapter-C/part-32/subpart-B/section-32.52"
+    ]
+  }
+]
