@@ -159,19 +159,25 @@ notes in `src/regs/local-areas.json`, shown in the location panel). Effects are 
 `src/regs/local-effects.ts`. Points to review:
 
 36. **Prince William's restricted areas** (Sec. 31-26–31-28) were hand-built from the metes-and-bounds
-    descriptions (11 of 12; the Courthouse complex lies outside the map's county outline). Ridgewood
-    Estates, Woodbine Woods, and Gainesville are low confidence; the text itself has inconsistencies
-    (unnamed Felkins Branch, Woodbine Woods leg lengths). The county's "Restricted Firearm Discharge
+    descriptions and county GIS (all 12; per-feature confidence is in the data). Still low: Ridgewood
+    Estates ("Felkins Branch" is unnamed in every map source; if it is the stream through Section 3,
+    the area is larger) and Woodbine Woods (a leg described as ~2,500 ft measures ~4,790 ft; east edge
+    kept on today's Rt 234). Gainesville is medium (railroad distance 17,850-18,100 ft vs 18,401 in the text). The county's "Restricted Firearm Discharge
     Zone" GIS layer is a different rule (100-yard buffers). **Fairfax Appendix J** was traced from the
     county's 2018 "No Shooting Areas" map PDF (no vector layer is published).
     **Not mapped:** Suffolk "densely populated
     areas" (computed from parcel layout); Louisa *posted* subdivisions; Lynchburg permitted farmland;
     Roanoke city / Portsmouth "public places"; Norton "in any street". All remain as text in the panel.
-37. **Low confidence:** Greene (Locust Lane / Midway Acres, rebuilt from parcel legal descriptions;
-    hunters with the owner's permission are exempt, so it's shown as information only) and Tazewell
-    parks (no public parcel GIS; only Cavitt's Creek mapped).
-38. **Under-mapped:** James City "recorded subdivisions" — the county layer misses small rural and
-    petitioned subdivisions and ~9 of 57 named pre-1964 subdivisions; the real restricted area is larger.
+37. **Greene (low confidence):** Locust Lane / Midway Acres now follows full-resolution county parcels,
+    but today's only R-2 district there doesn't adjoin Locust Lane (business parcels between). The 1990
+    "adjoining R-2" may be the since-rezoned New Life Drive tracts (unmapped); needs the county's exhibit.
+    Owner's-permission hunters are exempt, so it's information only. **Tazewell parks (medium):**
+    Cavitt's Creek and the county fairgrounds, from an owner search of county assessment records; leased
+    parks wouldn't appear.
+38. **James City "recorded subdivisions" (medium):** county subdivision and section layers, 55 of 57
+    named pre-1964 subdivisions (missing: Dandridge Davenport & Piggott; Levi & Lettie Wallace), and
+    small plats from the plat index. Petitioned subdivisions can't be identified, and plat titles don't
+    reliably flag excluded family subdivisions.
 39. **Judgment calls:** Henrico office/mixed-use districts counted as commercial; Essex "R-2 Limited
     Residential" taken to be today's R-2 "Low Density Residential"; Petersburg agricultural zoning (city
     sources disagree, 5.6–10.8 km²); Chesapeake north boundary follows I-664 north from Bowers Hill;
