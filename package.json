@@ -1,0 +1,31 @@
+{
+  "name": "va-hunt-map",
+  "version": "1.0.0",
+  "description": "Map of Virginia big game hunting regulations by date and location",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "build:geo": "scripts/build-geo.sh",
+    "fetch:sources": "scripts/fetch-sources.sh"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/geojson": "^7946.0.16",
+    "@types/leaflet": "^1.9.22",
+    "@types/node": "^26.6.6",
+    "mapshaper": "^0.7.101",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0"
+  },
+  "dependencies": {
+    "@turf/boolean-point-in-polygon": "^7.4.0",
+    "leaflet": "^1.9.4"
+  },
+  "type": "module"
+}
