@@ -1,0 +1,37 @@
+name: Watch DWR regulation pages
+
+# DWR's Board votes on regulation changes in late May and new license-year pages usually
+# appear in early summer; corrections can come any time in season. Check weekly April-
+# September (and on demand) and open/update an issue when any page's text changes.
+on:
+  schedule:
+    - cron: '17 13 * 4-9 1' # Mondays 13:17 UTC, April through September
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install beautifulsoup4
+      - id: check
+        run: python3 scripts/check-dwr-changes.py --report dwr-changes.md
+      - name: Open or update the tracking issue
+        if: steps.check.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh label create dwr-changes --color 8e7cc3 --description "DWR regulation pages changed" 2>/dev/null || true
+          issue=$(gh issue list --label dwr-changes --state open --json number --jq '.[0].number')
+          if [ -n "$issue" ]; then
+            gh issue comment "$issue" --body-file dwr-changes.md
+          else
+            gh issue create --title "DWR regulation pages changed" --label dwr-changes --body-file dwr-changes.md
+          fi

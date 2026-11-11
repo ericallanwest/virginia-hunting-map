@@ -64,6 +64,12 @@
 - [ ] Furbearer trapping seasons (https://dwr.virginia.gov/hunting/regulations/furbearertrapping/).
 - [ ] Migratory game birds (dove, waterfowl, woodcock) — federal frameworks.
 
+## Archive and yearly updates (done)
+
+- [x] License-year menu; archived-year and not-yet-published banners; dates follow loaded years.
+- [x] Weekly DWR page watcher (GitHub Actions) that opens an issue with diffs.
+- [ ] Per-year local ordinance and ordinance-area data (when counties change ordinances).
+
 ## Later ideas
 
 - Bring in DWR's annual regulation PDF and diff it automatically each year to flag changed rules.

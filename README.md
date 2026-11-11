@@ -77,12 +77,26 @@ not named in DWR's tables falls back to a per-land-type policy (follow private-l
 Where the regulations are ambiguous, the literal reading is encoded and the question is logged in
 [docs/OPEN-QUESTIONS.md](docs/OPEN-QUESTIONS.md).
 
-### Adding a license year or species
+### Each new license year (and archiving the old one)
 
-1. `npm run fetch:sources`, then `git diff sources/regs/` to see exactly what DWR changed.
-2. Copy `src/regs/deer-2026.ts` → `deer-2027.ts`, update it, and register it in `src/regs/index.ts`.
-3. Update/add scenario tests; `npm test` also checks every referenced county, city, town, and
-   property exists in the map data.
+Regulations are keyed by license year (Jul 1 – Jun 30), so past years stay available: the
+**License year** menu lists every loaded year (past ones marked "archived"), and dates before
+today's license year show an "Archived" banner. If today falls in a year DWR hasn't published yet
+(typically July, until the new pages go up), that year appears as "not yet published" with a notice
+and a link to DWR instead of wrong data.
+
+**Watching for changes.** `.github/workflows/watch-dwr.yml` runs every Monday April–September (and
+on demand from the Actions tab). It runs `scripts/check-dwr-changes.py`, which compares the text of
+113 DWR pages (species pages, legal use, all local ordinance pages) with the snapshots in
+`sources/regs/`, and opens — or comments on — a GitHub issue labelled `dwr-changes` with the diffs.
+
+**When DWR publishes a new year:**
+1. `python3 scripts/check-dwr-changes.py --update` to refresh the snapshots; review `git diff sources/regs/`.
+2. Copy each `src/regs/*-2026.ts` to `*-2027.ts`, apply the changes, set `licenseYear: 2027`, and
+   register them in `src/regs/index.ts` (keep the 2026 entries — that's the archive).
+3. Re-extract changed local ordinance pages (`scripts/build-local-ordinances.py`) and review
+   `src/regs/local-effects.ts`.
+4. Add scenario tests for the new year; `npm test` also checks every referenced place exists.
 
 ## Data sources
 

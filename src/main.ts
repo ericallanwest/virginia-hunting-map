@@ -6,7 +6,7 @@ import { legendFor, type View } from './legend';
 import { createMap, RegulationLayers } from './map';
 import { dayOfLicenseYear, licenseYearOf, resolve, todayISO } from './regs/dates';
 import { nextDay } from './regs/engine';
-import { availableYears, dateBounds, GROUPS, regsFor, SPECIES, speciesInfo, type Group } from './regs/index';
+import { availableYears, dateBounds, GROUPS, regsFor, SPECIES, speciesInfo, yearLabel, yearOptions, type Group } from './regs/index';
 import type { Species } from './regs/types';
 
 // ---------------------------------------------------------------------------
@@ -66,25 +66,38 @@ loadLayers().then((l) => {
 
 function refresh() {
   const regs = regsFor(state.species, state.iso);
+  const ly = licenseYearOf(state.iso);
+  const currentLy = licenseYearOf(todayISO());
   const banner = $('#banner');
+  banner.className = 'banner';
   if (!regs) {
+    // A license year DWR hasn't published yet (e.g. July, before the new regulations are posted).
     const years = availableYears(state.species);
     banner.hidden = false;
-    banner.textContent = years.length
-      ? `${label(state.species)} regulations for the ${licenseYearOf(state.iso)}–${(licenseYearOf(state.iso) + 1) % 100} license year aren’t loaded yet. Data covers ${years.map((y) => `${y}–${(y + 1) % 100}`).join(', ')}.`
+    banner.innerHTML = years.length
+      ? `<strong>${yearLabel(ly)} ${label(state.species).toLowerCase()} regulations aren’t published yet.</strong> DWR usually posts the new license year’s regulations in early summer (the Board votes in late May). Check <a href="https://dwr.virginia.gov/hunting/regulations/" target="_blank" rel="noopener">DWR’s regulations page</a>. Earlier years: ${years.map((y) => yearLabel(y)).join(', ')}.`
       : `${label(state.species)} regulations are coming soon.`;
+  } else if (ly < currentLy) {
+    banner.hidden = false;
+    banner.className = 'banner archived';
+    banner.innerHTML = `<strong>Archived: ${yearLabel(ly)} regulations.</strong> You’re viewing a past license year (Jul 1, ${ly} – Jun 30, ${ly + 1}).`;
   } else banner.hidden = true;
+
+  const yearSel = $('#license-year') as HTMLSelectElement;
+  yearSel.innerHTML = yearOptions(todayISO())
+    .map(({ year, loaded }) => `<option value="${year}" ${year === ly ? 'selected' : ''}>${yearLabel(year)}${loaded ? (year < currentLy ? ' (archived)' : '') : ' (not yet published)'}</option>`)
+    .join('');
 
   ($('#date') as HTMLInputElement).value = state.iso;
   const slider = $('#date-slider') as HTMLInputElement;
   slider.value = String(dayOfLicenseYear(state.iso));
   $('#date-label').textContent = fmtDate(state.iso);
-  const { min, max } = dateBounds();
+  const { min, max } = dateBounds(todayISO());
   ($('#prev-day') as HTMLButtonElement).disabled = state.iso <= min;
   ($('#next-day') as HTMLButtonElement).disabled = state.iso >= max;
   const today = todayISO();
-  if (today < min || today > max) {
-    $('#date-label').textContent += ` · today (${fmtDate(today)}) is outside the ${min.slice(0, 4)}–${max.slice(2, 4)} regulations`;
+  if (today < min) {
+    $('#date-label').textContent += ` · today (${fmtDate(today)}) is before the ${yearLabel(Number(min.slice(0, 4)))} license year`;
   }
 
   regLayers?.update({ regs, species: state.species, iso: state.iso, view: state.view, includeYouth: state.includeYouth });
@@ -226,13 +239,13 @@ function setDate(iso: string) {
 
 /** Keep dates within the license years we have regulations for. */
 function clampDate(iso: string): string {
-  const { min, max } = dateBounds();
+  const { min, max } = dateBounds(todayISO());
   return iso < min ? min : iso > max ? max : iso;
 }
 
 function wireDateControls() {
   const input = $('#date') as HTMLInputElement;
-  const { min, max } = dateBounds();
+  const { min, max } = dateBounds(todayISO());
   input.min = min;
   input.max = max;
   input.addEventListener('change', () => setDate(input.value));
@@ -242,6 +255,14 @@ function wireDateControls() {
   });
   $('#next-day').addEventListener('click', () => setDate(nextDay(state.iso)));
   $('#today').addEventListener('click', () => setDate(todayISO()));
+
+  // License-year menu: jump to the same calendar day in the chosen license year.
+  const yearSel = $('#license-year') as HTMLSelectElement;
+  yearSel.addEventListener('change', () => {
+    const y = Number(yearSel.value);
+    const mmdd = state.iso.slice(5) === '02-29' ? '02-28' : state.iso.slice(5);
+    setDate(resolve(mmdd, y));
+  });
 
   // Slider scrubs through the license year (Jul 1 - Jun 30).
   const slider = $('#date-slider') as HTMLInputElement;

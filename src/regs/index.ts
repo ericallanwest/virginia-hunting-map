@@ -82,11 +82,25 @@ export function regsFor(species: Species, iso: string): SpeciesRegs | undefined 
   return ALL.find((r) => r.species === species && r.licenseYear === ly);
 }
 
-/** First and last dates any loaded regulations cover (Jul 1 of the first license year … Jun 30 of the last). */
-export function dateBounds(): { min: string; max: string } {
-  const years = ALL.map((r) => r.licenseYear);
+/** License years with encoded regulations, oldest first. */
+export const loadedYears = (): number[] => [...new Set(ALL.map((r) => r.licenseYear))].sort();
+
+/**
+ * License years the date picker offers: every loaded year, plus the year containing
+ * `today` even if DWR hasn't published it yet (so "Today" works, with a notice).
+ */
+export function yearOptions(today: string): { year: number; loaded: boolean }[] {
+  const years = new Set([...loadedYears(), licenseYearOf(today)]);
+  return [...years].sort().map((year) => ({ year, loaded: loadedYears().includes(year) }));
+}
+
+/** First and last selectable dates (Jul 1 of the first offered license year … Jun 30 of the last). */
+export function dateBounds(today: string): { min: string; max: string } {
+  const years = yearOptions(today).map((y) => y.year);
   return { min: `${Math.min(...years)}-07-01`, max: `${Math.max(...years) + 1}-06-30` };
 }
+
+export const yearLabel = (y: number) => `${y}–${String((y + 1) % 100).padStart(2, '0')}`;
 
 export function availableYears(species: Species): number[] {
   return ALL.filter((r) => r.species === species).map((r) => r.licenseYear);
