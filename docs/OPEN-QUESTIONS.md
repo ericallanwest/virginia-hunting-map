@@ -40,9 +40,17 @@ encoded with the literal reading noted. Resolve these (ideally with DWR), then a
    are closed or special-hunt only).
 
 9. **Department of Defense lands** are mapped (src/regs/military.ts): the five bases DWR lists with hunting
-   programs show the state framework as "check posted rules"; other DoD land is closed to public hunting.
-   Not encoded: base-specific seasons and days (e.g. Quantico buck-only firearms, no Tue/Wed), Fauquier fox
-   open on Quantico (shown as text), and Camp Peary's longer fall turkey season (no public access).
+   programs show their own 2026-27 seasons where encoded (src/regs/military-2026.ts: Quantico, A.P. Hill,
+   Pickett, Belvoir), otherwise the state framework as "check posted rules"; other DoD land is closed.
+   Open points:
+   - A.P. Hill's Controlled Access Area either-sex days are only in a note.
+   - Species the bases say "follow the state" keep the state framework, so base day closures and
+     Belvoir's archery-only rule show only in the note.
+   - Quantico's bulletin is a scan.
+   - Fauquier fox open on Quantico is shown as text.
+   - Camp Peary's longer fall turkey season isn't encoded (no public access).
+   **Refuges** (src/regs/refuges.ts) and **other public land** (src/regs/other-lands.ts, state-parks.ts)
+   have their doubts in sources/refuges/README.md and sources/lands/README.md.
 
 10. **Name matching.** DCR's layer names some state forests without "State Forest" ("Cumberland",
     "Big Woods", "The Channels", "Prince Edward-Gallion"); these are assumed to be the forests in
