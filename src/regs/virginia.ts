@@ -115,7 +115,7 @@ SPLITS.push(
     jurisdiction: 'county:Wythe',
     line: 'Rt. 21, I-81, the New River, and Cripple Creek',
     parts: {
-      senr: 'Southeast area (east of Rt. 21, south of I-81, north of Cripple Creek, or southeast of the New River)',
+      senr: 'Southeast area: east of Rt. 21, south of I-81, north of Cripple Creek, or southeast of the New River',
       other: 'Outside the southeast area',
     },
     mapped: true,
