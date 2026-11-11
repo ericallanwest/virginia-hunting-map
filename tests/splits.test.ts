@@ -73,6 +73,17 @@ describe('split-line geometry', () => {
     expect(at(-79.2, 36.8)).toBe('county:Pittsylvania/east');
   });
 
+  it('US 29 divides Amherst and Rt. 151 divides Nelson', () => {
+    expect(at(-79.30, 37.60)).toBe('county:Amherst/west');
+    expect(at(-79.03, 37.47)).toBe('county:Amherst/east');
+    expect(at(-79.08, 37.82)).toBe('county:Nelson/west');
+    expect(at(-78.80, 37.75)).toBe('county:Nelson/east');
+  });
+
+  it('every split in the regulations is mapped (no "which side?" questions)', () => {
+    expect(SPLITS.filter((s) => !s.mapped).map((s) => s.jurisdiction)).toEqual([]);
+  });
+
   it('only the mapped split jurisdictions have sides', () => {
     const ids = new Set(jurisdictions.filter((j: any) => j.properties.subArea).map((j: any) => j.properties.id));
     expect([...ids].sort()).toEqual(

@@ -17,7 +17,7 @@ $MS "$SRC/cb_2023_us_county_500k/cb_2023_us_county_500k.shp" \
   -o "$OUT/jurisdictions.geojson" precision=0.00001 format=geojson
 
 # Split counties along the lines the regulations use (Rts. 613/731, Dismal Swamp line, I-81,
-# State Rt. 16, the New River, the Norfolk Southern main line, and the Wythe hound area); see scripts/split-jurisdictions.py.
+# State Rt. 16, the New River, the Norfolk Southern main line, US 29, Rt. 151, and the Wythe hound area); see scripts/split-jurisdictions.py.
 python3 scripts/split-jurisdictions.py "$OUT/jurisdictions.geojson"
 
 # Virginia outline used to clip statewide layers.

@@ -52,8 +52,10 @@ encoded with the literal reading noted. Resolve these (ideally with DWR), then a
     Norfolk Southern main line (Lynchburg–Altavista–Chatham–Danville), traced from Census TIGER rails
     as the shortest path through NS track between Lynchburg and Danville. Other NS lines in those
     counties run east–west, so "west of the Norfolk Southern Railroad" is read as the main line.
-    Amherst (Rt. 29) and Nelson (Rt. 151) only affect Earn-a-Buck/dog rules, so the user still picks
-    the side for those.
+    Amherst is split along US 29 and Nelson along State Rt. 151. **"Rt. 29" in Amherst is read as
+    today's US 29 (the bypass east of Amherst town and Madison Heights)**, not Business 29 (the old
+    route through them). If DWR means Business 29, the strip between the two roads, including
+    Madison Heights, would move to the east side.
 
 12. **NPS land.** Shown closed. Assateague Island National Seashore and Appalachian Trail corridor
     lands are excluded from the layer because hunting rules there vary.

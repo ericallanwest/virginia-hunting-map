@@ -61,8 +61,8 @@ export function regionOf(county: string | undefined, city: string | undefined): 
 
 /**
  * Jurisdictions the regulations divide along a road or line. `mapped` ones are
- * split in the map data (scripts/split-jurisdictions.py); for the rest (Amherst
- * Rt. 29, Nelson Rt. 151) the UI asks which side the user is on.
+ * split in the map data (scripts/split-jurisdictions.py). An unmapped split would
+ * make the UI ask which side the user is on (currently all are mapped).
  */
 export const SPLITS: Split[] = [
   {
@@ -79,8 +79,9 @@ export const SPLITS: Split[] = [
   },
   {
     jurisdiction: 'county:Amherst',
-    line: 'Route 29 (Earn-a-Buck and dog rules only)',
+    line: 'Route 29',
     parts: { west: 'West of Rt. 29', east: 'East of Rt. 29' },
+    mapped: true,
   },
   {
     jurisdiction: 'county:Campbell',
@@ -96,8 +97,9 @@ export const SPLITS: Split[] = [
   },
   {
     jurisdiction: 'county:Nelson',
-    line: 'Route 151 (dog rules only)',
+    line: 'Route 151',
     parts: { west: 'West of Rt. 151', east: 'East of Rt. 151' },
+    mapped: true,
   },
 ];
 

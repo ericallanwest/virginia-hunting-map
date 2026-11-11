@@ -88,7 +88,7 @@ Where the regulations are ambiguous, the literal reading is encoded and the ques
 | Layer | Source |
 | --- | --- |
 | Counties & independent cities, towns | U.S. Census Bureau cartographic boundary files (2023, 1:500k) |
-| Split lines (Rts. 613/731, Dismal Swamp line, I-81, Rt. 16, Rt. 21, New River, Cripple Creek, Norfolk Southern main line) | U.S. Census Bureau TIGER/Line roads, linear water, and rails (2023) |
+| Split lines (Rts. 613/731, Dismal Swamp line, I-81, Rt. 16, Rt. 21, New River, Cripple Creek, Norfolk Southern main line, US 29, Rt. 151) | U.S. Census Bureau TIGER/Line roads, linear water, and rails (2023) |
 | National Forest | USDA Forest Service, Basic Ownership (EDW) |
 | Wildlife Management Areas | Virginia DWR, WMA Boundaries feature service |
 | State forests, state parks, Philpott & Flannagan | Virginia DCR, Conservation Lands |

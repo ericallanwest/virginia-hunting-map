@@ -33,7 +33,7 @@ export function legendFor(species: Species, view: View): Category[] {
   if (view === 'dogs') {
     return [
       { key: 'yes', label: 'Open — hounds allowed', color: 'var(--c-either)' },
-      { key: 'varies', label: 'Hounds allowed in part of area', color: 'var(--c-antlered)' },
+      // 'varies' (hounds allowed in only part of an area) needs an unmapped split; all are mapped now.
       { key: 'no', label: 'Open — no hounds', color: 'var(--c-muzzleloader)' },
       CHECK,
       CLOSED,

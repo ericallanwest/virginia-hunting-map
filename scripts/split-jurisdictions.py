@@ -10,6 +10,7 @@ Lines (see PARTITIONS at the bottom):
   I-81              - Montgomery, Pulaski, Roanoke, Washington, Smyth (bear hound rules).
   State Rt. 16      - Grayson, Smyth. New River - Carroll, Grayson.
   Campbell, Pittsylvania - the Norfolk Southern main line (Lynchburg-Danville).
+  Amherst, Nelson   - US 29 and State Rt. 151.
   Wythe             - the area bounded by Rt. 21, I-81, the New River and Cripple Creek,
                       plus land southeast of the New River.
   City of Suffolk   - the "Dismal Swamp Line", 4VAC15-20-40: State Highway 10
@@ -318,6 +319,10 @@ PARTITIONS = {
     # Norfolk Southern main line (bear hounds, hound training; deer dogs and EAB nearby)
     "county:Campbell": [by_line_lazy(ns_mainline, {"west": (-79.33, 37.20), "east": (-79.00, 37.15)})],
     "county:Pittsylvania": [by_line_lazy(ns_mainline, {"west": (-79.60, 36.85), "east": (-79.20, 36.80)})],
+    # US 29 (Amherst) and State Rt. 151 (Nelson): Earn-a-Buck and deer/bear dog rules.
+    # "Rt. 29" is read as today's US 29 (the bypass), not Business 29 through Madison Heights.
+    "county:Amherst": [by_line(route("51009", "US Hwy 29"), {"west": (-79.30, 37.60), "east": (-79.03, 37.47)})],
+    "county:Nelson": [by_line(route("51125", "State Rte 151", "State Hwy 151"), {"west": (-79.08, 37.82), "east": (-78.80, 37.75)})],
     # New River
     "county:Carroll": [by_line(river("51035", "New Riv"), {"enr": (-80.75, 36.75), "wnr": (-80.975, 36.79)})],
     # Wythe: "southeast of the New River or that part bounded by Rt. 21 on the west, I-81 on the
