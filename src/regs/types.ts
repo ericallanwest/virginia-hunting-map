@@ -33,7 +33,8 @@ export type Land =
   | 'state_forest'
   | 'state_park'
   | 'army_corps'
-  | 'nps'; // National Park Service (closed to hunting)
+  | 'nps' // National Park Service (closed to hunting)
+  | 'military'; // Department of Defense installations (see military.ts)
 
 export type Region = 'east' | 'west'; // of the Blue Ridge
 

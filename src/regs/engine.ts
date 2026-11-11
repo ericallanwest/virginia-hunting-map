@@ -3,6 +3,7 @@ import type { DateRange, InfoRule, Land, Place, SeasonRule, SeasonType, Selector
 import { CITY_PARENT, splitFor } from './virginia';
 import { localEffect, type LocalEffect } from './local';
 import { regsFor } from './registry';
+import { MILITARY_CLOSED_NOTE, MILITARY_PROGRAM_NOTE, militaryProgram } from './military';
 
 // ---------------------------------------------------------------------------
 // Selector matching
@@ -108,6 +109,7 @@ export interface Evaluation {
 
 /** Season rules that apply to the place at all (any date), with public-land fallbacks resolved. */
 export function seasonsForPlace(regs: SpeciesRegs, place: Place): PlaceSeason[] {
+  if (place.land === 'military') return militarySeasons(regs, place);
   const out: PlaceSeason[] = [];
   if (place.land !== 'private' && regs.unlistedPublicPolicy[place.land]?.status === 'closed') return out;
   const firearmsTypes: SeasonType[] = ['firearms', 'antlerless_firearms'];
@@ -160,6 +162,30 @@ export function seasonsForPlace(regs: SpeciesRegs, place: Place): PlaceSeason[] 
   return out;
 }
 
+/**
+ * Military land: no public hunting, except the installations with hunting programs, where
+ * the state seasons for the surrounding county are the outer framework and every season is
+ * "check the installation's rules" (its permit, days, areas and limits apply).
+ */
+function militarySeasons(regs: SpeciesRegs, place: Place): PlaceSeason[] {
+  const program = militaryProgram(place);
+  if (!program) return [];
+  const asPrivate: Place = { ...place, land: 'private', property: undefined };
+  return regs.seasons
+    .filter((rule) => matches(rule.where, asPrivate))
+    .map((rule) => ({ ...toPlaceSeason(regs, rule, asPrivate), take: 'check' as const, note: MILITARY_PROGRAM_NOTE }));
+}
+
+/** The military access note for a place, as an info rule (shown with the other facts). */
+function militaryInfo(regs: SpeciesRegs, place: Place): InfoRule[] {
+  if (place.land !== 'military') return [];
+  const program = militaryProgram(place);
+  const text = program
+    ? `${MILITARY_PROGRAM_NOTE} ${program.note} Installation hunting site: ${program.url}`
+    : MILITARY_CLOSED_NOTE;
+  return [{ id: `${regs.species}-military`, species: regs.species, topic: 'access', text, where: {} }];
+}
+
 function toPlaceSeason(regs: SpeciesRegs, rule: SeasonRule, place: Place): PlaceSeason {
   let eitherSexDays: DateRange[] | 'full' = [];
   if (rule.take === 'by-days') {
@@ -195,8 +221,13 @@ export function evaluate(regs: SpeciesRegs, place: Place, iso: string, opts: { i
       open.push(o);
     }
   }
-  const info = regs.info.filter((i) => matches(i.where, place) && (!i.dates || inRanges(iso, i.dates, ly)));
-  const closedLand = place.land !== 'private' && regs.unlistedPublicPolicy[place.land]?.status === 'closed';
+  const info = [
+    ...militaryInfo(regs, place),
+    ...regs.info.filter((i) => matches(i.where, place) && (!i.dates || inRanges(iso, i.dates, ly))),
+  ];
+  const closedLand =
+    (place.land === 'military' && !militaryProgram(place)) ||
+    (place.land !== 'private' && regs.unlistedPublicPolicy[place.land]?.status === 'closed');
   if (closedLand) return { open, info: info.filter((i) => i.topic === 'access'), summary: { status: 'closed' } };
   const counted = open.filter((o) => opts.includeYouth || !o.rule.youthOnly);
   return { open, info, summary: summarize(counted) };

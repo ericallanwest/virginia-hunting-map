@@ -42,7 +42,7 @@ $MS "$SRC/tl_2023_51_place/tl_2023_51_place.shp" \
   -o "$OUT/towns.geojson" precision=0.00001 format=geojson
 
 # 3. Public lands with their own deer rules.
-#    land: national_forest | dwr | state_forest | state_park | army_corps | nps
+#    land: national_forest | dwr | state_forest | state_park | army_corps | nps | military
 $MS "$SRC/usfs.geojson" -clip "$SRC/va-outline.geojson" \
   -each "land = 'national_forest'; name = 'George Washington & Jefferson National Forest'" \
   -filter-fields land,name -o "$SRC/_nf.geojson" format=geojson
@@ -67,7 +67,12 @@ $MS "$SRC/nps.geojson" -clip "$SRC/va-outline.geojson" \
   -dissolve fields=name copy-fields=land \
   -o "$SRC/_nps.geojson" format=geojson
 
-$MS -i "$SRC/_nf.geojson" "$SRC/_wma.geojson" "$SRC/_state.geojson" "$SRC/_nps.geojson" combine-files \
+# Military installations (committed in sources/military; see its README).
+$MS sources/military/military.geojson \
+  -each "land = 'military'" \
+  -filter-fields land,name -o "$SRC/_mil.geojson" format=geojson
+
+$MS -i "$SRC/_nf.geojson" "$SRC/_wma.geojson" "$SRC/_state.geojson" "$SRC/_nps.geojson" "$SRC/_mil.geojson" combine-files \
   -merge-layers force \
   -filter-fields land,name \
   -o "$SRC/_public.geojson" format=geojson
