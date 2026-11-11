@@ -2,7 +2,7 @@ import { dayOfLicenseYear, fmt, fmtRange, resolve } from './regs/dates';
 import { evaluate, nextChange, seasonsForPlace, WEAPON_OF, type DayTake, type PlaceSeason } from './regs/engine';
 import type { InfoTopic, Place, SpeciesRegs } from './regs/types';
 import { splitFor } from './regs/virginia';
-import { localFor } from './regs/local';
+import { localConflicts, localFor } from './regs/local';
 import { jurisdictionLabel, type Located } from './geo';
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
@@ -101,7 +101,7 @@ export function renderDetails({ located, regs, iso, includeYouth, subArea }: Det
             <span class="take t-${o.take}">${takeLabel(o.take, regs.species)}</span>
             ${o.dogs ? `<span class="tag dogs-${o.dogs}">${DOGS_LABEL[o.dogs]}</span>` : ''}
             ${o.local.length ? `<span class="tag local">${LOCAL_LABEL[o.weapon]}</span>` : ''}
-            ${o.local.map(({ ord, r }) => `<div class="note">${esc(r.summary)} (${esc(ord.jurisdiction.split(':')[1])} ${esc(r.section)})</div>`).join('')}
+            ${o.local.map((e) => `<div class="note">${esc(e.note)} (${esc(e.jurisdiction.split(':')[1])} ${esc(e.section)})</div>`).join('')}
             ${o.rule.youthOnly ? '<span class="tag">Youth/apprentice only</span>' : ''}
             ${o.rule.partialNote ? `<div class="note"><strong>${esc(o.rule.partialNote)}</strong></div>` : ''}
             ${o.dogsNote ? `<div class="note">${esc(o.dogsNote)}</div>` : ''}
@@ -125,6 +125,9 @@ export function renderDetails({ located, regs, iso, includeYouth, subArea }: Det
     .join('');
 
   const ords = localFor(place);
+  const conflictHtml = localConflicts(place, regs.species)
+    .map((c) => `<p class="closed-msg"><strong>Local ordinance conflict:</strong> ${esc(c.note)} (${esc(c.section)})</p>`)
+    .join('');
   const localHtml = ords.length
     ? `<div class="fact"><h4>Local ordinances</h4>${ords
         .map(
@@ -154,6 +157,7 @@ export function renderDetails({ located, regs, iso, includeYouth, subArea }: Det
     ${splitHtml}
     <section>
       <h3>${fmtDate(iso)}</h3>
+      ${conflictHtml}
       ${chaseMsg}
       ${openHtml}
       ${next ? `<p class="small">Next change: <strong>${fmtDate(next)}</strong></p>` : ''}

@@ -560,12 +560,6 @@ const infos: InfoRule[] = [
     'No deer dogs Nov 14 – Nov 27 in Madison and Greene counties.', [['11-14', '11-27']]),
   info('dogs-allowed', 'dogs', { region: 'east', not: DOGS_PROHIBITED },
     'Deer dogs allowed during the general firearms season only — never on Sundays, during archery/muzzleloader/antlerless-only seasons, or on youth weekend.'),
-  info('local-no-firearms', 'local', [{ counties: ['Arlington'] }, { cities: ['Hampton', 'Richmond', 'Newport News'] }],
-    'Local ordinance prohibits discharging firearms — archery only (no special permit required for archery).'),
-  info('local-lynchburg', 'local', { cities: ['Lynchburg'] },
-    'Firearms deer hunting only on private lands with a special permit from the Chief of Police.'),
-  info('local-fairfax', 'local', { counties: ['Fairfax'] },
-    'Firearms hunting is restricted by location and parcel size (contact Fairfax County Police Wildlife Management). No parcel-size limits for archery.'),
   info('local-cities-towns', 'local', [{ anyCity: true }, { anyTown: true }],
     'Cities and towns set their own weapon restrictions — check local firearms ordinances.'),
   // Legal Use of Firearms and Archery Tackle (https://dwr.virginia.gov/hunting/regulations/legal-use-of-firearms-and-archery-tackle/)

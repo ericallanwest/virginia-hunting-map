@@ -187,7 +187,7 @@ export function evaluate(regs: SpeciesRegs, place: Place, iso: string, opts: { i
   if (licenseYearOf(iso) === ly) {
     for (const s of seasonsForPlace(regs, place)) {
       if (!inRanges(iso, s.dates, ly)) continue;
-      const eff = localEffect(place, regs.species, s.rule.type);
+      const eff = localEffect(place, regs.species, s.rule);
       const o: OpenSeason = { rule: s.rule, take: dayTake(s, iso, ly), note: s.note, weapon: s.rule.type === 'chase' ? 'none' : eff.weapon, local: eff.applied };
       if (s.rule.dogs && o.take !== 'check') Object.assign(o, dogStatus(regs, s.rule, place, iso));
       open.push(o);

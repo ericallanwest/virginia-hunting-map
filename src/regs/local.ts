@@ -4,12 +4,12 @@
  * sources/regs/local-ordinances/). Data: local-ordinances.json, built from those
  * pages and reviewed by hand (see scripts/ and docs/OPEN-QUESTIONS.md).
  *
- * Only ordinances that apply throughout a locality ("entire") change what the map
- * shows; ones limited to part of a locality (zoning districts, setbacks, parcel
- * sizes) are listed in the location panel.
+ * The extracted text is shown in the location panel. Only the hand-reviewed
+ * effects in local-effects.ts change what the map shows.
  */
 import data from './local-ordinances.json';
-import type { Place, SeasonType, Species } from './types';
+import { LOCAL_CONFLICTS, LOCAL_EFFECTS, type LocalEffectRule } from './local-effects';
+import type { Place, SeasonRule, SeasonType, Species } from './types';
 
 export type LocalWeapon = 'all_firearms' | 'rifle' | 'pistol' | 'shotgun' | 'muzzleloader' | 'air_gun' | 'archery' | 'any';
 
@@ -43,7 +43,7 @@ const BY_ID = new Map(LOCAL.map((l) => [l.jurisdiction, l]));
  * town the place is in. (County ordinances are assumed to apply inside towns too.)
  */
 export function localFor(place: Place): LocalOrdinances[] {
-  const ids = place.city ? [`city:${place.city}`] : [`county:${place.county}`, ...(place.town ? [`town:${place.town}`] : [])];
+  const ids = idsFor(place);
   return ids.map((id) => BY_ID.get(id)).filter((x): x is LocalOrdinances => !!x);
 }
 
@@ -63,37 +63,35 @@ const SEASON_WEAPONS: Record<SeasonType, LocalWeapon[]> = {
   chase: [],
 };
 
-const BANS: Partial<Record<string, (r: LocalRestriction) => LocalWeapon[]>> = {
-  no_firearm_discharge: () => ['rifle', 'pistol', 'shotgun', 'muzzleloader'],
-  no_hunting: () => ['rifle', 'pistol', 'shotgun', 'muzzleloader', 'air_gun', 'archery'],
-  no_rifles: (r) => (r.weapons.length ? r.weapons.filter((w) => w === 'rifle' || w === 'pistol') : ['rifle']),
-  shotgun_only: () => ['rifle', 'pistol', 'air_gun'],
-  archery_restriction: () => ['archery'],
-  air_gun_restriction: () => ['air_gun'],
-};
-
 export interface LocalEffect {
   weapon: WeaponClass;
-  /** Restrictions that narrowed the weapons for this season. */
-  applied: { ord: LocalOrdinances; r: LocalRestriction }[];
+  /** Reviewed ordinance effects that narrowed the weapons for this season. */
+  applied: LocalEffectRule[];
 }
 
-/** Weapons still usable in a season at this place after locality-wide ordinances. */
-export function localEffect(place: Place, species: Species, type: SeasonType): LocalEffect {
-  let allowed = new Set(SEASON_WEAPONS[type]);
-  const applied: LocalEffect['applied'] = [];
-  for (const ord of localFor(place)) {
-    for (const r of ord.restrictions) {
-      if (r.scope !== 'entire') continue;
-      if (!r.species.includes('all') && !r.species.includes(species)) continue;
-      const ban = BANS[r.kind]?.(r);
-      if (!ban) continue;
-      const before = allowed.size;
-      allowed = new Set([...allowed].filter((w) => !ban.includes(w)));
-      if (allowed.size !== before) applied.push({ ord, r });
-    }
+const idsFor = (place: Place) =>
+  place.city ? [`city:${place.city}`] : [`county:${place.county}`, ...(place.town ? [`town:${place.town}`] : [])];
+
+/** Weapons still usable in a season at this place after locality-wide ordinances (local-effects.ts). */
+export function localEffect(place: Place, species: Species, rule: Pick<SeasonRule, 'id' | 'type'>): LocalEffect {
+  const ids = idsFor(place);
+  let allowed = new Set(SEASON_WEAPONS[rule.type]);
+  const applied: LocalEffectRule[] = [];
+  for (const e of LOCAL_EFFECTS) {
+    if (!ids.includes(e.jurisdiction)) continue;
+    if (e.species !== 'all' && !e.species.includes(species)) continue;
+    if (e.ruleIds && !e.ruleIds.includes(rule.id)) continue;
+    const before = allowed.size;
+    allowed = new Set([...allowed].filter((w) => !e.ban.includes(w)));
+    if (allowed.size !== before) applied.push(e);
   }
   return { weapon: classOf(allowed), applied };
+}
+
+/** Local ordinances that conflict with a state season here (shown as warnings, not applied). */
+export function localConflicts(place: Place, species: Species) {
+  const ids = idsFor(place);
+  return LOCAL_CONFLICTS.filter((c) => ids.includes(c.jurisdiction) && c.species === species);
 }
 
 function classOf(w: Set<LocalWeapon>): WeaponClass {

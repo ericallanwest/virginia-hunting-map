@@ -101,7 +101,8 @@ describe('scenarios (2026-27)', () => {
   it('Fairfax County, Feb 1 2027: urban archery + antlerless firearms', () => {
     const e = at(place({ county: 'Fairfax' }), '2027-02-01');
     expect(e.open.map((o) => o.rule.type).sort()).toEqual(['antlerless_firearms', 'urban_archery']);
-    expect(e.summary).toEqual({ status: 'open', weapon: 'firearms', take: 'antlerless' });
+    // Fairfax County ordinance 6-1-2(e): nothing larger than .224 caliber -> firearms without rifles.
+    expect(e.summary).toEqual({ status: 'open', weapon: 'shotgun', take: 'antlerless' });
   });
   it('Arlington, Apr 1 2027: NOVA late archery', () => {
     expect(labels(place({ county: 'Arlington' }), '2027-04-01')).toEqual(['urban_archery:antlerless']);
