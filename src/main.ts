@@ -6,7 +6,7 @@ import { legendFor, type View } from './legend';
 import { createMap, RegulationLayers } from './map';
 import { dayOfLicenseYear, licenseYearOf, resolve, todayISO } from './regs/dates';
 import { nextDay } from './regs/engine';
-import { availableYears, GROUPS, regsFor, SPECIES, speciesInfo, type Group } from './regs/index';
+import { availableYears, dateBounds, GROUPS, regsFor, SPECIES, speciesInfo, type Group } from './regs/index';
 import type { Species } from './regs/types';
 
 // ---------------------------------------------------------------------------
@@ -15,7 +15,7 @@ import type { Species } from './regs/types';
 const params = new URLSearchParams(location.search);
 const state = {
   species: (params.get('species') as Species) || 'deer',
-  iso: params.get('date') || todayISO(),
+  iso: clampDate(params.get('date') || todayISO()),
   // 'antlerless' was the deer take view's name in early links.
   view: ((params.get('view') === 'antlerless' ? 'take' : params.get('view')) as View) || 'weapon',
   includeYouth: params.get('youth') === '1',
@@ -79,6 +79,13 @@ function refresh() {
   const slider = $('#date-slider') as HTMLInputElement;
   slider.value = String(dayOfLicenseYear(state.iso));
   $('#date-label').textContent = fmtDate(state.iso);
+  const { min, max } = dateBounds();
+  ($('#prev-day') as HTMLButtonElement).disabled = state.iso <= min;
+  ($('#next-day') as HTMLButtonElement).disabled = state.iso >= max;
+  const today = todayISO();
+  if (today < min || today > max) {
+    $('#date-label').textContent += ` · today (${fmtDate(today)}) is outside the ${min.slice(0, 4)}–${max.slice(2, 4)} regulations`;
+  }
 
   regLayers?.update({ regs, species: state.species, iso: state.iso, view: state.view, includeYouth: state.includeYouth });
   renderPanel();
@@ -213,12 +220,21 @@ function buildViewPicker() {
 
 function setDate(iso: string) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return;
-  state.iso = iso;
+  state.iso = clampDate(iso);
   refresh();
+}
+
+/** Keep dates within the license years we have regulations for. */
+function clampDate(iso: string): string {
+  const { min, max } = dateBounds();
+  return iso < min ? min : iso > max ? max : iso;
 }
 
 function wireDateControls() {
   const input = $('#date') as HTMLInputElement;
+  const { min, max } = dateBounds();
+  input.min = min;
+  input.max = max;
   input.addEventListener('change', () => setDate(input.value));
   $('#prev-day').addEventListener('click', () => {
     const [y, m, d] = state.iso.split('-').map(Number);
@@ -264,7 +280,7 @@ function wireViewControls() {
 }
 
 function wireLayerToggles() {
-  for (const key of ['towns', 'publicLands'] as const) {
+  for (const key of ['towns', 'publicLands', 'localAreas'] as const) {
     const cb = $(`#show-${key}`) as HTMLInputElement;
     cb.addEventListener('change', () => (cb.checked ? regLayers.groups[key].addTo(map) : regLayers.groups[key].remove()));
   }

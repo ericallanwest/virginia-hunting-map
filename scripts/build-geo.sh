@@ -74,4 +74,16 @@ $MS -i "$SRC/_public.geojson" "$OUT/jurisdictions.geojson" combine-files \
   -filter "this.area > 20000" \
   -o "$OUT/public-lands.geojson" precision=0.00001 format=geojson
 
+# 4. Local-ordinance areas (zoning districts, subdivisions, road-bounded areas, public
+#    property), split by jurisdiction like public lands so each piece knows its side.
+python3 scripts/build-local-areas.py
+$MS -i "$SRC/_local_areas.geojson" "$OUT/jurisdictions.geojson" combine-files \
+  -union target=* \
+  -filter "!!area && !!id" \
+  -each "jurisdiction = id; subArea = subArea || null; name = name_1 || ''" \
+  -dissolve fields=area,name,jurisdiction,subArea \
+  -simplify 30% keep-shapes \
+  -filter "this.area > 2000" \
+  -o "$OUT/local-areas.geojson" precision=0.00001 format=geojson
+
 ls -la "$OUT"

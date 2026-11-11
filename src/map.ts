@@ -1,6 +1,7 @@
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { placeForJurisdiction, placeForPublic, placeForTown, jurisdictionLabel, type Layers, type Poly } from './geo';
+import { placeForArea, placeForJurisdiction, placeForPublic, placeForTown, jurisdictionLabel, type Layers, type Poly } from './geo';
+import { LOCAL_AREAS } from './regs/local';
 import { categoryOf, cssColor, type Category, type View } from './legend';
 import { evaluate } from './regs/engine';
 import type { Place, Species, SpeciesRegs } from './regs/types';
@@ -16,6 +17,7 @@ export interface StyleState {
 interface Entry {
   layer: L.Path;
   feature: Poly;
+  kind: keyof Layers;
   place: Place;
   title: string;
   cat?: Category;
@@ -62,7 +64,8 @@ export function createMap(el: HTMLElement): L.Map {
   return map;
 }
 
-const REG_PANES: [string, string][] = [['jur', '410'], ['town', '420'], ['pub', '430']];
+// counties < towns < local-ordinance areas < public lands
+const REG_PANES: [string, string][] = [['jur', '410'], ['town', '420'], ['area', '425'], ['pub', '430']];
 
 /**
  * "Basemap" and "Regulations" opacity sliders inside the layers control (with the
@@ -107,14 +110,14 @@ function addOpacitySliders(map: L.Map, control: L.Control.Layers, tiles: L.TileL
 
 export class RegulationLayers {
   private entries: Entry[] = [];
-  readonly groups: Record<'jurisdictions' | 'towns' | 'publicLands', L.LayerGroup>;
+  readonly groups: Record<keyof Layers, L.LayerGroup>;
 
   constructor(map: L.Map, layers: Layers) {
     const add = (features: Poly[], kind: keyof Layers, pane: string) => {
       const group = L.layerGroup();
       for (const f of features) {
         const layer = L.geoJSON(f as any, { pane, interactive: true }).getLayers()[0] as L.Path;
-        const entry: Entry = { layer, feature: f, ...describe(f, kind) };
+        const entry: Entry = { layer, feature: f, kind, ...describe(f, kind) };
         layer.bindTooltip(() => `<strong>${entry.title}</strong><br>${entry.cat?.label ?? ''}`, { sticky: true, className: 'reg-tip' });
         group.addLayer(layer);
         this.entries.push(entry);
@@ -125,6 +128,7 @@ export class RegulationLayers {
       jurisdictions: add(layers.jurisdictions, 'jurisdictions', 'jur').addTo(map),
       towns: add(layers.towns, 'towns', 'town').addTo(map),
       publicLands: add(layers.publicLands, 'publicLands', 'pub').addTo(map),
+      localAreas: add(layers.localAreas, 'localAreas', 'area').addTo(map),
     };
   }
 
@@ -133,15 +137,16 @@ export class RegulationLayers {
       e.cat = s.regs
         ? categoryOf(evaluate(s.regs, e.place, s.iso, { includeYouth: s.includeYouth }).summary, s.species, s.view)
         : { key: 'none', label: 'No data', color: 'var(--c-closed)' };
-      const kind = e.feature.properties.land ? 'pub' : e.feature.properties.jurisdiction ? 'town' : 'jur';
+      const kind = e.kind;
       const closed = e.cat.key === 'closed' || e.cat.key === 'none';
       e.layer.setStyle({
         fillColor: cssColor(e.cat.color),
-        fillOpacity: closed ? 0.25 : kind === 'pub' ? 0.75 : 0.55,
-        color: kind === 'pub' ? '#1d3b2a' : kind === 'town' ? '#4b5563' : '#ffffff',
-        weight: kind === 'jur' ? 1 : 0.8,
-        opacity: kind === 'jur' ? 0.9 : 0.8,
-        dashArray: kind === 'town' ? '2 2' : undefined,
+        fillOpacity: closed ? 0.25 : kind === 'publicLands' ? 0.75 : kind === 'localAreas' ? 0.7 : 0.55,
+        // Ordinance areas get a purple dashed outline so they read as "local rule applies here".
+        color: kind === 'publicLands' ? '#1d3b2a' : kind === 'towns' ? '#4b5563' : kind === 'localAreas' ? '#6b4fa0' : '#ffffff',
+        weight: kind === 'jurisdictions' ? 1 : kind === 'localAreas' ? 1.2 : 0.8,
+        opacity: kind === 'jurisdictions' ? 0.9 : 0.85,
+        dashArray: kind === 'towns' ? '2 2' : kind === 'localAreas' ? '4 3' : undefined,
       });
     }
   }
@@ -153,5 +158,10 @@ function describe(f: Poly, kind: keyof Layers): Pick<Entry, 'place' | 'title'> {
     return { title: `${p.name}<br><small>${jurisdictionLabel(p.jurisdiction, p.subArea)}</small>`, place: placeForPublic(f) };
   }
   if (kind === 'towns') return { title: `Town of ${p.name}`, place: placeForTown(f) };
+  if (kind === 'localAreas') {
+    const meta = LOCAL_AREAS.find((a) => a.id === p.area);
+    const label = p.name || meta?.section || 'Local ordinance area';
+    return { title: `${label}<br><small>${jurisdictionLabel(p.jurisdiction, p.subArea)} · local ordinance area</small>`, place: placeForArea(f) };
+  }
   return { title: jurisdictionLabel(p.id, p.subArea), place: placeForJurisdiction(p.id, { subArea: p.subArea }) };
 }

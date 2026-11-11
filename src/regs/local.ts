@@ -8,6 +8,7 @@
  * effects in local-effects.ts change what the map shows.
  */
 import data from './local-ordinances.json';
+import areaData from './local-areas.json';
 import { LOCAL_CONFLICTS, LOCAL_EFFECTS, type LocalEffectRule } from './local-effects';
 import type { Place, SeasonRule, SeasonType, Species } from './types';
 
@@ -36,6 +37,18 @@ export interface LocalOrdinances {
 }
 
 export const LOCAL: LocalOrdinances[] = data as LocalOrdinances[];
+
+/** Mapped ordinance areas: where the polygon came from and how sure we are. */
+export interface LocalArea {
+  id: string;
+  jurisdiction: string;
+  section: string;
+  text: string;
+  method: string;
+  confidence: 'high' | 'medium' | 'low';
+  notes: string;
+}
+export const LOCAL_AREAS: LocalArea[] = areaData as LocalArea[];
 const BY_ID = new Map(LOCAL.map((l) => [l.jurisdiction, l]));
 
 /**
@@ -77,13 +90,17 @@ export function localEffect(place: Place, species: Species, rule: Pick<SeasonRul
   const ids = idsFor(place);
   let allowed = new Set(SEASON_WEAPONS[rule.type]);
   const applied: LocalEffectRule[] = [];
+  const areas = place.areas ?? [];
   for (const e of LOCAL_EFFECTS) {
     if (!ids.includes(e.jurisdiction)) continue;
+    if (e.area && !areas.includes(e.area)) continue;
+    if (e.exceptAreas?.some((a) => areas.includes(a))) continue;
     if (e.species !== 'all' && !e.species.includes(species)) continue;
     if (e.ruleIds && !e.ruleIds.includes(rule.id)) continue;
     const before = allowed.size;
     allowed = new Set([...allowed].filter((w) => !e.ban.includes(w)));
-    if (allowed.size !== before) applied.push(e);
+    // Area rules are listed even when they change nothing (conditions such as stand heights).
+    if (allowed.size !== before || (e.area && e.ban.length === 0)) applied.push(e);
   }
   return { weapon: classOf(allowed), applied };
 }

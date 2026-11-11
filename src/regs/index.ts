@@ -82,6 +82,12 @@ export function regsFor(species: Species, iso: string): SpeciesRegs | undefined 
   return ALL.find((r) => r.species === species && r.licenseYear === ly);
 }
 
+/** First and last dates any loaded regulations cover (Jul 1 of the first license year … Jun 30 of the last). */
+export function dateBounds(): { min: string; max: string } {
+  const years = ALL.map((r) => r.licenseYear);
+  return { min: `${Math.min(...years)}-07-01`, max: `${Math.max(...years) + 1}-06-30` };
+}
+
 export function availableYears(species: Species): number[] {
   return ALL.filter((r) => r.species === species).map((r) => r.licenseYear);
 }

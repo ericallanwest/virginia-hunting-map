@@ -8,6 +8,8 @@ export interface Layers {
   jurisdictions: Poly[];
   towns: Poly[];
   publicLands: Poly[];
+  /** Mapped local-ordinance areas (zoning districts, subdivisions, road-bounded areas, ...). */
+  localAreas: Poly[];
 }
 
 const load = async (name: string) =>
@@ -15,7 +17,12 @@ const load = async (name: string) =>
     .features as Poly[];
 
 export async function loadLayers(): Promise<Layers> {
-  const [jurisdictions, towns, publicLands] = await Promise.all([load('jurisdictions'), load('towns'), load('public-lands')]);
+  const [jurisdictions, towns, publicLands, localAreas] = await Promise.all([
+    load('jurisdictions'),
+    load('towns'),
+    load('public-lands'),
+    load('local-areas'),
+  ]);
   // Each town needs the county it lies in.
   for (const t of towns) {
     const pt = interiorPoint(t);
@@ -23,7 +30,7 @@ export async function loadLayers(): Promise<Layers> {
     t.properties.jurisdiction = j?.properties.id;
     t.properties.subArea = j?.properties.subArea;
   }
-  return { jurisdictions, towns, publicLands };
+  return { jurisdictions, towns, publicLands, localAreas };
 }
 
 /** A point inside (or at least on) the polygon: bbox center if inside, else first vertex. */
@@ -57,11 +64,16 @@ export function placeForPublic(f: Poly): Place {
   });
 }
 
+export function placeForArea(f: Poly): Place {
+  return placeForJurisdiction(f.properties.jurisdiction, { subArea: f.properties.subArea ?? undefined, areas: [f.properties.area] });
+}
+
 export interface Located {
   place: Place;
   jurisdiction?: Poly;
   town?: Poly;
   publicLand?: Poly;
+  localAreas?: Poly[];
 }
 
 /** Resolve a lon/lat to the most specific place: public land > town > county/city. */
@@ -74,7 +86,9 @@ export function locate(layers: Layers, lng: number, lat: number): Located | unde
   let place = placeForJurisdiction(jurisdiction.properties.id, { subArea: jurisdiction.properties.subArea });
   if (town) place = { ...place, town: town.properties.name };
   if (publicLand) place = { ...place, land: publicLand.properties.land, property: publicLand.properties.name };
-  return { place, jurisdiction, town, publicLand };
+  const localAreas = layers.localAreas.filter((f) => booleanPointInPolygon(pt, f));
+  if (localAreas.length) place = { ...place, areas: [...new Set(localAreas.map((f) => f.properties.area as string))] };
+  return { place, jurisdiction, town, publicLand, localAreas };
 }
 
 export function jurisdictionLabel(id: string | undefined, subArea?: string): string {

@@ -40,6 +40,8 @@ export interface Place {
   property?: string;
   /** For jurisdictions split by a road/line (see SPLITS), which side. Undefined = unknown. */
   subArea?: string;
+  /** Mapped local-ordinance areas the place is inside (ids in local-areas.json). */
+  areas?: string[];
 }
 
 /**

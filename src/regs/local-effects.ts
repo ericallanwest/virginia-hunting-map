@@ -23,6 +23,10 @@ import type { Species } from './types';
 
 export interface LocalEffectRule {
   jurisdiction: string;
+  /** Applies only inside this mapped area (local-areas.json); omitted = the whole locality. */
+  area?: string;
+  /** Does not apply inside these mapped areas. */
+  exceptAreas?: string[];
   species: Species[] | 'all';
   ban: LocalWeapon[];
   /** Only for these season rule ids (e.g. spring turkey). */
@@ -32,6 +36,7 @@ export interface LocalEffectRule {
 }
 
 const FIREARMS: LocalWeapon[] = ['rifle', 'pistol', 'shotgun', 'muzzleloader'];
+const FAIRFAX_EXEMPT = 'fairfax-county--appendix-j-exempt';
 const ALL: LocalWeapon[] = [...FIREARMS, 'archery'];
 const ALL_SPECIES: Species[] = [
   'deer', 'bear', 'turkey', 'elk', 'squirrel', 'rabbit', 'grouse', 'quail', 'pheasant', 'crow', 'groundhog',
@@ -126,11 +131,22 @@ export const LOCAL_EFFECTS: LocalEffectRule[] = [
   noBigGameRifles('county:King and Queen', 'Sec. 6-5(a)', 'No rifle larger than .22 caliber; muzzleloading rifles allowed except for spring gobbler.'),
   noBigGameRifles('city:Franklin', '§ 31-4(a)(5)', 'Only shotguns, pistols, or rifles of .22 caliber or smaller.'),
   {
+    // 6-1-2(e): outside Appendix J exempted parcels nothing larger than .224 caliber (no legal big-game
+    // firearm); on exempted parcels, shotguns with multiple ball shot (buckshot) only.
     jurisdiction: 'county:Fairfax',
+    species: BIG,
+    ban: FIREARMS,
+    exceptAreas: [FAIRFAX_EXEMPT],
+    section: 'Section 6-1-2(e)',
+    note: 'No firearm larger than .224 caliber except shotguns with buckshot on parcels exempted in Appendix J.',
+  },
+  {
+    jurisdiction: 'county:Fairfax',
+    area: FAIRFAX_EXEMPT,
     species: BIG,
     ban: ['rifle', 'pistol', 'muzzleloader'],
     section: 'Section 6-1-2(d), (e)',
-    note: 'No firearm larger than .224 caliber and no slugs; firearm deer hunting only with buckshot on parcels exempted in Appendix J.',
+    note: 'Appendix J exempted area: shotguns with buckshot only (no slugs, rifles, or muzzleloaders), on qualifying posted parcels.',
   },
   { jurisdiction: 'county:Halifax', species: ['turkey'], ban: ['rifle'], ruleIds: SPRING_TURKEY, section: '2025-11 Ordinance, Section 3', note: 'No rifles for spring turkey.' },
   { jurisdiction: 'county:King and Queen', species: ['turkey'], ban: ['rifle'], ruleIds: SPRING_TURKEY, section: 'Sec. 6-5(a)', note: 'No muzzleloading rifles for spring gobbler (and no rifles larger than .22).' },
@@ -139,6 +155,41 @@ export const LOCAL_EFFECTS: LocalEffectRule[] = [
   noBigGameRifles('county:Northumberland', '§ 83-3', 'Rifles larger than .22 rimfire are authorized only for deer (from stands); none for bear.', ['bear']),
   noBigGameRifles('county:Lancaster', 'Sec. 10-68', 'Rifles larger than .22 are authorized only for deer (from stands), groundhogs, and coyotes — so not for bear (inferred).', ['bear']),
 ];
+
+// --- Mapped areas (local-areas.json; built from county/city GIS, see the manifests) -----
+const inArea = (area: string, jurisdiction: string, ban: LocalWeapon[], section: string, note: string, species: LocalEffectRule['species'] = 'all'): LocalEffectRule => ({
+  jurisdiction,
+  area,
+  species,
+  ban,
+  section,
+  note,
+});
+
+LOCAL_EFFECTS.push(
+  inArea('chesapeake-city--north', 'city:Chesapeake', FIREARMS, 'Sec. 46-42(a)', 'Northern Chesapeake: no firearm discharge, except shotguns with pellets on 50+ acre tracts with a police permit.'),
+  inArea('virginia-beach-city--north-of-trace-line', 'city:Virginia Beach', ALL, 'Sec. 38-3(a), 38-3.2(a)', 'North/west of the trace line: no firearms or bows (permitted shotgun-with-pellets use on farmland excepted).'),
+  inArea('franklin-city--south-of-armory', 'city:Franklin', FIREARMS, '§ 31-4(a)', 'South of Armory Drive and Second Avenue: no firearm discharge, except limited December deer days or permitted still hunting.'),
+  inArea('loudoun-county--east', 'county:Loudoun', ['rifle'], '684.03(a)', 'Eastern Loudoun: no centerfire rifles — deer only with handguns, shotguns, or single-projectile muzzleloaders; other game with .22 rimfire or smaller.', BIG),
+  inArea('albemarle-county--residential-districts', 'county:Albemarle', FIREARMS, 'Sec. 10-107', 'Residential zoning district: no firearm discharge.'),
+  inArea('henrico-county--res-ind-com-districts', 'county:Henrico', ALL, 'Sec. 13-59, 13-61', 'Residential, industrial, or commercial zoning district: no firearm or bow discharge.'),
+  inArea('essex-county--r2-districts', 'county:Essex', FIREARMS, 'Sec. 22-5', 'R-2 residential district: no firearm (or crossbow) discharge.'),
+  inArea('essex-county--named-subdivisions', 'county:Essex', FIREARMS, 'Sec. 22-5', 'Named subdivision: no firearm (or crossbow) discharge.'),
+  inArea('petersburg-city--non-agricultural', 'city:Petersburg', FIREARMS, 'Sec. 74-208', 'Outside agricultural zoning: no firearm discharge.'),
+  inArea('petersburg-city--agricultural-zoning', 'city:Petersburg', ['rifle', 'pistol', 'muzzleloader'], 'Sec. 74-209', 'Agricultural zoning: shotgun hunting only.'),
+  inArea('james-city-county--subdivisions-50ft', 'county:James City', FIREARMS, 'Sec. 15-36(a)', 'In or within 50 ft of a recorded subdivision: no firearm discharge.'),
+  inArea('mecklenburg-county--merrifield-acres', 'county:Mecklenburg', FIREARMS, 'Sec. 46-124', 'Merrifield Acres and adjacent Corps land: no firearm discharge.'),
+  inArea('middlesex-county--piankatank-shores', 'county:Middlesex', FIREARMS, 'Sec. 22-51', 'Piankatank Shores: no firearm discharge.'),
+  inArea('surry-county--surry-landing', 'county:Surry', ALL, 'Sec. 20-99(a)', 'Surry Landing on the James: no hunting.'),
+  inArea('warren-county--designated-subdivisions', 'county:Warren', ALL, '§ 110-1', 'Designated subdivision/area: no hunting.'),
+  inArea('fairfax-county--appendix-j-restricted', 'county:Fairfax', FIREARMS, 'Section 6-1-2(a)', 'Appendix J heavily populated area: no firearm discharge.'),
+  inArea('stafford-county--shooting-prohibited', 'county:Stafford', FIREARMS, 'Sec. 26-17, 26-18', 'Shooting-prohibited area: no firearm discharge.'),
+  inArea('gloucester-county--wicomico-hayes', 'county:Gloucester', FIREARMS, 'Sec. 13-14', 'Wicomico/Hayes area: no firearm discharge.'),
+  inArea('gloucester-county--gloucester-point-sanitary-district', 'county:Gloucester', FIREARMS, 'Sec. 13-15', 'Gloucester Point sanitary district: no firearm discharge.'),
+  // Shown with their text but no weapon change: conditions rather than bans.
+  inArea('cumberland-county--rifle-area', 'county:Cumberland', [], 'Sec. 46-111', 'Deer rifles .23 caliber or larger only from a stand at least 10 ft high here.'),
+  inArea('greene-county--locust-lane-midway-acres', 'county:Greene', [], 'Sec. 54-1', 'No firearm discharge here except on private land with the owner’s permission.'),
+);
 
 /**
  * Ordinances that conflict with a state season and are shown as a warning rather than

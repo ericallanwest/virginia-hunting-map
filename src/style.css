@@ -66,6 +66,7 @@ h1 { font-size: 1.2rem; margin: 0; letter-spacing: -0.01em; }
 .date-row { display: flex; gap: 6px; align-items: center; }
 .date-row input { flex: 1; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; min-width: 0; }
 .date-row button { border: 1px solid var(--line); background: var(--bg); border-radius: 8px; padding: 5px 11px; cursor: pointer; font-size: 1rem; }
+.date-row button:disabled { opacity: 0.35; cursor: default; }
 .date-row button.link { border: 0; background: none; color: var(--accent); font-weight: 600; font-size: 0.9rem; padding: 5px 4px; }
 #date-slider { width: 100%; accent-color: var(--accent); margin: 0; }
 .slider-scale { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--muted); margin-top: -6px; }
@@ -117,6 +118,8 @@ h4 { margin: 0 0 2px; font-size: 0.85rem; }
 .ord { border-left: 3px solid var(--line); padding-left: 8px; margin: 6px 0; }
 .ord.entire { border-color: #8e7cc3; }
 .ord q { display: block; font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+.ord.area-low { border-color: #c58b2c; }
+.ord .small { margin-top: 3px; }
 .ord .scope { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
 .w-muzzleloader::before { background: var(--c-muzzleloader); }
 .w-archery::before { background: var(--c-archery); }

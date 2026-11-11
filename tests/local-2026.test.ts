@@ -60,3 +60,31 @@ describe('local ordinances narrow the weapons', () => {
     expect(evaluate(elk, place({ county: 'Buchanan' }), '2026-10-12').summary.status).toBe('check');
   });
 });
+
+describe('mapped local-ordinance areas', () => {
+  it('every area effect points at a mapped area, and every mapped area has a reviewed effect', async () => {
+    const { LOCAL_AREAS } = await import('../src/regs/local');
+    const ids = new Set(LOCAL_AREAS.map((a) => a.id));
+    const effectAreas = new Set(LOCAL_EFFECTS.flatMap((e) => [e.area, ...(e.exceptAreas ?? [])]).filter(Boolean));
+    expect([...effectAreas].filter((a) => !ids.has(a!))).toEqual([]);
+    expect([...ids].filter((a) => !effectAreas.has(a))).toEqual([]);
+  });
+  it('Henrico zoning districts: no firearms or bows; agricultural land unchanged', () => {
+    const henrico = (areas?: string[]) => evaluate(deer, place({ county: 'Henrico', subArea: 'w95', areas }), '2026-11-20').summary;
+    expect(henrico(['henrico-county--res-ind-com-districts']).status).toBe('closed');
+    expect(henrico().weapon).toBe('firearms');
+  });
+  it('eastern Loudoun: deer without centerfire rifles; turkey unchanged', () => {
+    const east = place({ county: 'Loudoun', areas: ['loudoun-county--east'] });
+    expect(evaluate(deer, east, '2026-11-20').summary.weapon).toBe('shotgun');
+    expect(evaluate(turkey, east, '2027-04-15').summary.weapon).toBe('firearms');
+  });
+  it('Petersburg: archery outside agricultural zoning, shotguns inside it', () => {
+    const pb = (area: string) => evaluate(deer, place({ city: 'Petersburg', subArea: 'w95', areas: [area] }), '2026-11-20').summary.weapon;
+    expect(pb('petersburg-city--non-agricultural')).toBe('archery');
+    expect(pb('petersburg-city--agricultural-zoning')).toBe('shotgun');
+  });
+  it('Warren designated subdivisions: no hunting at all', () => {
+    expect(evaluate(deer, place({ county: 'Warren', areas: ['warren-county--designated-subdivisions'] }), '2026-11-20').summary.status).toBe('closed');
+  });
+});

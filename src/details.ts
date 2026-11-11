@@ -2,7 +2,7 @@ import { dayOfLicenseYear, fmt, fmtRange, resolve } from './regs/dates';
 import { evaluate, nextChange, seasonsForPlace, WEAPON_OF, type DayTake, type PlaceSeason } from './regs/engine';
 import type { InfoTopic, Place, SpeciesRegs } from './regs/types';
 import { splitFor } from './regs/virginia';
-import { localConflicts, localFor } from './regs/local';
+import { LOCAL_AREAS, localConflicts, localFor } from './regs/local';
 import { jurisdictionLabel, type Located } from './geo';
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
@@ -126,11 +126,22 @@ export function renderDetails({ located, regs, iso, includeYouth, subArea }: Det
     .join('');
 
   const ords = localFor(place);
+  const areaHtml = (place.areas ?? [])
+    .map((id) => {
+      const a = LOCAL_AREAS.find((x) => x.id === id);
+      if (!a) return '';
+      const name = located.localAreas?.find((f) => f.properties.area === id)?.properties.name;
+      return `<div class="ord entire area-${a.confidence}"><span class="scope">Mapped ordinance area · ${esc(a.confidence)} confidence</span>
+        <div>${esc(name || a.section)} (${esc(a.section)})</div>
+        <q>${esc(a.text)}</q>
+        <div class="small">${esc(a.method)}. ${esc(a.notes)}</div></div>`;
+    })
+    .join('');
   const conflictHtml = localConflicts(place, regs.species)
     .map((c) => `<p class="closed-msg"><strong>Local ordinance conflict:</strong> ${esc(c.note)} (${esc(c.section)})</p>`)
     .join('');
-  const localHtml = ords.length
-    ? `<div class="fact"><h4>Local ordinances</h4>${ords
+  const localHtml = ords.length || areaHtml
+    ? `<div class="fact"><h4>Local ordinances</h4>${areaHtml}${ords
         .map(
           (ord) => `<p class="small">${esc(ord.jurisdiction.replace(/^(county|city|town):(.*)$/, (_, t, n) => (t === 'county' ? `${n} County` : t === 'city' ? `City of ${n}` : `Town of ${n}`)))} — <a href="${ord.url}" target="_blank" rel="noopener">DWR summary</a></p>
           ${[...ord.restrictions]
