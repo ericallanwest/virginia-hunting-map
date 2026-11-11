@@ -1,4 +1,4 @@
-# Open questions about the deer regulations (2026–27)
+# Open questions about the regulations (2026–27)
 
 Places where the published text is ambiguous, or where the app had to make an assumption. Each is
 encoded with the literal reading noted. Resolve these (ideally with DWR), then add a scenario test.
@@ -54,3 +54,36 @@ encoded with the literal reading noted. Resolve these (ideally with DWR), then a
 
 12. **NPS land.** Shown closed. Assateague Island National Seashore and Appalachian Trail corridor
     lands are excluded from the layer because hunting rules there vary.
+
+## Bear
+
+13. **Cities and towns.** "Any lawful weapon … within the incorporated limits of any town or city that
+    allows bear hunting from October 3 through January 2." Read literally, a town inside a county
+    with a shorter season (e.g. a town in Rockingham, where archery opens Oct 17) gets Oct 3 – Jan 2.
+    *Encoded:* literally.
+
+14. **Hound restrictions for part of a county** — south of I-81 (Montgomery, Pulaski, Roanoke,
+    Washington), east of the New River (Carroll, Grayson), around State Rt. 16 (Grayson, Smyth), and
+    the Wythe area bounded by Rt. 21 / I-81 / the New River / Cripple Creek. *Encoded:* shown as
+    "dogs vary by area" with the exact wording. Mapping these lines (as was done for Rockingham and
+    Suffolk) would make them exact.
+
+15. **"Counties west of the Blue Ridge"** (no hounds Nov 23–29). *Encoded:* the 31 western counties
+    and the towns in them; independent cities in the west are not included.
+
+16. **Hound training seasons that exclude Sundays** (Nov 30 – Dec 19). The timeline shows the full
+    range; the exclusion is in the note.
+
+## Turkey
+
+17. **Independent cities not named in any fall group** (e.g. Richmond, Lynchburg, Roanoke,
+    Charlottesville). *Encoded:* no fall firearms season; fall archery open (archery is "statewide
+    except where there is a closed firearm season", and only Arlington, Chesapeake, Norfolk,
+    Portsmouth, and Virginia Beach are named as closed).
+
+18. **Camp Peary** (York County) has the longer fall season but isn't mapped; noted in York's facts.
+
+## Elk
+
+19. **Norton.** The Elk Management Zone is "Buchanan, Dickenson, and Wise counties"; the independent
+    city of Norton (inside Wise) is treated as outside the zone. *Encoded:* literally.

@@ -10,6 +10,8 @@ for p in "" deer bear elk turkey general; do
   f=${p:-index}
   curl -sSL "https://dwr.virginia.gov/hunting/regulations/$p/" -o "sources/regs/$f.html"
 done
+curl -sSL "https://dwr.virginia.gov/wildlife/elk/hunting/" -o sources/regs/elk-hunting.html
+curl -sSL "https://dwr.virginia.gov/wildlife/elk/hunting/elk-lottery/" -o sources/regs/elk-lottery.html
 
 # --- Census cartographic boundaries (counties/independent cities, places/towns) ---
 cd sources/geo

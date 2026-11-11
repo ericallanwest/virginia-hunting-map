@@ -1,6 +1,8 @@
 import type { Summary } from './regs/engine';
+import { speciesInfo, type ViewId } from './regs/index';
+import type { Species } from './regs/types';
 
-export type View = 'weapon' | 'antlerless';
+export type View = ViewId;
 
 export interface Category {
   key: string;
@@ -9,30 +11,43 @@ export interface Category {
 }
 
 const CLOSED: Category = { key: 'closed', label: 'Closed', color: 'var(--c-closed)' };
-const CHECK: Category = { key: 'check', label: 'Quota hunt / check posted rules', color: 'var(--c-check)' };
+const CHECK: Category = { key: 'check', label: 'Lottery/quota or check posted rules', color: 'var(--c-check)' };
 
-export const LEGENDS: Record<View, Category[]> = {
-  weapon: [
-    { key: 'firearms', label: 'Firearms', color: 'var(--c-firearms)' },
-    { key: 'muzzleloader', label: 'Muzzleloader (+ archery)', color: 'var(--c-muzzleloader)' },
-    { key: 'archery', label: 'Archery only', color: 'var(--c-archery)' },
-    CHECK,
-    CLOSED,
-  ],
-  antlerless: [
-    { key: 'either-sex', label: 'Either sex', color: 'var(--c-either)' },
-    { key: 'antlered', label: 'Antlered (bucks) only', color: 'var(--c-antlered)' },
-    { key: 'antlerless', label: 'Antlerless (does) only', color: 'var(--c-antlerless)' },
-    CHECK,
-    CLOSED,
-  ],
+const TAKE_CATS: Record<string, Category> = {
+  'either-sex': { key: 'either-sex', label: 'Either sex', color: 'var(--c-either)' },
+  antlered: { key: 'antlered', label: 'Antlered (bucks) only', color: 'var(--c-antlered)' },
+  antlerless: { key: 'antlerless', label: 'Antlerless (does) only', color: 'var(--c-antlerless)' },
+  bearded: { key: 'bearded', label: 'Bearded birds only (spring)', color: 'var(--c-antlered)' },
 };
 
-export function categoryOf(s: Summary, view: View): Category {
-  const legend = LEGENDS[view];
+export function legendFor(species: Species, view: View): Category[] {
+  if (view === 'weapon') {
+    return [
+      { key: 'firearms', label: 'Firearms', color: 'var(--c-firearms)' },
+      { key: 'muzzleloader', label: 'Muzzleloader (+ archery)', color: 'var(--c-muzzleloader)' },
+      { key: 'archery', label: 'Archery only', color: 'var(--c-archery)' },
+      CHECK,
+      CLOSED,
+    ];
+  }
+  if (view === 'dogs') {
+    return [
+      { key: 'yes', label: 'Open — hounds allowed', color: 'var(--c-either)' },
+      { key: 'varies', label: 'Hounds allowed in part of area', color: 'var(--c-antlered)' },
+      { key: 'no', label: 'Open — no hounds', color: 'var(--c-muzzleloader)' },
+      CHECK,
+      CLOSED,
+    ];
+  }
+  const takes = speciesInfo(species).takes ?? [];
+  return [...takes.map((t) => TAKE_CATS[t]).filter(Boolean), CHECK, CLOSED];
+}
+
+export function categoryOf(s: Summary, species: Species, view: View): Category {
+  const legend = legendFor(species, view);
   if (s.status === 'closed') return CLOSED;
   if (s.status === 'check') return CHECK;
-  const key = view === 'weapon' ? s.weapon : s.take === 'mixed' ? 'either-sex' : s.take;
+  const key = view === 'weapon' ? s.weapon : view === 'dogs' ? s.dogs : s.take === 'mixed' ? 'either-sex' : s.take;
   return legend.find((c) => c.key === key) ?? CHECK;
 }
 

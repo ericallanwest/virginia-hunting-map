@@ -70,9 +70,15 @@ export type SeasonType =
   | 'urban_archery'
   | 'muzzleloader'
   | 'firearms'
-  | 'antlerless_firearms';
+  | 'antlerless_firearms'
+  /** Bear hound training ("chase"): dogs may pursue, no animal may be taken. */
+  | 'chase';
 
-export type Take = 'either-sex' | 'antlered' | 'antlerless';
+/**
+ * What may be taken. Deer: either-sex / antlered / antlerless. Bear & elk: 'any'
+ * legal animal. Spring turkey: 'bearded'. Chase seasons: 'none'.
+ */
+export type Take = 'either-sex' | 'antlered' | 'antlerless' | 'any' | 'bearded' | 'none';
 
 /** Dates are 'MM-DD' within the license year (Jul 1 - Jun 30); see dates.ts. */
 export type DateRange = [start: string, end: string];
@@ -93,8 +99,12 @@ export interface SeasonRule {
   esGroup?: string;
   /** Opportunity limited to youth (≤15) and apprentice license holders. */
   youthOnly?: boolean;
+  /** Hunting with dogs is allowed in this season (subject to the species' DogRules and Sundays). */
+  dogs?: boolean;
+  /** The rule covers only part of a matched jurisdiction we can't map; this says which part. */
+  partialNote?: string;
   notes?: string[];
-  /** Fragment on the DWR deer regulations page. */
+  /** Fragment on the DWR regulations page. */
   ref?: string;
 }
 
@@ -105,7 +115,21 @@ export interface EitherSexRule {
   where: Selector;
 }
 
-export type InfoTopic = 'bag' | 'eab' | 'apr' | 'bonus' | 'dogs' | 'local' | 'access';
+export type InfoTopic = 'bag' | 'eab' | 'apr' | 'bonus' | 'dogs' | 'hours' | 'methods' | 'local' | 'access';
+
+/**
+ * Where/when dogs may NOT be used to hunt this species. A rule with `partial`
+ * covers only part of the matched jurisdictions (e.g. "south of I-81"), so the
+ * answer there is "varies" rather than "no".
+ */
+export interface DogRule {
+  where: Selector;
+  dates?: DateRange[];
+  /** Limit to these season types (default: all seasons that allow dogs). */
+  seasonTypes?: SeasonType[];
+  partial?: string;
+  note?: string;
+}
 
 /** Static (or date-limited) facts about a place: bag limits, Earn-a-Buck, dog rules, etc. */
 export interface InfoRule {
@@ -133,6 +157,20 @@ export interface SpeciesRegs {
   seasons: SeasonRule[];
   eitherSex: EitherSexRule[];
   info: InfoRule[];
+  dogRules?: DogRule[];
+  /** Dogs may never be used on Sundays (bear and deer). */
+  noDogsOnSunday?: boolean;
   /** Public properties that follow their own posted rules when no rule names them. */
-  unlistedPublicPolicy: Partial<Record<Land, { status: 'check' | 'private-rules' | 'closed'; note: string }>>;
+  unlistedPublicPolicy: Partial<Record<Land, PublicPolicy>>;
+}
+
+/**
+ * What to do on public land of a given type. Normally applied only when no
+ * firearms rule names the property; `always` applies it to every season there
+ * (e.g. state parks for species whose rules are county-wide).
+ */
+export interface PublicPolicy {
+  status: 'check' | 'private-rules' | 'closed';
+  note: string;
+  always?: boolean;
 }

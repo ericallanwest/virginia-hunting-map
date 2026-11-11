@@ -3,10 +3,11 @@ import 'leaflet/dist/leaflet.css';
 import { placeForJurisdiction, placeForPublic, placeForTown, jurisdictionLabel, type Layers, type Poly } from './geo';
 import { categoryOf, cssColor, type Category, type View } from './legend';
 import { evaluate } from './regs/engine';
-import type { Place, SpeciesRegs } from './regs/types';
+import type { Place, Species, SpeciesRegs } from './regs/types';
 
 export interface StyleState {
   regs?: SpeciesRegs;
+  species: Species;
   iso: string;
   view: View;
   includeYouth: boolean;
@@ -85,7 +86,7 @@ export class RegulationLayers {
   update(s: StyleState) {
     for (const e of this.entries) {
       e.cat = s.regs
-        ? categoryOf(evaluate(s.regs, e.place, s.iso, { includeYouth: s.includeYouth }).summary, s.view)
+        ? categoryOf(evaluate(s.regs, e.place, s.iso, { includeYouth: s.includeYouth }).summary, s.species, s.view)
         : { key: 'none', label: 'No data', color: 'var(--c-closed)' };
       const kind = e.feature.properties.land ? 'pub' : e.feature.properties.jurisdiction ? 'town' : 'jur';
       const closed = e.cat.key === 'closed' || e.cat.key === 'none';

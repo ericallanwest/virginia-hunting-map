@@ -29,24 +29,27 @@
 6. Offline/PWA support (hunters are often out of signal), and a "plan a trip" view: pick a place
    and see every legal day in the season as a calendar.
 
-## Phase 2 — Bear
+## Phase 2 — Bear (done)
 
-Bear seasons follow a similar structure (archery, muzzleloader, firearms with hound/non-hound
-variants, county groups, youth weekend). Expected new needs:
-- Season "modes" (with or without dogs) as a dimension alongside weapon.
-- Bear-specific bag limits and "bear hound training season".
-- Add `src/regs/bear-2026.ts`; enable in `src/regs/index.ts`.
+- [x] 2026–27 seasons by county group, early SW firearms (except Clinch Mountain WMA), Eastern Shore
+      (no firearms), Chesapeake/Suffolk/Virginia Beach, cities & towns, youth weekend.
+- [x] Hounds: per-season dog status (Sundays, Nov 23–29 west of the Blue Ridge, Madison/Greene,
+      firearms-season counties, WMAs, Cavalier, youth-weekend exceptions); partial-county rules show
+      as "varies". New "Hounds" map view.
+- [x] Hound training (chase) seasons in the details/timeline (never counted as open).
+- [ ] Map the I-81 / New River / Rt. 16 lines so partial hound rules resolve exactly.
 
-## Phase 3 — Turkey
+## Phase 3 — Turkey (done)
 
-- Fall turkey (county-specific, some closed) and spring gobbler (statewide, different hours).
-- New concept: legal hunting hours differ (spring: until 1 p.m. early in the season).
-- License year spans two seasons (fall + spring) — the slider already covers Jul–Jun.
+- [x] Fall archery, fall firearms by county group (incl. Hampton, Newport News, Suffolk; closed areas),
+      youth fall & spring weekends, spring gobbler with the noon cutoff through Apr 25.
+- [x] "Either sex / bearded" map view.
+- [ ] Camp Peary geometry.
 
-## Phase 4 — Elk
+## Phase 4 — Elk (done)
 
-- Limited-entry (lottery) hunt in the elk zone (Buchanan, Dickenson, Wise) plus elk taken
-  incidentally during deer seasons elsewhere. Mostly a zone map + dates.
+- [x] Outside the Elk Management Zone, derived from the deer rules (any elk on any open deer day).
+- [x] Inside the zone, the Oct 10–16 lottery hunt (shown as lottery/quota).
 
 ## Later ideas
 

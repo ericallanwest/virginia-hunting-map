@@ -45,6 +45,7 @@ h1 { font-size: 1.2rem; margin: 0; letter-spacing: -0.01em; }
 
 .controls { padding: 10px 20px 14px; display: grid; gap: 10px; border-bottom: 1px solid var(--line); }
 
+.seg[hidden] { display: none; }
 .seg { display: flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--bg); }
 .seg button {
   flex: 1; border: 0; background: transparent; padding: 7px 6px; cursor: pointer; font-size: 0.88rem;
@@ -112,6 +113,13 @@ h4 { margin: 0 0 2px; font-size: 0.85rem; }
 .t-antlered { background: var(--c-antlered); }
 .t-antlerless { background: var(--c-antlerless); }
 .t-check, .t-quota { background: var(--c-check); }
+.t-any { background: var(--c-either); }
+.t-bearded { background: var(--c-antlered); }
+.t-none { background: repeating-linear-gradient(45deg, #9aa19d 0 3px, transparent 3px 6px); color: var(--ink); }
+.tag.dogs-yes { background: #dcefe3; color: #1d5a39; }
+.tag.dogs-no { background: #f1e3e3; color: #7a2b2b; }
+.tag.dogs-varies { background: #f6ecd2; color: #6b5212; }
+.w-none::before { background: transparent; border: 1px dashed var(--muted); }
 .note { flex-basis: 100%; font-size: 0.8rem; color: var(--muted); }
 .closed-msg { margin: 0; padding: 10px; background: #f3f3f1; border-radius: 8px; font-size: 0.9rem; }
 .small { font-size: 0.8rem; color: var(--muted); }

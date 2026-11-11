@@ -7,8 +7,7 @@ antler point restrictions, bonus-permit validity, and dog rules.
 
 ![Deer seasons on Nov 27: National Forest bucks-only (gold) next to either-sex private land (green)](docs/screenshots/deer-nov27.png)
 
-**Status:** Phase 1 (Deer, 2026–27 license year). Bear, Turkey, and Elk are planned — see
-[docs/ROADMAP.md](docs/ROADMAP.md).
+**Status:** Deer, Bear, Turkey, and Elk for the 2026–27 license year. See [docs/ROADMAP.md](docs/ROADMAP.md).
 
 > Unofficial. Regulations are summarized from
 > [Virginia DWR's published regulations](https://dwr.virginia.gov/hunting/regulations/). Always
@@ -41,13 +40,14 @@ npm run build:geo       # simplifies/clips/splits them into public/data/*.geojso
 
 ```
 sources/regs/*.html        snapshot of the DWR regulation pages (diff these each license year)
-src/regs/deer-2026.ts      the 2026–27 deer regulations, written as declarative rules
+src/regs/*-2026.ts         2026–27 deer, bear, turkey, elk regulations, written as declarative rules
 src/regs/engine.ts         evaluates (place, date) against the rules
 src/regs/virginia.ts       Blue Ridge east/west, independent-city → county, split jurisdictions
 public/data/*.geojson      counties + independent cities, towns, public lands (split by county)
 src/map.ts, src/main.ts    Leaflet map, controls, search
 src/details.ts             the location panel (open seasons, season timeline, place facts)
-tests/                     scenario tests ("Craig County National Forest on Nov 27 is either-sex")
+tests/                     scenario tests ("Craig County National Forest on Nov 27 is either-sex",
+                           "Roanoke County bear hounds vary south of I-81")
 ```
 
 ### The regulation model

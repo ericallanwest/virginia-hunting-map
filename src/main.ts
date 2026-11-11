@@ -2,11 +2,11 @@ import L from 'leaflet';
 import './style.css';
 import { renderDetails, fmtDate } from './details';
 import { jurisdictionLabel, loadLayers, locate, placeForJurisdiction, placeForPublic, placeForTown, type Layers, type Located, type Poly } from './geo';
-import { LEGENDS, type View } from './legend';
+import { legendFor, type View } from './legend';
 import { createMap, RegulationLayers } from './map';
 import { dayOfLicenseYear, licenseYearOf, resolve, todayISO } from './regs/dates';
 import { nextDay } from './regs/engine';
-import { availableYears, regsFor, SPECIES } from './regs/index';
+import { availableYears, regsFor, SPECIES, speciesInfo } from './regs/index';
 import type { Species } from './regs/types';
 
 // ---------------------------------------------------------------------------
@@ -16,7 +16,8 @@ const params = new URLSearchParams(location.search);
 const state = {
   species: (params.get('species') as Species) || 'deer',
   iso: params.get('date') || todayISO(),
-  view: (params.get('view') as View) || 'weapon',
+  // 'antlerless' was the deer take view's name in early links.
+  view: ((params.get('view') === 'antlerless' ? 'take' : params.get('view')) as View) || 'weapon',
   includeYouth: params.get('youth') === '1',
   subArea: params.get('side') || undefined,
   selected: undefined as Located | undefined,
@@ -45,9 +46,9 @@ let regLayers: RegulationLayers;
 let marker: L.CircleMarker | undefined;
 
 buildSpeciesPicker();
-buildLegend();
 wireDateControls();
 wireViewControls();
+buildViewPicker();
 wireSearch();
 
 loadLayers().then((l) => {
@@ -79,7 +80,7 @@ function refresh() {
   slider.value = String(dayOfLicenseYear(state.iso));
   $('#date-label').textContent = fmtDate(state.iso);
 
-  regLayers?.update({ regs, iso: state.iso, view: state.view, includeYouth: state.includeYouth });
+  regLayers?.update({ regs, species: state.species, iso: state.iso, view: state.view, includeYouth: state.includeYouth });
   renderPanel();
   syncUrl();
 }
@@ -162,13 +163,27 @@ function buildSpeciesPicker() {
     if (!b || b.disabled) return;
     state.species = b.dataset.species as Species;
     el.querySelectorAll('[data-species]').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
+    buildViewPicker();
     refresh();
   });
 }
 
 function buildLegend() {
-  $('#legend').innerHTML =
-    LEGENDS[state.view].map((c) => `<li><i style="background:${c.color}"></i>${c.label}</li>`).join('');
+  $('#legend').innerHTML = legendFor(state.species, state.view)
+    .map((c) => `<li><i style="background:${c.color}"></i>${c.label}</li>`)
+    .join('');
+}
+
+/** Map views depend on the species (e.g. bear has a hounds view, elk has only weapons). */
+function buildViewPicker() {
+  const views = speciesInfo(state.species).views;
+  if (!views.some((v) => v.id === state.view)) state.view = views[0].id;
+  const seg = $('#view');
+  seg.hidden = views.length < 2;
+  seg.innerHTML = views
+    .map((v) => `<button type="button" role="radio" data-view="${v.id}" aria-checked="${v.id === state.view}">${v.label}</button>`)
+    .join('');
+  buildLegend();
 }
 
 function setDate(iso: string) {
@@ -199,14 +214,13 @@ function wireDateControls() {
 
 function wireViewControls() {
   const seg = $('#view');
-  seg.querySelectorAll<HTMLButtonElement>('[data-view]').forEach((b) => {
-    b.setAttribute('aria-checked', String(b.dataset.view === state.view));
-    b.addEventListener('click', () => {
-      state.view = b.dataset.view as View;
-      seg.querySelectorAll('[data-view]').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
-      buildLegend();
-      refresh();
-    });
+  seg.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-view]');
+    if (!b) return;
+    state.view = b.dataset.view as View;
+    seg.querySelectorAll('[data-view]').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
+    buildLegend();
+    refresh();
   });
   const youth = $('#youth') as HTMLInputElement;
   youth.checked = state.includeYouth;
