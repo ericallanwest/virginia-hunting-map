@@ -16,6 +16,9 @@ $MS "$SRC/cb_2023_us_county_500k/cb_2023_us_county_500k.shp" \
   -simplify 12% keep-shapes \
   -o "$OUT/jurisdictions.geojson" precision=0.00001 format=geojson
 
+# Split Rockingham (Rts. 613/731) and Suffolk (Dismal Swamp line) into east/west pieces.
+python3 scripts/split-jurisdictions.py "$OUT/jurisdictions.geojson"
+
 # Virginia outline used to clip statewide layers.
 $MS "$OUT/jurisdictions.geojson" -dissolve -o "$SRC/va-outline.geojson" format=geojson
 
@@ -63,8 +66,8 @@ $MS -i "$SRC/_nf.geojson" "$SRC/_wma.geojson" "$SRC/_state.geojson" "$SRC/_nps.g
 $MS -i "$SRC/_public.geojson" "$OUT/jurisdictions.geojson" combine-files \
   -union target=* \
   -filter "!!land && !!id" \
-  -each "jurisdiction = id; name = name_1" \
-  -dissolve fields=name,jurisdiction copy-fields=land \
+  -each "jurisdiction = id; name = name_1; subArea = subArea || null" \
+  -dissolve fields=name,jurisdiction,subArea copy-fields=land \
   -simplify 25% keep-shapes \
   -filter "this.area > 20000" \
   -o "$OUT/public-lands.geojson" precision=0.00001 format=geojson

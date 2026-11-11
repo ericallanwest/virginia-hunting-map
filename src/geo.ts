@@ -1,7 +1,7 @@
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import type { Feature, FeatureCollection, MultiPolygon, Polygon } from 'geojson';
 import type { Land, Place } from './regs/types';
-import { CITY_PARENT, regionOf } from './regs/virginia';
+import { CITY_PARENT, regionOf, splitFor } from './regs/virginia';
 
 export type Poly = Feature<Polygon | MultiPolygon, Record<string, any>>;
 export interface Layers {
@@ -21,6 +21,7 @@ export async function loadLayers(): Promise<Layers> {
     const pt = interiorPoint(t);
     const j = jurisdictions.find((f) => booleanPointInPolygon(pt, f));
     t.properties.jurisdiction = j?.properties.id;
+    t.properties.subArea = j?.properties.subArea;
   }
   return { jurisdictions, towns, publicLands };
 }
@@ -45,11 +46,15 @@ export function placeForJurisdiction(id: string | undefined, extra: Partial<Plac
 }
 
 export function placeForTown(t: Poly): Place {
-  return placeForJurisdiction(t.properties.jurisdiction, { town: t.properties.name });
+  return placeForJurisdiction(t.properties.jurisdiction, { town: t.properties.name, subArea: t.properties.subArea ?? undefined });
 }
 
 export function placeForPublic(f: Poly): Place {
-  return placeForJurisdiction(f.properties.jurisdiction, { land: f.properties.land as Land, property: f.properties.name });
+  return placeForJurisdiction(f.properties.jurisdiction, {
+    land: f.properties.land as Land,
+    property: f.properties.name,
+    subArea: f.properties.subArea ?? undefined,
+  });
 }
 
 export interface Located {
@@ -66,14 +71,16 @@ export function locate(layers: Layers, lng: number, lat: number): Located | unde
   if (!jurisdiction) return undefined;
   const town = layers.towns.find((f) => booleanPointInPolygon(pt, f));
   const publicLand = layers.publicLands.find((f) => booleanPointInPolygon(pt, f));
-  let place = placeForJurisdiction(jurisdiction.properties.id);
+  let place = placeForJurisdiction(jurisdiction.properties.id, { subArea: jurisdiction.properties.subArea });
   if (town) place = { ...place, town: town.properties.name };
   if (publicLand) place = { ...place, land: publicLand.properties.land, property: publicLand.properties.name };
   return { place, jurisdiction, town, publicLand };
 }
 
-export function jurisdictionLabel(id: string | undefined): string {
+export function jurisdictionLabel(id: string | undefined, subArea?: string): string {
   if (!id) return '';
   const [type, name] = id.split(':');
-  return type === 'city' ? `City of ${name}` : `${name} County`;
+  const base = type === 'city' ? `City of ${name}` : `${name} County`;
+  const side = subArea && splitFor(id)?.parts[subArea];
+  return side ? `${base} (${side[0].toLowerCase()}${side.slice(1)})` : base;
 }

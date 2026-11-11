@@ -4,10 +4,6 @@ import { placeForJurisdiction, placeForPublic, placeForTown, jurisdictionLabel, 
 import { categoryOf, cssColor, type Category, type View } from './legend';
 import { evaluate } from './regs/engine';
 import type { Place, SpeciesRegs } from './regs/types';
-import { SPLITS } from './regs/virginia';
-
-/** Splits that change season dates (the others only affect EAB/dog rules). */
-const SEASON_SPLITS = new Set(['county:Rockingham', 'city:Suffolk']);
 
 export interface StyleState {
   regs?: SpeciesRegs;
@@ -19,10 +15,9 @@ export interface StyleState {
 interface Entry {
   layer: L.Path;
   feature: Poly;
-  /** One place per side of a split line (usually just one). */
-  variants: { label?: string; place: Place }[];
+  place: Place;
   title: string;
-  cats: Category[];
+  cat?: Category;
 }
 
 export function createMap(el: HTMLElement): L.Map {
@@ -64,16 +59,14 @@ export function createMap(el: HTMLElement): L.Map {
 export class RegulationLayers {
   private entries: Entry[] = [];
   readonly groups: Record<'jurisdictions' | 'towns' | 'publicLands', L.LayerGroup>;
-  private defs: SVGDefsElement;
 
-  constructor(private map: L.Map, layers: Layers) {
-    this.defs = makeDefs();
+  constructor(map: L.Map, layers: Layers) {
     const add = (features: Poly[], kind: keyof Layers, pane: string) => {
       const group = L.layerGroup();
       for (const f of features) {
         const layer = L.geoJSON(f as any, { pane, interactive: true }).getLayers()[0] as L.Path;
-        const entry: Entry = { layer, feature: f, ...describe(f, kind), cats: [] };
-        layer.bindTooltip(() => this.tooltip(entry), { sticky: true, className: 'reg-tip' });
+        const entry: Entry = { layer, feature: f, ...describe(f, kind) };
+        layer.bindTooltip(() => `<strong>${entry.title}</strong><br>${entry.cat?.label ?? ''}`, { sticky: true, className: 'reg-tip' });
         group.addLayer(layer);
         this.entries.push(entry);
       }
@@ -91,15 +84,13 @@ export class RegulationLayers {
 
   update(s: StyleState) {
     for (const e of this.entries) {
-      e.cats = e.variants.map((v) =>
-        s.regs ? categoryOf(evaluate(s.regs, v.place, s.iso, { includeYouth: s.includeYouth }).summary, s.view) : { key: 'none', label: 'No data', color: 'var(--c-closed)' },
-      );
-      const colors = [...new Set(e.cats.map((c) => cssColor(c.color)))];
-      const fill = colors.length > 1 ? `url(#${this.stripes(colors[0], colors[1])})` : colors[0];
+      e.cat = s.regs
+        ? categoryOf(evaluate(s.regs, e.place, s.iso, { includeYouth: s.includeYouth }).summary, s.view)
+        : { key: 'none', label: 'No data', color: 'var(--c-closed)' };
       const kind = e.feature.properties.land ? 'pub' : e.feature.properties.jurisdiction ? 'town' : 'jur';
-      const closed = e.cats.every((c) => c.key === 'closed' || c.key === 'none');
+      const closed = e.cat.key === 'closed' || e.cat.key === 'none';
       e.layer.setStyle({
-        fillColor: fill,
+        fillColor: cssColor(e.cat.color),
         fillOpacity: closed ? 0.25 : kind === 'pub' ? 0.75 : 0.55,
         color: kind === 'pub' ? '#1d3b2a' : kind === 'town' ? '#4b5563' : '#ffffff',
         weight: kind === 'jur' ? 1 : 0.8,
@@ -108,51 +99,13 @@ export class RegulationLayers {
       });
     }
   }
-
-  private tooltip(e: Entry): string {
-    const status = e.variants
-      .map((v, i) => `${v.label ? `<em>${v.label}:</em> ` : ''}${e.cats[i]?.label ?? ''}`)
-      .join('<br>');
-    return `<strong>${e.title}</strong><br>${status}`;
-  }
-
-  private stripes(a: string, b: string): string {
-    const id = `stripe-${(a + b).replace(/[^a-z0-9]/gi, '')}`;
-    if (!this.defs.querySelector(`#${id}`)) {
-      this.defs.insertAdjacentHTML(
-        'beforeend',
-        `<pattern id="${id}" patternUnits="userSpaceOnUse" width="12" height="12" patternTransform="rotate(45)">
-          <rect width="6" height="12" fill="${a}"/><rect x="6" width="6" height="12" fill="${b}"/></pattern>`,
-      );
-    }
-    return id;
-  }
 }
 
-function describe(f: Poly, kind: keyof Layers): Pick<Entry, 'variants' | 'title'> {
+function describe(f: Poly, kind: keyof Layers): Pick<Entry, 'place' | 'title'> {
   const p = f.properties;
   if (kind === 'publicLands') {
-    return { title: `${p.name}<br><small>${jurisdictionLabel(p.jurisdiction)}</small>`, variants: [{ place: placeForPublic(f) }] };
+    return { title: `${p.name}<br><small>${jurisdictionLabel(p.jurisdiction, p.subArea)}</small>`, place: placeForPublic(f) };
   }
-  if (kind === 'towns') {
-    return { title: `Town of ${p.name}`, variants: [{ place: placeForTown(f) }] };
-  }
-  const split = SPLITS.find((s) => s.jurisdiction === p.id);
-  const base = placeForJurisdiction(p.id);
-  const variants =
-    split && SEASON_SPLITS.has(p.id)
-      ? Object.entries(split.parts).map(([k, label]) => ({ label, place: { ...base, subArea: k } }))
-      : [{ place: base }];
-  return { title: jurisdictionLabel(p.id), variants };
-}
-
-function makeDefs(): SVGDefsElement {
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.setAttribute('width', '0');
-  svg.setAttribute('height', '0');
-  svg.style.position = 'absolute';
-  const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-  svg.appendChild(defs);
-  document.body.appendChild(svg);
-  return defs;
+  if (kind === 'towns') return { title: `Town of ${p.name}`, place: placeForTown(f) };
+  return { title: jurisdictionLabel(p.id, p.subArea), place: placeForJurisdiction(p.id, { subArea: p.subArea }) };
 }

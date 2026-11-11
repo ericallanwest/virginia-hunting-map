@@ -60,20 +60,22 @@ export function regionOf(county: string | undefined, city: string | undefined): 
 }
 
 /**
- * Jurisdictions the deer regulations divide along a line we don't yet have
- * geometry for. The UI asks the user which side they are on (and the map
- * shows both when they differ).
+ * Jurisdictions the regulations divide along a road or line. `mapped` ones are
+ * split in the map data (scripts/split-jurisdictions.py); for the rest the UI
+ * asks the user which side they are on (these only affect EAB and dog rules).
  */
 export const SPLITS: Split[] = [
   {
     jurisdiction: 'county:Rockingham',
     line: 'Routes 613 and 731',
     parts: { west: 'West of Rts. 613 & 731', east: 'East of Rts. 613 & 731' },
+    mapped: true,
   },
   {
     jurisdiction: 'city:Suffolk',
     line: 'the Dismal Swamp line',
     parts: { east: 'East of the Dismal Swamp line', west: 'West of the Dismal Swamp line' },
+    mapped: true,
   },
   {
     jurisdiction: 'county:Amherst',

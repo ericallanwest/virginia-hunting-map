@@ -18,6 +18,13 @@ for f in cb_2023_us_county_500k cb_2023_51_place_500k; do
   mkdir -p "$f" && (cd "$f" && unzip -oq "../$f.zip")
 done
 
+# --- Census TIGER roads for split lines (Rockingham 51165, Suffolk 51800) ---
+mkdir -p roads
+for f in 51165 51800; do
+  curl -sSL -o "roads/tl_2023_${f}_roads.zip" "https://www2.census.gov/geo/tiger/TIGER2023/ROADS/tl_2023_${f}_roads.zip"
+  (cd roads && unzip -oq "tl_2023_${f}_roads.zip")
+done
+
 # --- DWR Wildlife Management Area boundaries ---
 curl -sS "https://services.dwr.virginia.gov/arcgis/rest/services/HUB_Layers/DWR_WMA_Boundaries/FeatureServer/0/query?where=1%3D1&outFields=WMA_NAME,Tract_Name,Property_Type,Owner,Property_Class,ACRES&outSR=4326&f=geojson" -o wma.geojson
 

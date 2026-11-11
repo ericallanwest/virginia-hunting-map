@@ -128,7 +128,7 @@ function selectFeature(f: Poly, kind: keyof Layers) {
   const jur = (id: string) => layers.jurisdictions.find((j) => j.properties.id === id);
   const loc: Located =
     kind === 'jurisdictions'
-      ? { place: placeForJurisdiction(f.properties.id), jurisdiction: f }
+      ? { place: placeForJurisdiction(f.properties.id, { subArea: f.properties.subArea }), jurisdiction: f }
       : kind === 'towns'
         ? { place: placeForTown(f), town: f, jurisdiction: jur(f.properties.jurisdiction) }
         : { place: placeForPublic(f), publicLand: f, jurisdiction: jur(f.properties.jurisdiction) };
@@ -168,8 +168,7 @@ function buildSpeciesPicker() {
 
 function buildLegend() {
   $('#legend').innerHTML =
-    LEGENDS[state.view].map((c) => `<li><i style="background:${c.color}"></i>${c.label}</li>`).join('') +
-    `<li><i class="stripe"></i>Differs across a dividing line (click for details)</li>`;
+    LEGENDS[state.view].map((c) => `<li><i style="background:${c.color}"></i>${c.label}</li>`).join('');
 }
 
 function setDate(iso: string) {
@@ -297,7 +296,7 @@ function wireSearch() {
       seen.add(key);
       out.push({ label, sub, go: () => selectFeature(f, kind) });
     };
-    for (const f of layers.jurisdictions) consider(f, 'jurisdictions', jurisdictionLabel(f.properties.id), 'Virginia');
+    for (const f of layers.jurisdictions) consider(f, 'jurisdictions', jurisdictionLabel(f.properties.id, f.properties.subArea), 'Virginia');
     for (const f of layers.towns) consider(f, 'towns', `Town of ${f.properties.name}`, jurisdictionLabel(f.properties.jurisdiction));
     // Public lands are split by county; offer the largest piece of each property.
     const biggest = new Map<string, Poly>();

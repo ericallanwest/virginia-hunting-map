@@ -122,6 +122,8 @@ export interface Split {
   jurisdiction: string; // e.g. 'county:Rockingham'
   line: string;
   parts: Record<string, string>; // subArea -> label
+  /** True when the map data is already split along this line (jurisdiction features carry `subArea`). */
+  mapped?: boolean;
 }
 
 export interface SpeciesRegs {

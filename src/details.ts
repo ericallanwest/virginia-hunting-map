@@ -45,7 +45,11 @@ export interface DetailsInput {
 export function renderDetails({ located, regs, iso, includeYouth, subArea }: DetailsInput): string {
   const jurId: string = located.jurisdiction?.properties.id;
   const split = splitFor(jurId);
-  const place: Place = { ...located.place, subArea: split ? subArea ?? Object.keys(split.parts)[0] : undefined };
+  // Mapped splits: the side comes from the map. Unmapped ones: ask (default to the first side).
+  const askSide = !!split && !split.mapped;
+  const place: Place = askSide
+    ? { ...located.place, subArea: subArea ?? Object.keys(split!.parts)[0] }
+    : { ...located.place, subArea: split ? located.place.subArea : undefined };
   const ev = evaluate(regs, place, iso, { includeYouth });
   const seasons = seasonsForPlace(regs, place).filter((s) => includeYouth || !s.rule.youthOnly);
   const next = nextChange(regs, place, iso);
@@ -53,10 +57,10 @@ export function renderDetails({ located, regs, iso, includeYouth, subArea }: Det
   const where = [
     place.property ? `<strong>${esc(place.property)}</strong>` : '',
     place.town ? `Town of ${esc(place.town)}` : '',
-    esc(jurisdictionLabel(jurId)),
+    esc(jurisdictionLabel(jurId, split?.mapped ? place.subArea : undefined)),
   ].filter(Boolean);
 
-  const splitHtml = split
+  const splitHtml = askSide && split
     ? `<div class="split">
         <div class="split-q">This ${jurId.startsWith('city') ? 'city' : 'county'} is divided by ${esc(split.line)}. Which side?</div>
         <div class="seg" role="radiogroup">

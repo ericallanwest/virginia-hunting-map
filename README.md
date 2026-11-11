@@ -34,7 +34,7 @@ run the app. To refresh them from the source agencies:
 
 ```bash
 npm run fetch:sources   # downloads raw boundaries into sources/geo (git-ignored) + DWR pages into sources/regs
-npm run build:geo       # simplifies/clips/splits them into public/data/*.geojson (uses mapshaper)
+npm run build:geo       # simplifies/clips/splits them into public/data/*.geojson (mapshaper + Python: pip install -r scripts/requirements.txt)
 ```
 
 ## How it works
@@ -88,6 +88,7 @@ Where the regulations are ambiguous, the literal reading is encoded and the ques
 | Layer | Source |
 | --- | --- |
 | Counties & independent cities, towns | U.S. Census Bureau cartographic boundary files (2023, 1:500k) |
+| Split lines (Rts. 613/731, Dismal Swamp line) | U.S. Census Bureau TIGER/Line roads (2023) |
 | National Forest | USDA Forest Service, Basic Ownership (EDW) |
 | Wildlife Management Areas | Virginia DWR, WMA Boundaries feature service |
 | State forests, state parks, Philpott & Flannagan | Virginia DCR, Conservation Lands |

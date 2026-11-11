@@ -45,9 +45,12 @@ encoded with the literal reading noted. Resolve these (ideally with DWR), then a
     "Big Woods", "The Channels", "Prince Edward-Gallion"); these are assumed to be the forests in
     DWR's table. "Thompson WMA" = G. Richard Thompson WMA; "Turkeycock Mountain WMA" = Turkeycock.
 
-11. **Split lines without geometry.** Rockingham (Rts. 613/731), Suffolk (Dismal Swamp line),
-    Amherst (Rt. 29), Campbell/Pittsylvania (Norfolk Southern RR), Nelson (Rt. 151). The user picks
-    the side; the map stripes jurisdictions whose sides differ.
+11. **Split lines.** Rockingham (Rts. 613/731) and Suffolk (Dismal Swamp line, 4VAC15-20-40) are
+    split in the map data from Census TIGER roads (`scripts/split-jurisdictions.py`). In Suffolk, the
+    stretch "through the corporate limits of the City of Suffolk" between Route 10 and White Marsh
+    Road is approximated by a straight segment downtown. Amherst (Rt. 29), Campbell/Pittsylvania
+    (Norfolk Southern RR), and Nelson (Rt. 151) only affect Earn-a-Buck/dog rules, so the user still
+    picks the side for those.
 
 12. **NPS land.** Shown closed. Assateague Island National Seashore and Appalachian Trail corridor
     lands are excluded from the layer because hunting rules there vary.

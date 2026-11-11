@@ -10,8 +10,7 @@
       Earn-a-Buck, antler point restriction, bonus permits, dogs, local firearm ordinances.
 - [x] Map coloured by status for any date; two views ("open weapon", "antlered/antlerless").
 - [x] Public lands split by county so each piece gets its own rules; NPS land shown closed.
-- [x] Split jurisdictions (Rockingham, Suffolk) drawn striped when the two sides differ; the
-      details panel asks which side you're on.
+- [x] Rockingham (Rts. 613/731) and Suffolk (Dismal Swamp line) split along the real roads.
 - [x] Search counties/cities/towns/public lands locally, addresses via Nominatim; "use my location".
 - [x] Date picker + license-year slider; shareable URLs (`?date=…&at=lat,lng&view=…`).
 - [x] Season timeline per location.
@@ -20,9 +19,8 @@
 
 1. **Verify the encoding against the regulations.** Walk through docs/OPEN-QUESTIONS.md, ideally
    with DWR. Add a scenario test for each answer.
-2. **Real geometry for split lines** — Rockingham (Rts. 613/731), Suffolk (Dismal Swamp line),
-   Amherst (Rt. 29), Campbell & Pittsylvania (Norfolk Southern RR), Nelson (Rt. 151). Build the
-   split polygons from OSM road/rail lines so clicks resolve the side automatically.
+2. ~~Real geometry for split lines~~ — done for Rockingham and Suffolk (the two that change season
+   dates). Amherst, Campbell, Pittsylvania, and Nelson splits (EAB/dog rules only) still ask the user.
 3. **Missing land types:** military installations (DoD rules, PW exceptions), National Wildlife
    Refuges, Virginia National Guard lands, city-owned public hunting lands, DCR state park hunt
    lists (which parks open which dates).
