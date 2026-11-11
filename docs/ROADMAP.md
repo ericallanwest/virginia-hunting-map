@@ -62,7 +62,10 @@
       and the National Forest), coyote and skunk (continuous except NF/DWR land), red and gray fox
       (closed counties, chase seasons), raccoon (chase seasons), opossum.
 - [ ] Furbearer trapping seasons (https://dwr.virginia.gov/hunting/regulations/furbearertrapping/).
-- [ ] Migratory game birds (dove, waterfowl, woodcock) — federal frameworks.
+- [x] Migratory Birds group (2026–27 only): dove (noon opener), duck (teal by I-95 side, ducks,
+      mergansers, coots), goose & swan (Canada geese by AP/RP zone, September goose, light goose, brant,
+      tundra swan by permit), woodcock & snipe, rails & gallinules; youth & veterans days; migratory
+      shooting hours.
 
 ## Archive and yearly updates (done)
 

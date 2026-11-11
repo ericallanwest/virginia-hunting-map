@@ -41,9 +41,13 @@ const ALL: LocalWeapon[] = [...FIREARMS, 'archery'];
 const ALL_SPECIES: Species[] = [
   'deer', 'bear', 'turkey', 'elk', 'squirrel', 'rabbit', 'grouse', 'quail', 'pheasant', 'crow', 'groundhog',
   'bobcat', 'coyote', 'fox', 'raccoon', 'opossum', 'skunk',
+  'dove', 'duck', 'goose', 'woodcock', 'rail',
 ];
 const NOT_DEER = ALL_SPECIES.filter((s) => s !== 'deer');
 const GAME_BIRDS: Species[] = ['turkey', 'grouse', 'quail', 'pheasant'];
+const MIGRATORY_BIRDS: Species[] = ['dove', 'duck', 'goose', 'woodcock', 'rail'];
+const WATERFOWL: Species[] = ['duck', 'goose'];
+const NOT_WATERFOWL = ALL_SPECIES.filter((s) => !WATERFOWL.includes(s));
 const BIG: Species[] = ['deer', 'bear', 'elk']; // need .23 caliber+ rifles under state rules
 const SPRING_TURKEY = ['turkey-spring-noon', 'turkey-spring-allday', 'turkey-youth-spring'];
 
@@ -95,16 +99,24 @@ export const LOCAL_EFFECTS: LocalEffectRule[] = [
   noFirearms('town:Ashland', 'Sec 12-27', 'No firearm discharge, except shotgun-with-shot hunting by police permit on 50+ acre parcels (Sec 12-28).'),
   noFirearms('town:Gate City', 'Sec. 16-4(a)', 'No firearm discharge without a town special permit.'),
   noFirearms('town:Rocky Mount', 'Sec. 42-17'),
-  noFirearms('city:Hampton', 'Sec. 40-18'),
+  { ...noFirearms('city:Hampton', 'Sec. 40-18'), species: NOT_WATERFOWL },
   noFirearms('city:Fairfax', 'Sec. 54-172'),
   { jurisdiction: 'city:Radford', species: ['deer'], ban: FIREARMS, section: 'Sec. 70-47', note: 'City deer hunting is archery-only (no guns of any type during hunting hours).' },
 
   // --- No hunting at all -----------------------------------------------------------
   { jurisdiction: 'city:Falls Church', species: 'all', ban: ALL, section: 'Sec. 28-212', note: 'Hunting is unlawful within the city.' },
   { jurisdiction: 'city:Fairfax', species: 'all', ban: ALL, section: 'Sec. 54-175', note: 'Hunting with any weapon is prohibited unless authorized by city council.' },
-  { jurisdiction: 'city:Hampton', species: 'all', ban: ALL, section: 'Sec. 40-18(b)', note: 'Hunting is prohibited except waterfowl from licensed blinds or under a state wildlife-reduction permit.' },
-  { jurisdiction: 'city:Buena Vista', species: [...GAME_BIRDS, 'crow'], ban: ALL, section: 'Sec. 6-131(b)(1)', note: 'Hunting any wild bird (including turkey) is prohibited in the city.' },
-  { jurisdiction: 'city:Williamsburg', species: GAME_BIRDS, ban: ALL, section: 'Sec. 4-10', note: 'The city is a bird sanctuary: no killing game birds, including turkey.' },
+  { jurisdiction: 'city:Hampton', species: NOT_WATERFOWL, ban: ALL, section: 'Sec. 40-18(b)', note: 'Hunting is prohibited except waterfowl from licensed blinds or under a state wildlife-reduction permit.' },
+  {
+    jurisdiction: 'city:Hampton',
+    species: WATERFOWL,
+    ban: ['rifle', 'pistol', 'muzzleloader', 'archery'],
+    section: 'Sec. 40-18, 40-20',
+    note: 'Waterfowl only from state-licensed blinds over water, with shotguns using shot no heavier than 00 buckshot, and no shot landward within 500 ft of the shoreline. No other hunting or firearm discharge in the city.',
+  },
+  { jurisdiction: 'city:Buena Vista', species: [...GAME_BIRDS, 'crow', ...MIGRATORY_BIRDS], ban: ALL, section: 'Sec. 6-131(b)(1)', note: 'Hunting any wild bird (including turkey) is prohibited in the city.' },
+  // "Song bird or game bird": migratory game birds are game birds.
+  { jurisdiction: 'city:Williamsburg', species: [...GAME_BIRDS, ...MIGRATORY_BIRDS], ban: ALL, section: 'Sec. 4-10', note: 'The city is a bird sanctuary: no killing game birds, including turkey.' },
 
   // --- Archery limits ---------------------------------------------------------------
   { jurisdiction: 'city:Bristol', species: 'all', ban: ['archery'], section: 'Sec. 62-36', note: 'Bows and crossbows may only be shot on approved archery ranges.' },

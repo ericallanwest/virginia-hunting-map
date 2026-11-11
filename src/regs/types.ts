@@ -12,7 +12,18 @@ export type Species =
   // Small game
   | 'squirrel' | 'rabbit' | 'grouse' | 'quail' | 'pheasant' | 'crow' | 'groundhog'
   // Furbearers
-  | 'bobcat' | 'coyote' | 'fox' | 'raccoon' | 'opossum' | 'skunk';
+  | 'bobcat' | 'coyote' | 'fox' | 'raccoon' | 'opossum' | 'skunk'
+  // Migratory game birds. 'duck' also covers teal, mergansers and coots; 'goose' covers
+  // Canada/white-fronted, light geese, brant and tundra swan; 'woodcock' covers snipe;
+  // 'rail' covers rails, gallinules and moorhens.
+  | 'dove' | 'duck' | 'goose' | 'woodcock' | 'rail';
+
+/**
+ * Legal hunting hours (sun.ts): 'half-hour' = ½ hour before sunrise to ½ hour after sunset;
+ * 'until-sunset' = ½ hour before sunrise to sunset; 'noon-sunset' = 12 noon to sunset;
+ * 'until-noon' = ½ hour before sunrise to noon; 'any-time' = day or night.
+ */
+export type Hours = 'half-hour' | 'until-noon' | 'until-sunset' | 'noon-sunset' | 'any-time';
 
 /** Land-ownership class. 'private' also covers public land not specifically listed. */
 export type Land =
@@ -111,6 +122,8 @@ export interface SeasonRule {
   weekdays?: number[];
   /** Hunting with dogs is allowed in this season (subject to the species' DogRules and Sundays). */
   dogs?: boolean;
+  /** Legal hours when they differ from the species' usual hours (see sun.ts). */
+  hours?: Hours;
   /** The rule covers only part of a matched jurisdiction we can't map; this says which part. */
   partialNote?: string;
   notes?: string[];
@@ -125,7 +138,7 @@ export interface EitherSexRule {
   where: Selector;
 }
 
-export type InfoTopic = 'bag' | 'eab' | 'apr' | 'bonus' | 'dogs' | 'hours' | 'methods' | 'local' | 'access';
+export type InfoTopic = 'zone' | 'bag' | 'eab' | 'apr' | 'bonus' | 'dogs' | 'hours' | 'license' | 'methods' | 'local' | 'access';
 
 /**
  * Where/when dogs may NOT be used to hunt this species. A rule with `partial`

@@ -5,6 +5,7 @@ import { splitFor } from './regs/virginia';
 import { LOCAL_AREAS, localConflicts, localFor } from './regs/local';
 import { fmtTime, hoursFor, legalWindow, sunDay, zoneName, type Hours } from './sun';
 import { jurisdictionLabel, type Located } from './geo';
+import { speciesInfo } from './regs/index';
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
 
@@ -44,10 +45,12 @@ const LOCAL_LABEL: Record<string, string> = {
 const DOGS_LABEL = { yes: 'Dogs allowed', no: 'No dogs', varies: 'Dogs: varies by area' } as const;
 
 const TOPIC_LABEL: Record<InfoTopic, string> = {
+  zone: 'Zones',
   local: 'Local restrictions',
   access: 'Access',
   hours: 'Hunting hours',
   bag: 'Bag limits',
+  license: 'Licenses, permits & stamps',
   eab: 'Earn a Buck',
   apr: 'Antler point restriction',
   bonus: 'Bonus permits',
@@ -114,7 +117,7 @@ export function renderDetails({ located, regs, iso, includeYouth, subArea, latLn
           </li>`,
         )
         .join('')}</ul>`
-    : `<p class="closed-msg">No ${regs.species} season is open here on this date.</p>`;
+    : `<p class="closed-msg">No ${esc(speciesInfo(regs.species).label.toLowerCase())} season is open here on this date.</p>`;
   const onlyChase = ev.open.length > 0 && ev.open.every((o) => o.rule.type === 'chase');
   const chaseMsg = onlyChase ? `<p class="closed-msg">No bear may be taken today — hound training (chase) only.</p>` : '';
 
@@ -198,6 +201,7 @@ const HOURS_LABEL: Record<Hours, string> = {
   'half-hour': '½ hour before sunrise to ½ hour after sunset',
   'until-noon': '½ hour before sunrise until noon',
   'until-sunset': '½ hour before sunrise until sunset',
+  'noon-sunset': 'noon until sunset',
   'any-time': 'day or night',
 };
 

@@ -11,20 +11,31 @@
  * Crow is a federally regulated migratory bird; DWR gives no hours for it, so
  * none are claimed.
  *
+ * Migratory game birds (DWR Migratory Game Birds page, "Shooting Hours", and each
+ * species' table; the federal 2026–27 seasons memorandum MGBHM–2026–02 agrees):
+ * - One half-hour before sunrise until sunset, for every species and season, except:
+ * - Dove opening day (Sep 5, 2026): 12 noon until sunset.
+ * - September Canada goose: until one half-hour after sunset Sep 1–18 east of I-95 and
+ *   Sep 1–21 west of I-95 (then until sunset, when teal season opens).
+ * Those exceptions are set on the season rules (`hours`).
+ *
  * Sun times use the NOAA Solar Calculator algorithm (solar.ts), checked against the U.S.
  * Naval Observatory, which DWR's regulations page links to for sunrise/sunset times.
  */
 import { sunEvent } from './solar';
-import type { SeasonRule, Species } from './regs/types';
+import type { Hours, SeasonRule, Species } from './regs/types';
 
-export type Hours = 'half-hour' | 'until-noon' | 'until-sunset' | 'any-time';
+export type { Hours };
 
 const TZ = 'America/New_York';
 const FURBEARERS: Species[] = ['bobcat', 'coyote', 'fox', 'raccoon', 'opossum', 'skunk'];
+export const MIGRATORY: Species[] = ['dove', 'duck', 'goose', 'woodcock', 'rail'];
 
 /** Legal hours for a season, or undefined when the regulations don't state them. */
 export function hoursFor(rule: SeasonRule): Hours | undefined {
   if (rule.type === 'chase') return undefined; // no take
+  if (rule.hours) return rule.hours;
+  if (MIGRATORY.includes(rule.species)) return 'until-sunset';
   if (rule.id === 'turkey-spring-noon') return 'until-noon';
   if (rule.id === 'turkey-spring-allday' || rule.id === 'turkey-youth-spring') return 'until-sunset';
   if (FURBEARERS.includes(rule.species)) return 'any-time';
@@ -59,9 +70,13 @@ function localNoon(iso: string): Date {
 /** Start and end of legal hunting hours, or 'any' for day-or-night species. */
 export function legalWindow(hours: Hours, iso: string, sun: SunDay): { start: Date; end: Date } | 'any' {
   if (hours === 'any-time') return 'any';
-  const start = round(new Date(sun.sunrise.getTime() - 30 * MIN));
+  const start = hours === 'noon-sunset' ? localNoon(iso) : round(new Date(sun.sunrise.getTime() - 30 * MIN));
   const end =
-    hours === 'until-noon' ? localNoon(iso) : hours === 'until-sunset' ? round(sun.sunset) : round(new Date(sun.sunset.getTime() + 30 * MIN));
+    hours === 'until-noon'
+      ? localNoon(iso)
+      : hours === 'until-sunset' || hours === 'noon-sunset'
+        ? round(sun.sunset)
+        : round(new Date(sun.sunset.getTime() + 30 * MIN));
   return { start, end };
 }
 

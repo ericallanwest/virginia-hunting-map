@@ -8,6 +8,7 @@ import { licenseYearOf } from './dates';
 import { deer2026 } from './deer-2026';
 import { elk2026 } from './elk-2026';
 import { FURBEARERS } from './furbearer-2026';
+import { MIGRATORY } from './migratory-2026';
 import { SMALL_GAME } from './small-game-2026';
 import { turkey2026 } from './turkey-2026';
 import { bear2025 } from './bear-2025';
@@ -39,7 +40,7 @@ export const isDraft = (r: SpeciesRegs) => DRAFT_REGS.includes(r);
 
 const PUBLISHED: SpeciesRegs[] = [
   // 2026–27
-  deer2026, bear2026, turkey2026, elk2026, ...SMALL_GAME, ...FURBEARERS,
+  deer2026, bear2026, turkey2026, elk2026, ...SMALL_GAME, ...FURBEARERS, ...MIGRATORY,
   // 2025–26 (archived)
   deer2025, bear2025, turkey2025, elk2025, ...SMALL_GAME_2025, ...FURBEARERS_2025,
   // 2024–25 (archived)
