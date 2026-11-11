@@ -10,3 +10,6 @@ Oct 4 – Nov 14, urban archery Sep 6 – Oct 3, NOVA late archery Mar 30 – Ap
 was updated Nov 3, 2026 and is migratory-bird content, not used by the app.
 
 They are the source for encoding the 2025–26 license year (`src/regs/*-2025.ts`), if/when added.
+
+The official 2025–26 digest PDF (31 MB, sha256 `19e03a91…5c7075`, from eRegulations — no longer on dwr.virginia.gov) and the 2024–25 digest PDF (48 MB, sha256 `51741445…d7bdda`) are archived as attachments to the GitHub release
+[source-digests](https://github.com/ericallanwest/virginia-hunting-map/releases/tag/source-digests).
