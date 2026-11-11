@@ -6,7 +6,7 @@ import { legendFor, type View } from './legend';
 import { createMap, RegulationLayers } from './map';
 import { dayOfLicenseYear, licenseYearOf, resolve, todayISO } from './regs/dates';
 import { nextDay } from './regs/engine';
-import { availableYears, dateBounds, GROUPS, regsFor, SPECIES, speciesInfo, yearLabel, yearOptions, type Group } from './regs/index';
+import { availableYears, GROUPS, regsFor, SPECIES, speciesInfo, yearLabel, type Group } from './regs/index';
 import type { Species } from './regs/types';
 
 // ---------------------------------------------------------------------------
@@ -15,7 +15,7 @@ import type { Species } from './regs/types';
 const params = new URLSearchParams(location.search);
 const state = {
   species: (params.get('species') as Species) || 'deer',
-  iso: clampDate(params.get('date') || todayISO()),
+  iso: params.get('date') || todayISO(),
   // 'antlerless' was the deer take view's name in early links.
   view: ((params.get('view') === 'antlerless' ? 'take' : params.get('view')) as View) || 'weapon',
   includeYouth: params.get('youth') === '1',
@@ -67,38 +67,27 @@ loadLayers().then((l) => {
 function refresh() {
   const regs = regsFor(state.species, state.iso);
   const ly = licenseYearOf(state.iso);
-  const currentLy = licenseYearOf(todayISO());
   const banner = $('#banner');
   banner.className = 'banner';
   if (!regs) {
-    // A license year DWR hasn't published yet (e.g. July, before the new regulations are posted).
+    // Any date can be chosen; say plainly when the app has no regulations for its license year.
     const years = availableYears(state.species);
+    const covers = years.length ? ` The app currently covers ${years.map(yearLabel).join(', ')}.` : '';
     banner.hidden = false;
-    banner.innerHTML = years.length
-      ? `<strong>${yearLabel(ly)} ${label(state.species).toLowerCase()} regulations aren’t published yet.</strong> DWR usually posts the new license year’s regulations in early summer (the Board votes in late May). Check <a href="https://dwr.virginia.gov/hunting/regulations/" target="_blank" rel="noopener">DWR’s regulations page</a>. Earlier years: ${years.map((y) => yearLabel(y)).join(', ')}.`
-      : `${label(state.species)} regulations are coming soon.`;
-  } else if (ly < currentLy) {
+    banner.innerHTML = years.length && ly < Math.min(...years)
+      ? `<strong>Prior-year regulations (${yearLabel(ly)}) aren’t available in this app.</strong>${covers}`
+      : `<strong>${yearLabel(ly)} regulations aren’t available in this app yet.</strong> DWR usually posts a new license year’s regulations in early summer — check <a href="https://dwr.virginia.gov/hunting/regulations/" target="_blank" rel="noopener">DWR’s regulations page</a>.${covers}`;
+  } else if (ly < licenseYearOf(todayISO())) {
+    // A past license year that is loaded (once more than one year is in the app).
     banner.hidden = false;
     banner.className = 'banner archived';
     banner.innerHTML = `<strong>Archived: ${yearLabel(ly)} regulations.</strong> You’re viewing a past license year (Jul 1, ${ly} – Jun 30, ${ly + 1}).`;
   } else banner.hidden = true;
 
-  const yearSel = $('#license-year') as HTMLSelectElement;
-  yearSel.innerHTML = yearOptions(todayISO())
-    .map(({ year, loaded }) => `<option value="${year}" ${year === ly ? 'selected' : ''}>${yearLabel(year)}${loaded ? (year < currentLy ? ' (archived)' : '') : ' (not yet published)'}</option>`)
-    .join('');
-
   ($('#date') as HTMLInputElement).value = state.iso;
   const slider = $('#date-slider') as HTMLInputElement;
   slider.value = String(dayOfLicenseYear(state.iso));
   $('#date-label').textContent = fmtDate(state.iso);
-  const { min, max } = dateBounds(todayISO());
-  ($('#prev-day') as HTMLButtonElement).disabled = state.iso <= min;
-  ($('#next-day') as HTMLButtonElement).disabled = state.iso >= max;
-  const today = todayISO();
-  if (today < min) {
-    $('#date-label').textContent += ` · today (${fmtDate(today)}) is before the ${yearLabel(Number(min.slice(0, 4)))} license year`;
-  }
 
   regLayers?.update({ regs, species: state.species, iso: state.iso, view: state.view, includeYouth: state.includeYouth });
   renderPanel();
@@ -233,21 +222,12 @@ function buildViewPicker() {
 
 function setDate(iso: string) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return;
-  state.iso = clampDate(iso);
+  state.iso = iso;
   refresh();
-}
-
-/** Keep dates within the license years we have regulations for. */
-function clampDate(iso: string): string {
-  const { min, max } = dateBounds(todayISO());
-  return iso < min ? min : iso > max ? max : iso;
 }
 
 function wireDateControls() {
   const input = $('#date') as HTMLInputElement;
-  const { min, max } = dateBounds(todayISO());
-  input.min = min;
-  input.max = max;
   input.addEventListener('change', () => setDate(input.value));
   $('#prev-day').addEventListener('click', () => {
     const [y, m, d] = state.iso.split('-').map(Number);
@@ -255,14 +235,6 @@ function wireDateControls() {
   });
   $('#next-day').addEventListener('click', () => setDate(nextDay(state.iso)));
   $('#today').addEventListener('click', () => setDate(todayISO()));
-
-  // License-year menu: jump to the same calendar day in the chosen license year.
-  const yearSel = $('#license-year') as HTMLSelectElement;
-  yearSel.addEventListener('change', () => {
-    const y = Number(yearSel.value);
-    const mmdd = state.iso.slice(5) === '02-29' ? '02-28' : state.iso.slice(5);
-    setDate(resolve(mmdd, y));
-  });
 
   // Slider scrubs through the license year (Jul 1 - Jun 30).
   const slider = $('#date-slider') as HTMLInputElement;

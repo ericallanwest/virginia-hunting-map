@@ -18,9 +18,6 @@
         <div class="seg group" id="group" role="radiogroup" aria-label="Game group"></div>
         <div class="seg species" id="species" role="radiogroup" aria-label="Species"></div>
 
-        <label class="year-row">License year
-          <select id="license-year" aria-label="License year"></select>
-        </label>
         <div class="date-row">
           <button id="prev-day" type="button" aria-label="Previous day">‹</button>
           <input id="date" type="date" aria-label="Date" />
@@ -30,6 +27,7 @@
         <input id="date-slider" type="range" min="0" max="364" aria-label="Scrub through the license year" />
         <div class="slider-scale"><span>Jul</span><span>Sep</span><span>Nov</span><span>Jan</span><span>Mar</span><span>May</span></div>
         <div id="date-label" class="date-label"></div>
+        <div id="banner" class="banner" hidden></div>
 
         <div class="search">
           <input id="search" type="search" placeholder="County, city, town, WMA, or address" autocomplete="off" aria-label="Search location" />
@@ -49,7 +47,6 @@
         </div>
       </div>
 
-      <div id="banner" class="banner" hidden></div>
 
       <div class="details-wrap">
         <button id="close-details" type="button" class="close" aria-label="Close details">×</button>

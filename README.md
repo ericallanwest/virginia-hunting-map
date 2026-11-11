@@ -79,11 +79,11 @@ Where the regulations are ambiguous, the literal reading is encoded and the ques
 
 ### Each new license year (and archiving the old one)
 
-Regulations are keyed by license year (Jul 1 – Jun 30), so past years stay available: the
-**License year** menu lists every loaded year (past ones marked "archived"), and dates before
-today's license year show an "Archived" banner. If today falls in a year DWR hasn't published yet
-(typically July, until the new pages go up), that year appears as "not yet published" with a notice
-and a link to DWR instead of wrong data.
+Regulations are keyed by license year (Jul 1 – Jun 30), so past years stay available once a new
+year is added. Any date can be picked: if the app has no regulations for that date's license year
+(an earlier year, or a year DWR hasn't published or that hasn't been added yet), a notice under the
+date says so and links to DWR, and the map shows no seasons rather than another year's rules.
+Dates in a loaded past year show an "Archived" notice.
 
 **Watching for changes.** `.github/workflows/watch-dwr.yml` runs every Monday April–September (and
 on demand from the Actions tab). It runs `scripts/check-dwr-changes.py`, which compares the text of

@@ -66,7 +66,7 @@
 
 ## Archive and yearly updates (done)
 
-- [x] License-year menu; archived-year and not-yet-published banners; dates follow loaded years.
+- [x] Any date can be picked; notices for years not in the app (prior or not yet published) and for archived years.
 - [x] Weekly DWR page watcher (GitHub Actions) that opens an issue with diffs.
 - [ ] Per-year local ordinance and ordinance-area data (when counties change ordinances).
 
