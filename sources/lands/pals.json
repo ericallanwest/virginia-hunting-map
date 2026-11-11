@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Coalfields PALS",
+    "open_to_hunting": true,
+    "species": ["all species in season (DWR layer flags bear, deer, elk, grouse, turkey, rabbit, raccoon, squirrel, dove, quail, waterfowl, woodcock, rail/snipe)"],
+    "method": "open during state seasons; PALS permit required",
+    "dates": "Virginia seasons for Dickenson and Wise counties (private-land seasons; not in DWR's public-lands deer table). Elk only for elk-license holders.",
+    "url": "https://dwr.virginia.gov/hunting/regulations/publiclands/",
+    "notes": "About 30,000 ac of private land owned by CF Highlands LLC and managed by The Nature Conservancy, opened through a DWR agreement. A hunting/fishing/trapping license AND a PALS permit ($18 per DWR) are needed to enter to hunt. No camping or fires. No ATVs. No loaded gun in or on a vehicle. No target shooting. No permanent stands. The newest rules sheet DWR links is dated 2023-24 (printed 4/2023); no 2026-27 version was found.",
+    "sources": [
+      "https://dwr.virginia.gov/wp-content/uploads/media/Coalfields-PALS-Rules-2023-2024.pdf",
+      "https://dwr.virginia.gov/wp-content/uploads/media/Coalfields-PALS-Map.pdf",
+      "https://services.dwr.virginia.gov/arcgis/rest/services/HUB_Layers/DWR_PALS/FeatureServer/0"
+    ]
+  },
+  {
+    "name": "James City County PALS (Jolly Pond)",
+    "open_to_hunting": true,
+    "species": ["deer"],
+    "method": "archery/crossbow only; PALS permit required; first come, first served (one lot, about 5 vehicles)",
+    "dates": "Scouting only Sept 1-4, 2026. Antlerless only Sept 5-Oct 2, 2026 (2/day). Either-sex Oct 3, 2026-Jan 2, 2027 (2/day, up to 3 antlered per season). Antlerless only Jan 3-Mar 28, 2027 (2/day). Gates open Sept 1, 2026-Mar 31, 2027.",
+    "url": "https://dwr.virginia.gov/wp-content/uploads/media/James-City-County-PALS-Rules-2026-2027.pdf",
+    "notes": "County-owned land (DWR layer label 'James City County Jolly Pond PALS', 141 ac). Archery or crossbow deer only; no other activity is allowed. Earn-a-Buck does not apply (public land). Blaze orange or pink is required on youth/apprentice days Sept 26-27 and during the urban firearms periods named in the rules. No overnight parking; cars outside the lot are towed. Portable stands only.",
+    "sources": [
+      "https://dwr.virginia.gov/wp-content/uploads/media/James-City-County-PALS-Rules-2026-2027.pdf",
+      "https://dwr.virginia.gov/wp-content/uploads/PALS-Map-James-City-County.pdf",
+      "https://services.dwr.virginia.gov/arcgis/rest/services/HUB_Layers/DWR_PALS/FeatureServer/0"
+    ]
+  }
+]

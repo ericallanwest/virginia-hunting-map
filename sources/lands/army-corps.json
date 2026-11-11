@@ -1,0 +1,18 @@
+[
+  {
+    "name": "John H. Kerr Reservoir",
+    "open_to_hunting": true,
+    "species": ["all species in season under Virginia DWR regulations"],
+    "method": "open during state seasons; Virginia hunting license only, no Corps permit found",
+    "dates": "Virginia statewide/county seasons. Kerr is not in DWR's public-lands firearms deer table, so private-land seasons for Mecklenburg, Halifax and Charlotte counties apply (the same as the app's army_corps 'private-rules' policy).",
+    "url": "https://dwr.virginia.gov/hunting/regulations/publiclands/",
+    "notes": "USACE: 'All project lands are open to hunting with appropriate state license, except developed recreation areas, or unless otherwise posted.' DWR: about 40,000 acres open to hunting within about 55,000 acres of Corps land around the lake (both states); 26 wildlife management units. The polygon (46,766 ac in Virginia) is all Corps fee land in DCR's layer plus DWR's WMU polygons. It still contains developed recreation areas (campgrounds, ramps, day-use parks), which are closed; no GIS for them was found. Occoneechee and Staunton River state parks (on Corps land) and Corps flowage easements are cut out. Corps land along the Dan and Staunton arms includes the river channels. The 66-ac overlap with DCR's 'Buggs Island Lake' water polygon is removed. Virginia Visitor Assistance Center 434-738-6143.",
+    "sources": [
+      "https://dwr.virginia.gov/hunting/regulations/publiclands/",
+      "https://www.saw.usace.army.mil/Locations/District-Lakes-and-Dams/John-H-Kerr-1/Recreation/Hunting/ (live site returns 403; text read from the Wayback copy of 2024-11-28)",
+      "https://corpslakes.erdc.dren.mil/visitors/projects.cfm?Id=K708350",
+      "https://services1.arcgis.com/PxUNqSbaWFvFgHnJ/arcgis/rest/services/VAConservationLands/FeatureServer/0",
+      "https://services.dwr.virginia.gov/arcgis/rest/services/HUB_Layers/DWR_Public_Huntable_Lands/FeatureServer/0"
+    ]
+  }
+]

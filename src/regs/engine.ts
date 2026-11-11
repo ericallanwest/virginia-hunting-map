@@ -5,6 +5,8 @@ import { localEffect, type LocalEffect } from './local';
 import { regsFor } from './registry';
 import { MILITARY_CLOSED_NOTE, MILITARY_PROGRAM_NOTE, baseSeasonNote, baseSeasons, baseYear, militaryProgram } from './military';
 import { REFUGE_CLOSED_NOTE, REFUGE_NOTE, refugeFor, refugeSpeciesClosedNote } from './refuges';
+import { otherLandClosedNote, otherLandFor } from './other-lands';
+import { STATE_PARK_CLOSED_NOTE, stateParkClosed } from './state-parks';
 
 // ---------------------------------------------------------------------------
 // Selector matching
@@ -112,6 +114,8 @@ export interface Evaluation {
 export function seasonsForPlace(regs: SpeciesRegs, place: Place): PlaceSeason[] {
   if (place.land === 'military') return militarySeasons(regs, place);
   if (place.land === 'refuge') return refugeSeasons(regs, place);
+  if (place.land === 'other_public') return otherLandSeasons(regs, place);
+  if (place.land === 'state_park' && stateParkClosed(place.property, regs.licenseYear)) return [];
   const out: PlaceSeason[] = [];
   if (place.land !== 'private' && regs.unlistedPublicPolicy[place.land]?.status === 'closed') return out;
   const firearmsTypes: SeasonType[] = ['firearms', 'antlerless_firearms'];
@@ -198,6 +202,26 @@ function refugeSeasons(regs: SpeciesRegs, place: Place): PlaceSeason[] {
     .map((rule) => ({ ...toPlaceSeason(regs, rule, asPrivate), take: 'check' as const, note: REFUGE_NOTE }));
 }
 
+/** Other public land (other-lands.ts): private-land seasons when open, "check" when by lottery or permit. */
+function otherLandSeasons(regs: SpeciesRegs, place: Place): PlaceSeason[] {
+  const land = otherLandFor(place, regs.species);
+  if (!land) return [];
+  const asPrivate: Place = { ...place, land: 'private', property: undefined };
+  return regs.seasons
+    .filter((rule) => matches(rule.where, asPrivate))
+    .map((rule) => {
+      const s = toPlaceSeason(regs, rule, asPrivate);
+      return land.status === 'check' ? { ...s, take: 'check' as const, note: land.note } : { ...s, note: land.note };
+    });
+}
+
+function otherLandInfo(regs: SpeciesRegs, place: Place): InfoRule[] {
+  if (place.land !== 'other_public') return [];
+  const land = otherLandFor(place, regs.species);
+  const text = land ? `${land.note} ${land.url}` : otherLandClosedNote(place, regs.species);
+  return [{ id: `${regs.species}-other-land`, species: regs.species, topic: 'access', text, where: {} }];
+}
+
 const refugeClosed = (regs: SpeciesRegs, place: Place) =>
   place.land === 'refuge' && !refugeFor(place)?.species.includes(regs.species);
 
@@ -268,11 +292,17 @@ export function evaluate(regs: SpeciesRegs, place: Place, iso: string, opts: { i
   const info = [
     ...militaryInfo(regs, place),
     ...refugeInfo(regs, place),
+    ...otherLandInfo(regs, place),
+    ...(place.land === 'state_park' && stateParkClosed(place.property, ly)
+      ? [{ id: `${regs.species}-state-park-closed`, species: regs.species, topic: 'access' as const, text: STATE_PARK_CLOSED_NOTE, where: {} }]
+      : []),
     ...regs.info.filter((i) => matches(i.where, place) && (!i.dates || inRanges(iso, i.dates, ly))),
   ];
   const closedLand =
     (place.land === 'military' && !militaryProgram(place)) ||
     refugeClosed(regs, place) ||
+    (place.land === 'other_public' && !otherLandFor(place, regs.species)) ||
+    (place.land === 'state_park' && stateParkClosed(place.property, ly)) ||
     (place.land !== 'private' && regs.unlistedPublicPolicy[place.land]?.status === 'closed');
   if (closedLand) return { open, info: info.filter((i) => i.topic === 'access'), summary: { status: 'closed' } };
   const counted = open.filter((o) => opts.includeYouth || !o.rule.youthOnly);

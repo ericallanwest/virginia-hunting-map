@@ -1,0 +1,384 @@
+{
+ "license_year": "2026-27",
+ "retrieved": "2026-11-11",
+ "sources": {
+  "dcr_page": "https://www.dcr.virginia.gov/state-parks/hunting (page last modified 2026-08-26)",
+  "dcr_chart": "https://www.dcr.virginia.gov/state-parks/document/vsp-huntchart-26-27.pdf",
+  "dcr_open_hunt_maps": "https://www.dcr.virginia.gov/state-parks/document/vsp-huntmap.pdf",
+  "dwr_page": "https://dwr.virginia.gov/hunting/regulations/publiclands/ (State Parks section only points to the DCR page)"
+ },
+ "general_rules": [
+  "Hunting only in designated areas; hunting prohibited within 100 yards of park buildings and roads.",
+  "Reservation (managed deer) hunts: $15 non-refundable reservation per day at reservevaparks.com or 1-800-933-7275 option 5; reservations open 9 a.m. on the chart date; hunter education proof required at check-in; every hunt has its own terms (hunt packet).",
+  "Open hunts (Fairy Stone, Grayson Highlands, Hungry Mother, Occoneechee): no reservation, all DWR regulations apply, daily parking fee.",
+  "Weapon key from the chart: A archery, M muzzleloader, S shotgun, Ss shotgun slugs only, G general firearms; * special qualification required and non-lead ammunition required."
+ ],
+ "differences_from_app": [
+  "Widewater State Park is missing from public-lands.geojson: build-geo.sh drops any DCR feature whose MANAME matches /water/, which catches 'Widewater'. It has a 2026-27 managed hunt. Geometry in state-parks.geojson; fix the filter to e.g. / - water$/ or MANAME !== 'Philpott Reservoir - water'.",
+  "Holliday Lake State Park (560 ac, not open to hunting) is entirely inside Appomattox-Buckingham State Forest in the DCR layer; the -union keeps the state-forest name, so the app shows the park as A-B State Forest with the state-forest firearms season. It should be cut out and shown as a closed state park.",
+  "Falkland State Conservation Area (DCR land holding run by Staunton River State Park, 7,323 ac) is not in the app; it holds the 2026-27 Staunton River managed hunt (Nov 19-20, general firearms). Geometry in state-parks.geojson.",
+  "Fairy Stone, Grayson Highlands and Hungry Mother: deer-2026.ts applies their DWR firearms seasons to the whole park polygon, but only designated portions are open (Grayson Highlands 1,117 ac north section via Massie Gap/Seed Orchard Trail; Hungry Mother 863 ac north section off Rt 16; Fairy Stone the cooperative DWR/USACE area). deer-2025.ts carried a 'Designated areas only.' note for Fairy Stone; deer-2026.ts dropped it. Add a 'designated open-hunt area only' note to all three (no GIS for the sub-areas was found; DCR publishes only PDF maps).",
+  "Occoneechee State Park: open hunt on 1,900 ac in the southeast part, all DWR rules, but deer-2026.ts has no firearms rule for it, so it falls to unlistedPublicPolicy.state_park = 'check'. DWR's public-lands table does not list it, so firearms dates follow the private-land season for Mecklenburg County (the either-sex rules already single it out). Consider 'private-rules' plus a designated-area note.",
+  "The 18 other parks with reservation, permit or cooperative hunts get only the generic 'check DCR' note. These are deer-only managed hunts on specific dates; showing the dates and weapons per park (table below) would help, but the land outside those dates is closed.",
+  "Grayson Highlands also has reservation hunts (Nov 2-3 muzzleloader, Nov 16-17 general firearms, 30 hunters/day) in addition to the open hunt; deer-2026.ts encodes only the open-hunt season (Nov 14-28)."
+ ],
+ "parks": [
+  {
+   "name": "Caledon State Park",
+   "open_to_hunting": true,
+   "species": [
+    "deer"
+   ],
+   "method": "reservation managed hunt",
+   "dates": "2026-11-12, 2026-11-19 (muzzleloader); 10 hunters/day; reservations opened 9/1",
+   "url": "https://www.dcr.virginia.gov/state-parks/hunting",
+   "notes": "Hunt packet and map on DCR hunting page.",
+   "sources": [
+    "https://www.dcr.virginia.gov/state-parks/document/vsp-huntchart-26-27.pdf"
+   ]
+  },
+  {
+   "name": "Chippokes State Park",
+   "open_to_hunting": true,
+   "species": [
+    "deer"
+   ],
+   "method": "reservation managed hunt",
+   "dates": "2026-11-17/18, 2026-12-01/02 (shotgun); 30 hunters/day; reservations opened 9/2",
+   "url": "https://www.dcr.virginia.gov/state-parks/hunting",
+   "notes": "",
+   "sources": [
+    "https://www.dcr.virginia.gov/state-parks/document/vsp-huntchart-26-27.pdf"
+   ]
+  },
+  {
+   "name": "Claytor Lake State Park",
+   "open_to_hunting": true,
+   "species": [
+    "deer"
+   ],
+   "method": "reservation managed hunt; plus DWR youth deer workshop",
+   "dates": "2027-01-08/09 (muzzleloader, shotgun slugs only); 20 hunters/day; reservations opened 9/3. Youth workshop (ages 12-17): seminar 2026-12-11, guided muzzleloader hunt 2026-12-12 (register with Tracy Howard 540-641-4455).",
+   "url": "https://www.dcr.virginia.gov/state-parks/hunting",
+   "notes": "Jan 8-9, 2027 is after the general deer season in Pulaski County; it is a DCR management hunt - follow the hunt packet.",
+   "sources": [
+    "https://www.dcr.virginia.gov/state-parks/document/vsp-huntchart-26-27.pdf"
+   ]
+  },
+  {
+   "name": "Clinch River State Park",
+   "open_to_hunting": true,
+   "species": [
+    "deer"
+   ],
+   "method": "reservation managed archery hunt (new for 2026-27)",
+   "dates": "2026-10-22/23, 2026-12-08/09 (archery); 10 hunters/day; reservations opened 9/29",
+   "url": "https://www.dcr.virginia.gov/state-parks/hunting",
+   "notes": "",
+   "sources": [
+    "https://www.dcr.virginia.gov/state-parks/hunting",
+    "https://www.dcr.virginia.gov/state-parks/document/vsp-huntchart-26-27.pdf"
+   ]
+  },
+  {
+   "name": "Fairy Stone State Park",
+   "open_to_hunting": true,
+   "species": [
+    "all species in season under DWR regulations"
+   ],
+   "method": "open hunt, designated area only (cooperative area with DWR and USACE Philpott lands)",
+   "dates": "DWR seasons; DWR public-lands deer table: firearms Nov 14-Dec 12, either-sex Nov 21 and Dec 7-12",
+   "url": "https://www.dcr.virginia.gov/state-parks/hunting",
+   "notes": "Daily parking fee. Only the designated part of the park is open; see the DCR open-hunt map.",
+   "sources": [
+    "https://www.dcr.virginia.gov/state-parks/hunting",
+    "https://www.dcr.virginia.gov/state-parks/document/vsp-huntmap.pdf"
+   ]
+  },
+  {
+   "name": "Grayson Highlands State Park",
+   "open_to_hunting": true,
+   "species": [
+    "all species in season under DWR regulations (open hunt)",
+    "deer (reservation hunts)"
+   ],
+   "method": "open hunt on 1,117-ac northern section; plus reservation managed hunts",
+   "dates": "Open hunt: DWR seasons (public-lands deer table: firearms Nov 14-28, either-sex Nov 28). Reservation hunts: 2026-11-02/03 muzzleloader, 2026-11-16/17 general firearms; 30 hunters/day; reservations opened 9/8.",
+   "url": "https://www.dcr.virginia.gov/state-parks/hunting",
+   "notes": "Open area reached via Massie Gap and the Seed Orchard Trail, adjoins Mount Rogers NRA. Hunting with dogs off leash not allowed. Daily parking fee.",
+   "sources": [
+    "https://www.dcr.virginia.gov/state-parks/hunting",
+    "https://www.dcr.virginia.gov/state-parks/document/vsp-huntchart-26-27.pdf"
+   ]
+  },
+  {
+   "name": "Hungry Mother State Park",
+   "open_to_hunting": true,
+   "species": [
+    "all species in season under DWR regulations"
+   ],
+   "method": "open hunt on 863-ac northern section",
+   "dates": "DWR seasons (public-lands deer table: firearms Nov 14-28, either-sex Nov 28)",
+   "url": "https://www.dcr.virginia.gov/state-parks/hunting",
+   "notes": "Access via State Highway 16. Daily parking fee.",
+   "sources": [
+    "https://www.dcr.virginia.gov/state-parks/hunting"
+   ]
+  },
+  {
+   "name": "James River State Park",
+   "open_to_hunting": true,
+   "species": [
+    "deer"
+   ],
+   "method": "reservation managed hunt",
+   "dates": "2026-11-09/10/11 (muzzleloader), 2026-12-07/08/09 (general firearms); 15 hunters/day; reservations opened 9/9",
+   "url": "https://www.dcr.virginia.gov/state-parks/hunting",
+   "notes": "",
+   "sources": [
+    "https://www.dcr.virginia.gov/state-parks/document/vsp-huntchart-26-27.pdf"
+   ]
+  },
+  {
+   "name": "Kiptopeke State Park",
+   "open_to_hunting": true,
+   "species": [
+    "deer"
+   ],
+   "method": "reservation managed hunt",
+   "dates": "2026-11-04/05 (archery, muzzleloader), 2026-12-02/03 (archery, muzzleloader, shotgun); 13 hunters/day (some slots allow a hunting buddy; accessible site - call park)",
+   "url": "https://www.dcr.virginia.gov/state-parks/hunting",
+   "notes": "",
+   "sources": [
+    "https://www.dcr.virginia.gov/state-parks/document/vsp-huntchart-26-27.pdf"
+   ]
+  },
+  {
+   "name": "Lake Anna State Park",
+   "open_to_hunting": true,
+   "species": [
+    "deer"
+   ],
+   "method": "reservation managed hunt; plus Wheelin' Sportsmen hunt",
+   "dates": "2026-11-02 (archery, muzzleloader), 2026-11-30/12-01 (archery, muzzleloader, shotgun slugs - special qualification, non-lead); 27 hunters/day; reservations opened 9/11. Wheelin' Sportsmen muzzleloader hunt 2026-11-03 (mobility-impaired; applications closed Sept 1).",
+   "url": "https://www.dcr.virginia.gov/state-parks/hunting",
+   "notes": "",
+   "sources": [
+    "https://www.dcr.virginia.gov/state-parks/document/vsp-huntchart-26-27.pdf"
+   ]
+  },
+  {
+   "name": "Leesylvania State Park",
+   "open_to_hunting": true,
+   "species": [
+    "deer"
+   ],
+   "method": "reservation managed hunt",
+   "dates": "2026-12-02, 2026-12-09 (shotgun slugs only; special qualification and non-lead ammunition required); 15 hunters/day; reservations opened 9/15",
+   "url": "https://www.dcr.virginia.gov/state-parks/hunting",
+   "notes": "",
+   "sources": [
+    "https://www.dcr.virginia.gov/state-parks/document/vsp-huntchart-26-27.pdf"
+   ]
+  },
+  {
+   "name": "Machicomoco State Park",
+   "open_to_hunting": true,
+   "species": [
+    "deer"
+   ],
+   "method": "reservation managed hunt",
+   "dates": "2026-11-18/19 and 2026-12-08/09 (archery, muzzleloader, shotgun slugs); 2 accessible archery + 14 hunters/day; reservations opened 9/16",
+   "url": "https://www.dcr.virginia.gov/state-parks/hunting",
+   "notes": "",
+   "sources": [
+    "https://www.dcr.virginia.gov/state-parks/document/vsp-huntchart-26-27.pdf"
+   ]
+  },
+  {
+   "name": "Mason Neck State Park",
+   "open_to_hunting": true,
+   "species": [
+    "deer"
+   ],
+   "method": "permit hunt run with Potomac River NWR Complex (first come, first served)",
+   "dates": "2026-11-17, 2026-12-01, bonus 2026-12-08; permits sold from 2026-09-19 noon at potomacriverrefugehunts.recaccess.com",
+   "url": "https://potomacriverrefugehunts.recaccess.com/",
+   "notes": "Orientation and proof of weapons qualification required.",
+   "sources": [
+    "https://www.dcr.virginia.gov/state-parks/document/vsp-huntchart-26-27.pdf"
+   ]
+  },
+  {
+   "name": "Natural Tunnel State Park",
+   "open_to_hunting": true,
+   "species": [
+    "deer"
+   ],
+   "method": "reservation managed hunt; plus lottery archery permit hunt",
+   "dates": "Reservation: 2026-11-09/10 (muzzleloader), 2027-01-05/06 (muzzleloader, shotgun slugs); 15 hunters/day; reservations opened 9/17. Archery permit (10 permits by lottery, $50, applications closed Sept 15): about 393 ac, designated days Mon-Sat, 2026-10-03 to 2027-01-02 except Nov 9-10, Nov 26, Dec 25, Jan 1.",
+   "url": "https://www.dcr.virginia.gov/state-parks/hunting",
+   "notes": "Jan 5-6, 2027 is after the Scott County general season - DCR management hunt; follow the packet.",
+   "sources": [
+    "https://www.dcr.virginia.gov/state-parks/hunting",
+    "https://www.dcr.virginia.gov/state-parks/document/vsp-huntchart-26-27.pdf"
+   ]
+  },
+  {
+   "name": "Occoneechee State Park",
+   "open_to_hunting": true,
+   "species": [
+    "all species in season under DWR regulations"
+   ],
+   "method": "open hunt on 1,900 ac in the southeast portion",
+   "dates": "DWR seasons (not in DWR's public-lands deer table, so private-land seasons for Mecklenburg County; DWR's either-sex rules name Occoneechee as following the full early-muzzleloader either-sex season)",
+   "url": "https://www.dcr.virginia.gov/state-parks/hunting",
+   "notes": "Two parking areas; daily parking fee.",
+   "sources": [
+    "https://www.dcr.virginia.gov/state-parks/hunting",
+    "https://dwr.virginia.gov/hunting/regulations/deer/"
+   ]
+  },
+  {
+   "name": "Pocahontas State Park",
+   "open_to_hunting": true,
+   "species": [
+    "deer"
+   ],
+   "method": "reservation managed hunt; plus archery permit hunt",
+   "dates": "Reservation: 2026-11-09/10 (archery, muzzleloader; 20/day), 2026-12-07/08 (archery, muzzleloader, shotgun; 28/day); reservations opened 9/18. Archery permit (100 permits, $50, sold at park office Sept 14-Oct 2, safety briefing required): about 2,500 ac, Mon-Fri 2026-10-05 to 2027-01-01 except Nov 9-10, Nov 26, Dec 7-9, Dec 25.",
+   "url": "https://www.dcr.virginia.gov/state-parks/hunting",
+   "notes": "Normal DWR regulations and bag limits apply to the permit hunt.",
+   "sources": [
+    "https://www.dcr.virginia.gov/state-parks/hunting",
+    "https://www.dcr.virginia.gov/state-parks/document/vsp-huntchart-26-27.pdf"
+   ]
+  },
+  {
+   "name": "Shenandoah River State Park",
+   "open_to_hunting": true,
+   "species": [
+    "deer"
+   ],
+   "method": "reservation managed hunt; plus Wheelin' Sportsmen hunt",
+   "dates": "2026-11-03 (muzzleloader); 7 hunters/day; reservations opened 9/22. Wheelin' Sportsmen muzzleloader hunt 2026-11-02.",
+   "url": "https://www.dcr.virginia.gov/state-parks/hunting",
+   "notes": "",
+   "sources": [
+    "https://www.dcr.virginia.gov/state-parks/document/vsp-huntchart-26-27.pdf"
+   ]
+  },
+  {
+   "name": "Smith Mountain Lake State Park",
+   "open_to_hunting": true,
+   "species": [
+    "deer"
+   ],
+   "method": "reservation managed hunt",
+   "dates": "2026-11-02/03, 2026-11-09/10 (archery, muzzleloader); 30 hunters/day; reservations opened 9/23",
+   "url": "https://www.dcr.virginia.gov/state-parks/hunting",
+   "notes": "No overnight accommodations at the park this hunt season.",
+   "sources": [
+    "https://www.dcr.virginia.gov/state-parks/document/vsp-huntchart-26-27.pdf"
+   ]
+  },
+  {
+   "name": "Staunton River State Park",
+   "open_to_hunting": true,
+   "species": [
+    "deer"
+   ],
+   "method": "Wheelin' Sportsmen hunt only (mobility-impaired, by application)",
+   "dates": "2026-12-05 (general firearms); applications Aug 1-Sept 1 via vanwtf.org",
+   "url": "https://www.vanwtf.org",
+   "notes": "The park's reservation hunt is on Falkland State Conservation Area, not the park itself. Treat the park as closed to the general public.",
+   "sources": [
+    "https://www.dcr.virginia.gov/state-parks/document/vsp-huntchart-26-27.pdf"
+   ]
+  },
+  {
+   "name": "Falkland State Conservation Area",
+   "open_to_hunting": true,
+   "species": [
+    "deer"
+   ],
+   "method": "reservation managed hunt (booked under Staunton River State Park)",
+   "dates": "2026-11-19/20 (general firearms); 30 hunters/day; reservations opened 9/24",
+   "url": "https://www.dcr.virginia.gov/state-parks/hunting",
+   "notes": "Not in the app; geometry in state-parks.geojson (DCR 'DCR Land Holding').",
+   "sources": [
+    "https://www.dcr.virginia.gov/state-parks/document/vsp-huntchart-26-27.pdf"
+   ]
+  },
+  {
+   "name": "Sweet Run State Park",
+   "open_to_hunting": true,
+   "species": [
+    "deer"
+   ],
+   "method": "reservation managed hunt",
+   "dates": "2026-11-16, 2026-11-23 (shotgun slugs only; special qualification and non-lead ammunition required); 18 hunters/day; reservations opened 9/25",
+   "url": "https://www.dcr.virginia.gov/state-parks/hunting",
+   "notes": "",
+   "sources": [
+    "https://www.dcr.virginia.gov/state-parks/document/vsp-huntchart-26-27.pdf"
+   ]
+  },
+  {
+   "name": "Widewater State Park",
+   "open_to_hunting": true,
+   "species": [
+    "deer"
+   ],
+   "method": "reservation managed hunt; plus DWR novice hunter workshop",
+   "dates": "Reservation: 2026-12-03, 2026-12-10 (shotgun slugs only; special qualification, non-lead); 8 hunters/day; reservations opened 9/4. Novice workshop (18+, mentored): archery Oct 7, 14, 21; shotgun (non-lead slugs) Dec 3, 10.",
+   "url": "https://www.dcr.virginia.gov/state-parks/hunting",
+   "notes": "Missing from the app (build filter bug); geometry in state-parks.geojson.",
+   "sources": [
+    "https://www.dcr.virginia.gov/state-parks/document/vsp-huntchart-26-27.pdf"
+   ]
+  },
+  {
+   "name": "York River State Park",
+   "open_to_hunting": true,
+   "species": [
+    "deer"
+   ],
+   "method": "reservation managed hunt; plus DWR youth archery quota hunt",
+   "dates": "2026-12-16/17 (archery, muzzleloader, shotgun); 4 archery + 19 hunters/day; reservations opened 9/30. DWR quota hunt #218 (archery/crossbow youth deer hunts, 9 days during the rut, 10 adults each bringing a licensed youth 12-15; applications closed 2026-09-25; self-guided, no assigned stands).",
+   "url": "https://www.dcr.virginia.gov/state-parks/hunting",
+   "notes": "",
+   "sources": [
+    "https://www.dcr.virginia.gov/state-parks/document/vsp-huntchart-26-27.pdf",
+    "https://dwr.virginia.gov/hunting/quota-hunts/"
+   ]
+  }
+ ],
+ "closed_parks": {
+  "note": "Not listed on DCR's 2026-27 hunting page or chart, so closed to hunting (DCR: 'Specific sites that offer hunting may change from year to year'). Belle Isle, Douthat and False Cape still appear in DWR's older 'Public Huntable Lands' GIS layer but are not in DCR's 2026-27 list.",
+  "names": [
+   "Bear Creek Lake State Park",
+   "Belle Isle State Park",
+   "Culpeper Battlefields State Park",
+   "Douthat State Park",
+   "False Cape State Park",
+   "First Landing State Park",
+   "Hayfields State Park",
+   "High Bridge Trail State Park",
+   "Holliday Lake State Park",
+   "Mayo River State Park",
+   "Middle Peninsula State Park",
+   "Natural Bridge State Park",
+   "New River Trail State Park",
+   "Powhatan State Park",
+   "Sailors Creek Battlefield Historic State Park",
+   "Seven Bends State Park",
+   "Shot Tower Historic State Park",
+   "Sky Meadows State Park",
+   "Staunton River Battlefield State Park",
+   "Twin Lakes State Park",
+   "Westmoreland State Park",
+   "Wilderness Road State Park"
+  ]
+ }
+}

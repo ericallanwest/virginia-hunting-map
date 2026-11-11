@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Camp Pendleton State Military Reservation (Virginia Beach)",
+    "open_to_hunting": false,
+    "species": [],
+    "method": "none found",
+    "dates": "",
+    "url": "https://dwr.virginia.gov/hunting/regulations/publiclands/",
+    "notes": "Not mapped. DWR's Military Areas list (Fort A.P. Hill, Fort Pickett, Fort Belvoir, JBLE-Fort Eustis, MCB Quantico) leaves it out, and no state or Guard source offers hunting there. It is a small, built-up beachfront post in Virginia Beach. DCR's layer gives public access as 'by arrangement with landowner'. (Search results for 'Camp Pendleton hunting' are all about the Marine Corps base in California.)",
+    "sources": ["https://dwr.virginia.gov/hunting/regulations/publiclands/", "https://services1.arcgis.com/PxUNqSbaWFvFgHnJ/arcgis/rest/services/VAConservationLands/FeatureServer/0"]
+  },
+  {
+    "name": "Other Virginia National Guard sites (DCR 'National Guard Site' polygons; armories, Army Aviation Support Facility, etc.)",
+    "open_to_hunting": false,
+    "species": [],
+    "method": "none found",
+    "dates": "",
+    "url": "https://dwr.virginia.gov/hunting/regulations/publiclands/",
+    "notes": "Not mapped; no public hunting program found. Fort Pickett / Maneuver Training Center (listed in DCR as 'Fort Barfoot') is already in sources/military; hunting there runs through ftpickett.isportsman.net.",
+    "sources": ["https://dwr.virginia.gov/hunting/regulations/publiclands/"]
+  }
+]

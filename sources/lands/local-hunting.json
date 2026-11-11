@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Lone Star Lakes Park",
+    "open_to_hunting": "quota only",
+    "species": ["deer"],
+    "method": "DWR quota (lottery) hunts with the City of Suffolk; closed to other hunting",
+    "dates": "Hunt #212 (October periods) and #213 (November periods); specific days assigned with the drawing; applications closed 2026-08-28. Standby drawing, walk-in only, on the Friday before each hunt.",
+    "url": "https://dwr.virginia.gov/hunting/quota-hunts/",
+    "notes": "City of Suffolk park. Weapon: shotgun, muzzleloader or archery (hunter's choice). 8 hunters per period, each may bring 1 guest. $7.50 application, plus $25 per person paid to the City of Suffolk on hunt day. Mandatory 5 a.m. briefing on the first day. The polygon (DWR, 1,101 ac) includes the park's lakes.",
+    "sources": ["https://dwr.virginia.gov/hunting/quota-hunts/", "https://services.dwr.virginia.gov/arcgis/rest/services/HUB_Layers/DWR_Public_Huntable_Lands/FeatureServer/0"]
+  },
+  {
+    "name": "Dutch Gap Conservation Area (waterfowl blind sites)",
+    "open_to_hunting": "quota only",
+    "species": ["waterfowl"],
+    "method": "DWR quota (lottery) hunt; floating blinds at designated blind stakes only",
+    "dates": "Hunt #103: Wednesdays, Fridays and Saturdays in the last two segments of the general duck season, plus the last day of the season; applications closed 2026-09-25.",
+    "url": "https://dwr.virginia.gov/hunting/quota-hunts/",
+    "notes": "3 hunters per date set, each may bring 2 guests; bring your own decoys and floating blind. 4VAC15-260-170 prohibits waterfowl hunting in the Dutch Gap Cutoff without a DWR permit. Owner is not named on DWR's page; Dutch Gap Conservation Area is a Chesterfield County park (from general knowledge, not checked against a county source). The polygon (DWR, 457 ac) is mostly water.",
+    "sources": ["https://dwr.virginia.gov/hunting/quota-hunts/", "https://law.lis.virginia.gov/admincode/title4/agency15/chapter260/section170/", "https://services.dwr.virginia.gov/arcgis/rest/services/HUB_Layers/DWR_Public_Huntable_Lands/FeatureServer/0"]
+  },
+  {
+    "name": "City of Franklin urban archery area (city property)",
+    "open_to_hunting": "permit only",
+    "species": ["deer"],
+    "method": "archery only by city permit (book up to 5 dates online; staff review each application; 2 hunters per calendar day)",
+    "dates": "Urban archery Sept 5-Oct 2, 2026 and Jan 3-Mar 28, 2027 (antlerless only); early archery Oct 3-Nov 13, 2026; Nov 14, 2026-Jan 2, 2027 (city-limits season).",
+    "url": "https://urban-archery.franklinva.gov/",
+    "notes": "Elevated stand at least 10 ft with full-body harness; no dogs; no field dressing on city land. Virginia driver's license and hunting license required. The polygon is a hand-drawn sketch in the city's public web map, not a parcel layer (low positional confidence, 90 ac). Not checked by me directly; from the research sub-agent.",
+    "sources": ["https://urban-archery.franklinva.gov/", "https://cofva.maps.arcgis.com/sharing/rest/content/items/71e1baaee78a40a3877ac738e9db711e/data?f=json"]
+  },
+  {
+    "name": "Fairfax County Deer Management Archery Program (NOT MAPPED)",
+    "open_to_hunting": "restricted",
+    "species": ["deer"],
+    "method": "approved archers only: apply individually, pass an archery qualification, IBEP course and background check; police staff select and assign archers to groups",
+    "dates": "Sept 12, 2026-Feb 13, 2027; no hunting in county parks on Sundays; archery ends Jan 9, 2027 at Lake Fairfax, Huntley Meadows and Dogue Creek. Applications ran June 1-28, 2026.",
+    "url": "https://www.fairfaxcounty.gov/wildlife/archery-program",
+    "notes": "Not public hunting in the usual sense, so not mapped. GIS exists if wanted: https://www.fairfaxcounty.gov/gispub2/rest/services/FCPA/DeerManagement/FeatureServer/1 with MANAGEMENT_METHOD IN ('Archery','Archery/Sharpshooting','Archery/Managed Hunt') (sub-agent tested: about 147 features). Useful as 'closed except program archers'.",
+    "sources": ["https://www.fairfaxcounty.gov/wildlife/archery-program", "https://www.fairfaxcounty.gov/wildlife/how-apply"]
+  },
+  {
+    "name": "Banshee Reeks Nature Preserve, Loudoun County (NOT MAPPED)",
+    "open_to_hunting": "unconfirmed",
+    "species": ["deer"],
+    "method": "county lottery deer hunt and novice workshop (registration via loudoun.gov/webtrac), per DWR's managed-hunts page",
+    "dates": "No 2026-27 dates found; DWR's workshop text still shows 2023 dates and Loudoun's preserve page does not mention hunting.",
+    "url": "https://dwr.virginia.gov/hunting/managed-hunts/",
+    "notes": "Confirm with Loudoun PRCS (703-777-0343) before mapping.",
+    "sources": ["https://dwr.virginia.gov/hunting/managed-hunts/", "https://www.loudoun.gov/bansheereeks"]
+  }
+]

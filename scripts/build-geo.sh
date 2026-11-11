@@ -56,8 +56,10 @@ $MS "$SRC/wma.geojson" \
 $MS "$SRC/statelands.geojson" \
   -filter "MATYPE !== 'Military Recreation Area' && !/water/.test(MANAME)" \
   -each "land = MATYPE === 'State Park' ? 'state_park' : MATYPE === 'State Forest' ? 'state_forest' : 'army_corps'; name = land === 'army_corps' ? MANAME.replace(/ - .*/, '') : MANAME" \
-  -dissolve fields=name copy-fields=land \
+  -filter-fields land,name \
   -o "$SRC/_state.geojson" format=geojson
+# (No -dissolve here: it drops parks that lie inside a state forest, e.g. Holliday Lake.
+#  split-public-lands.py dissolves each property instead.)
 
 # National Park Service units (hunting generally prohibited). Trail corridors and
 # Assateague (mixed rules) are left out rather than shown as closed.
@@ -79,20 +81,28 @@ $MS sources/refuges/refuges.geojson \
   -dissolve fields=name copy-fields=land \
   -o "$SRC/_nwr.geojson" format=geojson
 
-$MS -i "$SRC/_nf.geojson" "$SRC/_wma.geojson" "$SRC/_state.geojson" "$SRC/_nps.geojson" "$SRC/_mil.geojson" "$SRC/_nwr.geojson" combine-files \
+# Other public land and state parks missing from DCR's layer (committed in sources/lands; see
+# its README). Land types there: other_public, state_park.
+$MS -i sources/lands/army-corps.geojson sources/lands/dof-lands.geojson sources/lands/local-hunting.geojson \
+  sources/lands/pals.geojson sources/lands/powrr.geojson sources/lands/natural-area-preserves.geojson \
+  sources/lands/state-parks.geojson combine-files \
+  -merge-layers force \
+  -each "land = land === 'state_park' ? 'state_park' : 'other_public'" \
+  -filter-fields land,name -o "$SRC/_lands.geojson" format=geojson
+
+$MS -i "$SRC/_nf.geojson" "$SRC/_wma.geojson" "$SRC/_state.geojson" "$SRC/_nps.geojson" "$SRC/_mil.geojson" "$SRC/_nwr.geojson" "$SRC/_lands.geojson" combine-files \
   -merge-layers force \
   -filter-fields land,name \
   -o "$SRC/_public.geojson" format=geojson
 
-# Split each public property by county/city: deer rules on National Forest (and
-# a few other properties) depend on which jurisdiction the land is in.
-$MS -i "$SRC/_public.geojson" "$OUT/jurisdictions.geojson" combine-files \
-  -union target=* \
-  -filter "!!land && !!id" \
-  -each "jurisdiction = id; name = name_1; subArea = subArea || null" \
-  -dissolve fields=name,jurisdiction,subArea copy-fields=land \
+# Split each public property by county/city (deer rules on National Forest and a few other
+# properties depend on the jurisdiction), keeping properties that overlap. Larger properties
+# come first so smaller ones draw on top of them.
+python3 scripts/split-public-lands.py "$SRC/_public.geojson" "$OUT/jurisdictions.geojson" "$SRC/_public_split.geojson"
+$MS "$SRC/_public_split.geojson" \
   -simplify interval=$TOL keep-shapes \
   -filter "this.area > 20000" \
+  -sort "this.area" descending \
   -o "$OUT/public-lands.geojson" precision=0.00001 format=geojson
 
 # 4. Local-ordinance areas (zoning districts, subdivisions, road-bounded areas, public

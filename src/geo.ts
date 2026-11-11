@@ -83,13 +83,25 @@ export interface Located {
   localAreas?: Poly[];
 }
 
+/** Bounding-box area in square degrees: enough to tell a nested property from its container. */
+function bboxArea(f: Poly): number {
+  let [x0, y0, x1, y1] = [Infinity, Infinity, -Infinity, -Infinity];
+  const rings = f.geometry.type === 'Polygon' ? [f.geometry.coordinates[0]] : f.geometry.coordinates.map((p) => p[0]);
+  for (const ring of rings) for (const [x, y] of ring) [x0, y0, x1, y1] = [Math.min(x0, x), Math.min(y0, y), Math.max(x1, x), Math.max(y1, y)];
+  return (x1 - x0) * (y1 - y0);
+}
+
 /** Resolve a lon/lat to the most specific place: public land > town > county/city. */
 export function locate(layers: Layers, lng: number, lat: number): Located | undefined {
   const pt: [number, number] = [lng, lat];
   const jurisdiction = layers.jurisdictions.find((f) => booleanPointInPolygon(pt, f));
   if (!jurisdiction) return undefined;
   const town = layers.towns.find((f) => booleanPointInPolygon(pt, f));
-  const publicLand = layers.publicLands.find((f) => booleanPointInPolygon(pt, f));
+  // Where properties overlap (a state park inside a state forest, a preserve inside a park),
+  // the smaller, more specific one applies.
+  const publicLand = layers.publicLands
+    .filter((f) => booleanPointInPolygon(pt, f))
+    .sort((a, b) => bboxArea(a) - bboxArea(b))[0];
   let place = placeForJurisdiction(jurisdiction.properties.id, { subArea: jurisdiction.properties.subArea });
   if (town) place = { ...place, town: town.properties.name };
   if (publicLand) place = { ...place, land: publicLand.properties.land, property: publicLand.properties.name };

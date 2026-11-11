@@ -35,7 +35,8 @@ export type Land =
   | 'army_corps'
   | 'nps' // National Park Service (closed to hunting)
   | 'military' // Department of Defense installations (see military.ts)
-  | 'refuge'; // National Wildlife Refuges (see refuges.ts)
+  | 'refuge' // National Wildlife Refuges (see refuges.ts)
+  | 'other_public'; // POWRR, PALS, quota-hunt sites, Natural Area Preserves, etc. (other-lands.ts)
 
 export type Region = 'east' | 'west'; // of the Blue Ridge
 

@@ -1,0 +1,72 @@
+[
+  {
+    "name": "CF Highlands Breaks",
+    "open_to_hunting": true,
+    "species": ["all species in season; coyote Sept 1-Mar 10 and during spring turkey season"],
+    "method": "open during state seasons; hunting license only (no PALS permit)",
+    "dates": "Virginia seasons for Dickenson/Buchanan counties (private-land seasons). Elk only for elk-license holders; the layer marks the property as elk-hunting land.",
+    "url": "https://dwr.virginia.gov/place/cf-highlands-breaks/",
+    "notes": "POWRR lease of private land (CF Highlands LLC / TNC). Trapping prohibited. No camping or fires. No loaded gun in vehicles. ATVs only for permitted riders on Spearhead Trails. Roads or sections may be closed temporarily; obey signs.",
+    "sources": ["https://dwr.virginia.gov/wp-content/uploads/media/CF-Highlands-Breaks-Rules.pdf", "https://dwr.virginia.gov/powrr/visit-powrr-properties/"]
+  },
+  {
+    "name": "CF Highlands Dante",
+    "open_to_hunting": true,
+    "species": ["deer, bear, turkey, small game; coyote Sept 1-Mar 10 and during spring turkey season"],
+    "method": "open during state seasons; hunting license only",
+    "dates": "Virginia seasons for Dickenson/Russell counties (private-land seasons)",
+    "url": "https://dwr.virginia.gov/place/cf-highlands-dante/",
+    "notes": "Trapping prohibited on the whole property. No hunting in the 1,598-ac Straight Hollow Exclusion Zone (separate feature).",
+    "sources": ["https://dwr.virginia.gov/wp-content/uploads/media/CF-Highlands-Dante-Rules.pdf", "https://dwr.virginia.gov/place/cf-highlands-dante/"]
+  },
+  {
+    "name": "CF Highlands Dante - Straight Hollow Exclusion Zone (no hunting)",
+    "open_to_hunting": false,
+    "species": [],
+    "method": "closed (safety zone)",
+    "dates": "",
+    "url": "https://dwr.virginia.gov/place/cf-highlands-dante/",
+    "notes": "DWR: 'No hunting will occur in the 1,598-acre Straight Hollow Exclusion Zone.'",
+    "sources": ["https://dwr.virginia.gov/place/cf-highlands-dante/"]
+  },
+  {
+    "name": "CF Highlands Vansant",
+    "open_to_hunting": true,
+    "species": ["all species in season; coyote Sept 1-Mar 10 and during spring turkey season"],
+    "method": "open during state seasons; hunting license only",
+    "dates": "Virginia seasons for Buchanan County (private-land seasons). Elk only for elk-license holders.",
+    "url": "https://dwr.virginia.gov/place/cf-highlands-vansant/",
+    "notes": "ATVs prohibited. Part of the property (elk restoration area, separate feature) is not open for general hunting.",
+    "sources": ["https://dwr.virginia.gov/wp-content/uploads/media/CF-Highlands-Vansant-Rules.pdf"]
+  },
+  {
+    "name": "CF Highlands Vansant - elk restoration area (no general hunting)",
+    "open_to_hunting": false,
+    "species": ["elk only for drawn elk-license / elk-conservation-license hunters"],
+    "method": "closed to general hunting; access limited to scheduled elk-viewing tours",
+    "dates": "",
+    "url": "https://dwr.virginia.gov/powrr/visit-powrr-properties/",
+    "notes": "POWRR layer: Hunting = No, Elk_Hunting = Yes, Elk_Viewing = Yes.",
+    "sources": ["https://services.dwr.virginia.gov/arcgis/rest/services/Projects/powrr_properties_Viewer/FeatureServer/3"]
+  },
+  {
+    "name": "TNC Baker - elk restoration area (no general hunting)",
+    "open_to_hunting": false,
+    "species": ["elk only for drawn elk-license / elk-conservation-license hunters"],
+    "method": "closed to general hunting; limited public access",
+    "dates": "",
+    "url": "https://dwr.virginia.gov/powrr/visit-powrr-properties/",
+    "notes": "POWRR layer: Hunting = No, Elk_Hunting = Yes. Site of Virginia's elk reintroduction.",
+    "sources": ["https://services.dwr.virginia.gov/arcgis/rest/services/Projects/powrr_properties_Viewer/FeatureServer/3"]
+  },
+  {
+    "name": "TNC Big Caney",
+    "open_to_hunting": true,
+    "species": ["all species in season"],
+    "method": "open during state seasons; hunting license only (per the sister properties' rules; the Big Caney rules PDF link returned a web page, not a PDF)",
+    "dates": "Virginia seasons for Dickenson County (private-land seasons)",
+    "url": "https://dwr.virginia.gov/place/tnc-big-caney/",
+    "notes": "397 ac. Rules not confirmed directly.",
+    "sources": ["https://dwr.virginia.gov/powrr/visit-powrr-properties/", "https://services.dwr.virginia.gov/arcgis/rest/services/Projects/powrr_properties_Viewer/FeatureServer/3"]
+  }
+]

@@ -1,0 +1,15 @@
+[
+  {
+    "name": "New Kent Forestry Center",
+    "open_to_hunting": "quota only",
+    "species": ["deer (apprentice)", "turkey (apprentice spring gobbler)", "rabbit", "quail"],
+    "method": "DWR quota hunts only (lottery); closed to other hunting",
+    "dates": "2026-27 quota hunts: #219 apprentice deer (archery/muzzleloader/firearms, 7 days, 25 hunters each with a licensed apprentice; deadline 2026-09-25); #408 apprentice spring gobbler (1 day, 4 hunters; deadline 2026-12-11); #602 rabbit, #603 quail, #606 apprentice rabbit, #607 apprentice quail (1 party per day; deadline 2026-12-11). Exact hunt days are not on DWR's page; they come with the drawing.",
+    "url": "https://dwr.virginia.gov/hunting/quota-hunts/",
+    "notes": "Department of Forestry seed orchard/forestry center (New Kent County), next to Game Farm Marsh WMA. It is not a state forest, so it is not in DCR's 'State Forest' type that the app uses. DWR says Game Farm Marsh WMA must be reached by boat, not through the Forestry Center. $7.50 application per hunt. The other DOF centers and natural areas in DCR's layer (Augusta and Garland Gray forestry centers, the research tract, and the state-forest natural areas, which sit inside state forests the app already has) have no public hunting information and are not mapped.",
+    "sources": [
+      "https://dwr.virginia.gov/hunting/quota-hunts/",
+      "https://services.dwr.virginia.gov/arcgis/rest/services/HUB_Layers/DWR_Public_Huntable_Lands/FeatureServer/0"
+    ]
+  }
+]
