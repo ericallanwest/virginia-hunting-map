@@ -1,14 +1,8 @@
-import { bear2026 } from './bear-2026';
-import { licenseYearOf } from './dates';
-import { deer2026 } from './deer-2026';
-import { elk2026 } from './elk-2026';
-import { turkey2026 } from './turkey-2026';
-import { FURBEARERS } from './furbearer-2026';
-import { SMALL_GAME } from './small-game-2026';
-import type { Species, SpeciesRegs, Take } from './types';
+import { ALL_REGS, regsFor } from './registry';
+import type { Species, Take } from './types';
 
-/** All encoded regulation sets. Add a new entry per species per license year. */
-const ALL: SpeciesRegs[] = [deer2026, bear2026, turkey2026, elk2026, ...SMALL_GAME, ...FURBEARERS];
+export { regsFor };
+const ALL = ALL_REGS;
 
 export type ViewId = 'weapon' | 'take' | 'dogs';
 
@@ -77,10 +71,6 @@ export const SPECIES: SpeciesInfo[] = [
 
 export const speciesInfo = (s: Species) => SPECIES.find((x) => x.id === s)!;
 
-export function regsFor(species: Species, iso: string): SpeciesRegs | undefined {
-  const ly = licenseYearOf(iso);
-  return ALL.find((r) => r.species === species && r.licenseYear === ly);
-}
 
 /** License years with encoded regulations, oldest first. */
 export const loadedYears = (): number[] => [...new Set(ALL.map((r) => r.licenseYear))].sort();

@@ -2,7 +2,7 @@ import { inRanges, licenseYearOf, resolve } from './dates';
 import type { DateRange, InfoRule, Land, Place, SeasonRule, SeasonType, Selector, SpeciesRegs, Take, Where } from './types';
 import { CITY_PARENT, splitFor } from './virginia';
 import { localEffect, type LocalEffect } from './local';
-import { deer2026 } from './deer-2026';
+import { regsFor } from './registry';
 
 // ---------------------------------------------------------------------------
 // Selector matching
@@ -285,9 +285,10 @@ export const weekday = (iso: string) => new Date(`${iso}T12:00:00Z`).getUTCDay()
 
 /** Is a deer firearms season (general or antlerless) open here today? Used by bobcat/fox dog rules. */
 function deerFirearmsOpen(place: Place, iso: string): boolean {
-  if (licenseYearOf(iso) !== deer2026.licenseYear) return false;
-  return seasonsForPlace(deer2026, place).some(
-    (s) => (s.rule.type === 'firearms' || s.rule.type === 'antlerless_firearms') && s.take !== 'check' && inRanges(iso, s.dates, deer2026.licenseYear),
+  const deer = regsFor('deer', iso);
+  if (!deer) return false;
+  return seasonsForPlace(deer, place).some(
+    (s) => (s.rule.type === 'firearms' || s.rule.type === 'antlerless_firearms') && s.take !== 'check' && inRanges(iso, s.dates, deer.licenseYear),
   );
 }
 
