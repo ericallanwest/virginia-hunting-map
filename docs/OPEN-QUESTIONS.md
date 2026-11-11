@@ -180,3 +180,13 @@ notes in `src/regs/local-areas.json`, shown in the location panel). Effects are 
     Stafford "public property" = county and school-board land.
 40. **Fairfax Appendix J** restricted/exempt areas come from county GIS; the countywide .224-caliber rule
     is applied everywhere except the exempted parcels.
+
+## Archived license years
+
+41. **2025–26 and 2024–25** are encoded from DWR's digests (2025–26: eRegulations PDF; 2024–25: DWR PDF;
+    URLs and sha256 in each file header). Differences from 2026–27 and that year's ambiguities are in
+    `docs/changes-2025.md` and `docs/changes-2024.md`. Most notable: the 2024–25 digest gives the
+    Nov 16 – Dec 14 deer group's either-sex days as "Nov 16 through Dec 4 (full season)" — probably a
+    misprint for Dec 14; encoded as printed (Dec 5–14 antlered only) with a note.
+42. **Local ordinances in archived years** use the current (2026) ordinance data; the archived notice
+    says so.

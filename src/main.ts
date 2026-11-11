@@ -81,7 +81,7 @@ function refresh() {
     // A past license year that is loaded (once more than one year is in the app).
     banner.hidden = false;
     banner.className = 'banner archived';
-    banner.innerHTML = `<strong>Archived: ${yearLabel(ly)} regulations.</strong> You’re viewing a past license year (Jul 1, ${ly} – Jun 30, ${ly + 1}).`;
+    banner.innerHTML = `<strong>Archived: ${yearLabel(ly)} regulations.</strong> You’re viewing a past license year (Jul 1, ${ly} – Jun 30, ${ly + 1}). Local ordinances shown are the current ones.`;
   } else banner.hidden = true;
 
   ($('#date') as HTMLInputElement).value = state.iso;
