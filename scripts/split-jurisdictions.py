@@ -9,6 +9,7 @@ Lines (see PARTITIONS at the bottom):
   Rockingham County - Routes 613 and 731 (as used in the deer regulations).
   I-81              - Montgomery, Pulaski, Roanoke, Washington, Smyth (bear hound rules).
   State Rt. 16      - Grayson, Smyth. New River - Carroll, Grayson.
+  Campbell, Pittsylvania - the Norfolk Southern main line (Lynchburg-Danville).
   Wythe             - the area bounded by Rt. 21, I-81, the New River and Cripple Creek,
                       plus land southeast of the New River.
   City of Suffolk   - the "Dismal Swamp Line", 4VAC15-20-40: State Highway 10
@@ -190,6 +191,11 @@ def to_boundary(line, poly, reach=0.03):
     return LineString(c)
 
 
+def by_line_lazy(line_fn, refs):
+    """by_line, building the line only when the partition is used."""
+    return lambda poly: by_line(line_fn(), refs)(poly)
+
+
 def by_faces(lines, token, refs, other):
     """Partition by several lines: faces containing a reference point get `token`, the rest `other`."""
     lines = [l.simplify(0.0002) for l in lines]
@@ -215,6 +221,71 @@ def by_side_ew(line_fn):
 
 
 I81 = lambda fips: route(fips, "I- 81")
+
+RAILS = "sources/geo/rails/tl_2023_us_rails"
+_ns_main = None
+
+
+def ns_mainline():
+    """Norfolk Southern main line Lynchburg -> Altavista -> Chatham -> Danville.
+
+    Campbell and Pittsylvania have several NS lines; the one "west of the Norfolk
+    Southern Railroad" refers to is the north-south main line. It is found as the
+    shortest path through the NS track network between Lynchburg and Danville.
+    """
+    global _ns_main
+    if _ns_main:
+        return _ns_main
+    import heapq
+
+    bbox = (-79.8, 36.5, -78.8, 37.5)
+    r = shapefile.Reader(RAILS)
+    graph = {}
+    key = lambda c: (round(c[0], 5), round(c[1], 5))
+    # Prefer Norfolk Southern track; unnamed track segments may fill gaps at a high cost.
+    cost = {"Norfolk Southern Rlwy": 1, "Southern Rlwy": 1, "Railway": 5, "": 5}
+    ends = []
+    for s, rec in zip(r.shapes(), r.records()):
+        if rec["FULLNAME"] not in cost:
+            continue
+        x0, y0, x1, y1 = s.bbox
+        if x1 < bbox[0] or x0 > bbox[2] or y1 < bbox[1] or y0 > bbox[3]:
+            continue
+        pts = [key(c) for c in s.points]
+        for a, b in zip(pts, pts[1:]):
+            d = ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5 * cost[rec["FULLNAME"]]
+            graph.setdefault(a, []).append((b, d))
+            graph.setdefault(b, []).append((a, d))
+        ends += [pts[0], pts[-1]]
+    # Segments often stop a few meters short of each other: join ends within ~200 m.
+    for i, a in enumerate(ends):
+        for b in ends[i + 1 :]:
+            d = ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5
+            if 0 < d < 0.002:
+                graph[a].append((b, d * 3))
+                graph[b].append((a, d * 3))
+    nodes = list(graph)
+    near = lambda p: min(nodes, key=lambda n: (n[0] - p[0]) ** 2 + (n[1] - p[1]) ** 2)
+    start, goal = near((-79.17, 37.39)), near((-79.40, 36.59))  # Lynchburg, Danville
+    dist, prev, heap = {start: 0}, {}, [(0, start)]
+    while heap:
+        d, n = heapq.heappop(heap)
+        if n == goal:
+            break
+        if d > dist[n]:
+            continue
+        for m, w in graph[n]:
+            if d + w < dist.get(m, 1e9):
+                dist[m], prev[m] = d + w, n
+                heapq.heappush(heap, (d + w, m))
+    if goal not in prev:
+        sys.exit("no Norfolk Southern path from Lynchburg to Danville")
+    path, n = [goal], goal
+    while n != start:
+        n = prev[n]
+        path.append(n)
+    _ns_main = LineString(path[::-1])
+    return _ns_main
 
 
 def cripple_to_new_river():
@@ -244,6 +315,9 @@ PARTITIONS = {
         by_line(river("51077", "New Riv"), {"enr": (-80.98, 36.62), "wnr": (-81.20, 36.70)}),
         by_line(route("51077", "State Rte 16"), {"e16": (-81.20, 36.68), "w16": (-81.55, 36.65)}),
     ],
+    # Norfolk Southern main line (bear hounds, hound training; deer dogs and EAB nearby)
+    "county:Campbell": [by_line_lazy(ns_mainline, {"west": (-79.33, 37.20), "east": (-79.00, 37.15)})],
+    "county:Pittsylvania": [by_line_lazy(ns_mainline, {"west": (-79.60, 36.85), "east": (-79.20, 36.80)})],
     # New River
     "county:Carroll": [by_line(river("51035", "New Riv"), {"enr": (-80.75, 36.75), "wnr": (-80.975, 36.79)})],
     # Wythe: "southeast of the New River or that part bounded by Rt. 21 on the west, I-81 on the

@@ -61,8 +61,8 @@ export function regionOf(county: string | undefined, city: string | undefined): 
 
 /**
  * Jurisdictions the regulations divide along a road or line. `mapped` ones are
- * split in the map data (scripts/split-jurisdictions.py); for the rest the UI
- * asks the user which side they are on (these only affect EAB and dog rules).
+ * split in the map data (scripts/split-jurisdictions.py); for the rest (Amherst
+ * Rt. 29, Nelson Rt. 151) the UI asks which side the user is on.
  */
 export const SPLITS: Split[] = [
   {
@@ -84,13 +84,15 @@ export const SPLITS: Split[] = [
   },
   {
     jurisdiction: 'county:Campbell',
-    line: 'the Norfolk Southern Railroad (dog rules only)',
-    parts: { west: 'West of the railroad', east: 'East of the railroad' },
+    line: 'the Norfolk Southern Railroad',
+    parts: { west: 'West of the Norfolk Southern Railroad', east: 'East of the Norfolk Southern Railroad' },
+    mapped: true,
   },
   {
     jurisdiction: 'county:Pittsylvania',
-    line: 'the Norfolk Southern Railroad (dog rules only)',
-    parts: { west: 'West of the railroad', east: 'East of the railroad' },
+    line: 'the Norfolk Southern Railroad',
+    parts: { west: 'West of the Norfolk Southern Railroad', east: 'East of the Norfolk Southern Railroad' },
+    mapped: true,
   },
   {
     jurisdiction: 'county:Nelson',

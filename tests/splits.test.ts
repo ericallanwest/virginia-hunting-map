@@ -66,6 +66,13 @@ describe('split-line geometry', () => {
     expect(at(-81.12, 36.80)).toBe('county:Wythe/other'); // south of Cripple Creek, east of Rt. 21
   });
 
+  it('the Norfolk Southern main line divides Campbell and Pittsylvania', () => {
+    expect(at(-79.33, 37.2)).toBe('county:Campbell/west');
+    expect(at(-79.0, 37.15)).toBe('county:Campbell/east'); // Rustburg area
+    expect(at(-79.6, 36.85)).toBe('county:Pittsylvania/west');
+    expect(at(-79.2, 36.8)).toBe('county:Pittsylvania/east');
+  });
+
   it('only the mapped split jurisdictions have sides', () => {
     const ids = new Set(jurisdictions.filter((j: any) => j.properties.subArea).map((j: any) => j.properties.id));
     expect([...ids].sort()).toEqual(

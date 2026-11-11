@@ -48,9 +48,12 @@ encoded with the literal reading noted. Resolve these (ideally with DWR), then a
 11. **Split lines.** Rockingham (Rts. 613/731) and Suffolk (Dismal Swamp line, 4VAC15-20-40) are
     split in the map data from Census TIGER roads (`scripts/split-jurisdictions.py`). In Suffolk, the
     stretch "through the corporate limits of the City of Suffolk" between Route 10 and White Marsh
-    Road is approximated by a straight segment downtown. Amherst (Rt. 29), Campbell/Pittsylvania
-    (Norfolk Southern RR), and Nelson (Rt. 151) only affect Earn-a-Buck/dog rules, so the user still
-    picks the side for those.
+    Road is approximated by a straight segment downtown. Campbell and Pittsylvania are split along the
+    Norfolk Southern main line (Lynchburg–Altavista–Chatham–Danville), traced from Census TIGER rails
+    as the shortest path through NS track between Lynchburg and Danville. Other NS lines in those
+    counties run east–west, so "west of the Norfolk Southern Railroad" is read as the main line.
+    Amherst (Rt. 29) and Nelson (Rt. 151) only affect Earn-a-Buck/dog rules, so the user still picks
+    the side for those.
 
 12. **NPS land.** Shown closed. Assateague Island National Seashore and Appalachian Trail corridor
     lands are excluded from the layer because hunting rules there vary.

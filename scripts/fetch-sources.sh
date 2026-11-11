@@ -31,6 +31,10 @@ for f in 51165 51800 51035 51077 51121 51155 51161 51173 51191 51197; do
   (cd water && unzip -oq "tl_2023_${f}_linearwater.zip")
 done
 
+# --- Census TIGER rails (Norfolk Southern main line through Campbell and Pittsylvania) ---
+curl -sSL -o rails/tl_2023_us_rails.zip "https://www2.census.gov/geo/tiger/TIGER2023/RAILS/tl_2023_us_rails.zip" --create-dirs
+(cd rails && unzip -oq tl_2023_us_rails.zip)
+
 # --- DWR Wildlife Management Area boundaries ---
 curl -sS "https://services.dwr.virginia.gov/arcgis/rest/services/HUB_Layers/DWR_WMA_Boundaries/FeatureServer/0/query?where=1%3D1&outFields=WMA_NAME,Tract_Name,Property_Type,Owner,Property_Class,ACRES&outSR=4326&f=geojson" -o wma.geojson
 

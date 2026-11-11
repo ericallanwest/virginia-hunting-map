@@ -78,7 +78,6 @@ describe('bear scenarios (2026-27)', () => {
     expect(open(bear, { county: 'Fairfax' }, '2026-12-01')).toEqual(['firearms:any:dogs-no']);
     expect(open(bear, { county: 'Roanoke', subArea: 's81' }, '2026-12-01')).toEqual(['firearms:any:dogs-no']);
     expect(open(bear, { county: 'Roanoke', subArea: 'n81' }, '2026-12-01')).toEqual(['firearms:any:dogs-yes']);
-    expect(open(bear, { county: 'Campbell' }, '2026-12-01')).toEqual(['firearms:any:dogs-varies']);
     expect(open(bear, { county: 'Campbell', subArea: 'west' }, '2026-12-01')).toEqual(['firearms:any:dogs-no']);
     expect(open(bear, { county: 'Campbell', subArea: 'east' }, '2026-12-01')).toEqual(['firearms:any:dogs-yes']);
   });

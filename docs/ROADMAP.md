@@ -20,7 +20,8 @@
 1. **Verify the encoding against the regulations.** Walk through docs/OPEN-QUESTIONS.md, ideally
    with DWR. Add a scenario test for each answer.
 2. ~~Real geometry for split lines~~ — done for Rockingham and Suffolk (the two that change season
-   dates). Amherst, Campbell, Pittsylvania, and Nelson splits (EAB/dog rules only) still ask the user.
+   dates), plus I-81, Rt. 16, the New River, Wythe, and the Norfolk Southern line in Campbell and
+   Pittsylvania. Amherst (Rt. 29) and Nelson (Rt. 151) still ask the user.
 3. **Missing land types:** military installations (DoD rules, PW exceptions), National Wildlife
    Refuges, Virginia National Guard lands, city-owned public hunting lands, DCR state park hunt
    lists (which parks open which dates).
