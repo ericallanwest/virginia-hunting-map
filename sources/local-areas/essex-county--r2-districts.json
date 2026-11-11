@@ -1,0 +1,10 @@
+{
+ "id": "essex-county--r2-districts",
+ "jurisdiction": "county:Essex",
+ "section": "Sec. 22-5",
+ "ordinance_area_text": "It shall be unlawful to shoot or discharge any firearm, compound bow, cross-bow, air-operated weapon or gas-operated weapon in the following high density areas of the county, except for the protection of one's life or property: (1) R-2 Limited Residential.",
+ "method": "Downloaded with ArcGIS REST query (outSR=4326, paged); selected features by attribute; union in a local equal-distance plane; clipped to the Census 2023 cartographic-boundary (cb_2023_us_county_500k) polygon for the jurisdiction's FIPS (sources/geo/cb_2023_us_county_500k) rather than the heavily simplified public/data/jurisdictions.geojson outline, so land near the boundary is not cut off; simplified (Douglas-Peucker, preserve topology), snapped to 1e-5 deg, single MultiPolygon feature. Script: scratchpad scripts/proc.py. District polygons dissolved; parts < 50 m2 dropped; tolerance 0.0001 deg.",
+ "confidence": "medium",
+ "notes": "Result 7.1 km2 = 1.0% of the county. The ordinance (2012) says 'R-2 Limited Residential'; the current county zoning ordinance (adopted 10-11-2022) and the GIS layer name R-2 'Residential, Low Density'. I assumed this is the same R-2 district carried forward; I could not confirm a 'Limited Residential' label anywhere in current county material. Town of Tappahannock R2 is a different (town) district and was excluded. About 210 of the layer's ~1,970 R-2 acres fall outside the Census shoreline (riverfront lots extending into the Rappahannock) and were clipped off. The named subdivisions in the same section are a separate area (essex-county--named-subdivisions).",
+ "recovered": "Recovered 2026-11 from public/data/local-areas.geojson (the original source files were lost); geometry carries that layer's 30% simplification."
+}

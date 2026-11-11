@@ -1,0 +1,10 @@
+{
+ "id": "tazewell-county--county-parks",
+ "jurisdiction": "county:Tazewell",
+ "section": "Sec. 14-32",
+ "ordinance_area_text": "It is hereby declared to be unlawful for any person to do any of the acts set forth in this section within the limits of the facilities and lands located within any public park or parkway or lands used by the county for related purposes within the limits of the county; (1) To carry or discharge any firearms, firecrackers, rockets, torpedoes or fireworks of any kind without written consent of the administrator, with the exception of duly authorized law enforcement officials on official duty and with the exception of persons legally permitted to carry a firearm as a concealed weapon, pursuant to Code of Virginia, § 18.2-308 et seq. as amended, while in compliance with any laws or regulations appertaining to such permit.",
+ "method": "Tazewell County has no public parcel/park GIS (its viewer needs a login). Cavitt's Creek Park (Lake Witten) was built from VGIN statewide parcel geometry for tax maps 75-A-1A, 75-A-2A, 75-A-3, 75-A-3A, 75-A-4A (757 Recreation Dr) and 74-A-143A. Each was confirmed as 'TAZEWELL COUNTY (BD OF SUPERVISORS)' in the county's Vision (VGSI) assessment database. This was unioned with the DCR Conservation Lands 'Cavitts Creek Park' polygon (MAAGENCY Tazewell County), which adds the lake/northern section missing from VGIN.",
+ "confidence": "low",
+ "notes": "Only 1 area mapped. The ordinance also covers 'any public park or parkway or lands used by the county for related purposes', which may include other county recreation sites that could not be identified. A full owner search of VGSI was not possible (results paginate unreliably). The ordinance names the Tazewell County Fairgrounds, but the parcel at 515 Fairground Rd (94-A-52) is assessed to a private owner (Peery), so it was NOT mapped; it should be verified. Several Tazewell parks (e.g. Lotito Park) appear to be town parks. Treat this as incomplete.",
+ "recovered": "Recovered 2026-11 from public/data/local-areas.geojson (the original source files were lost); geometry carries that layer's 30% simplification."
+}

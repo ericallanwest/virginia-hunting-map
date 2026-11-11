@@ -1,0 +1,10 @@
+{
+ "id": "greensville-county--meherrin-dam",
+ "jurisdiction": "county:Greensville",
+ "section": "Sec. 20-4(a)",
+ "ordinance_area_text": "(a) It shall be unlawful for any person to hunt while on any portion of the Meherrin River which lies closer to the Emporia Hydroelectric Project Dam than four thousand eight hundred (4,800) feet, which is a point generally south of the terminus of Riverview Road. The property on which hunting is hereby prohibited constitutes impounded water of the Meherrin River and real property resulting from the geologic process of accretion which is commonly known as the Emporia Water Reservoir.",
+ "method": "Built from Census TIGER 2023 AREAWATER 'Meherrin River Reservoir' polygons (Greensville 51081 + Emporia 51595). Dam located at the downstream (east) end of the reservoir, about 36.69595 N, 77.55695 W. Took the reservoir water within a 4,800 ft (1,463 m) straight-line radius of that point and clipped it to the Census cb_2023 Greensville County boundary. Check: the Riverview Rd terminus is ~5,100 ft from that point, consistent with the ordinance's '4,800 ft ... generally south of the terminus of Riverview Road'.",
+ "confidence": "medium",
+ "notes": "1 feature (~82 ac in Greensville). Another ~18 ac within the radius lies inside the City of Emporia and is excluded from this county area. The dam point is inferred from TIGER water geometry, not a surveyed dam location (+/- ~50 m). Distance is measured straight-line; measuring along the river would shift the upstream cutoff slightly. 'Accreted' land around the reservoir cannot be delineated and is not included; TIGER shorelines are approximate.",
+ "recovered": "Recovered 2026-11 from public/data/local-areas.geojson (the original source files were lost); geometry carries that layer's 30% simplification."
+}

@@ -1,0 +1,10 @@
+{
+ "id": "amherst-county--county-parks",
+ "jurisdiction": "county:Amherst",
+ "section": "Sec. 12-26(B)(3),(C)",
+ "ordinance_area_text": "(3) Park visitors shall not hunt, trap, or pursue wildlife while within the park. ... (1) Only law enforcement officers engaged in professional duties may discharge in any park any pistol, revolver, shotgun, BB gun, air gun, slingshot, bow and arrow, dart device, or other weapon in which the propelling force is gunpowder, a spring, or air.",
+ "method": "Amherst County official GIS (MapInsights 'Amherst_WL_P' FeatureServer) layer 68 'County Owned Parcels'; selected the parcels whose assessor description (MDESC1) identifies a county park: Coolwell Rec Park (125 A 37), Riveredge/Riversedge Park (160A3 A 158), Thrashers Creek Park (49 A 29, 29A, 29B), Stonehouse Lake (50 A 1, 50 A 2), Mill Creek Lake/Park (51 A 12, 22A, 23, 23A, 36A, 36B), Seminole Park (155D A 44A, 101 High St). Monacan Park is county-run on land owned by Eagle Creek Reusens Hydro LLC (parcel 135 A 7, layer 30 'Parcels', legal 'MONACAN PARK'); included. Dissolved per park, simplified 0.0001 deg, 5-decimal coords.",
+ "confidence": "medium",
+ "notes": "7 parks. The county's own 'Parks' layer (53) has 7 unnamed, schematic ~35-acre blobs that do not line up with parcels (one sits on private 'Madison Heights Youth Baseball' land), so it was used only to identify parks, not for geometry. Not included: Buffalo River watershed-dam properties (48 A 11/11A/15/16), Graham Creek Reservoir (Service Authority), the county-owned Virginia Blue Ridge Railway Trail parcel (42 A 1) and Leets Spur bike trail parcel (161 A 150), and the old Seminole pool lot - none is clearly designated a county park. Sec. 12-26(C)(4) also bars shooting INTO a park from outside its boundary; this layer does not buffer for that. DCR lists only 'Stone House' for Amherst County.",
+ "recovered": "Recovered 2026-11 from public/data/local-areas.geojson (the original source files were lost); geometry carries that layer's 30% simplification."
+}

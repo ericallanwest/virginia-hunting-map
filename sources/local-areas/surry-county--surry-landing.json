@@ -1,0 +1,10 @@
+{
+ "id": "surry-county--surry-landing",
+ "jurisdiction": "county:Surry",
+ "section": "Sec. 20-99(a)",
+ "ordinance_area_text": "No person shall hunt with firearms or other weapons in the Surry Landing on the James subdivision, including future and developed lots, as recorded in the subdivision plat in Deed Book 120 Pages 785-793, and as amended by Plat Book 7, Page 267 in 2010 and as further amended by Plat Book 8, Page 23 in 2011.",
+ "method": "Queried the Surry County public parcel layer (CivQuest-hosted county GIS) around Surry Landing Drive. Every parcel with legal description \"LOT n SURRY LANDING (SUB.)\" carries tax-map PIN 14-3-*; their recorded plat references (PLAT-120-785, PLAT-7-267, PLAT-8-23, PLAT-11-55) match the plats cited in the ordinance. Selected all 10 parcels 14-3-1 ... 14-3-9 and 14-3-1A (lots 1-10), unioned with a 15 m closing to absorb the internal road, simplified 0.0001 deg, rounded to 5 decimals.",
+ "confidence": "high",
+ "notes": "All ten parcels whose legal description names Surry Landing are on one tax-map block (14-3) and cite the ordinance's plats. Lot 1 (14-3-1, ~89.5 ac, PLAT-8-23 of 2011) is a large residual tract that holds the \"future\" lots; it is included because the ordinance expressly covers future lots and the 2011 plat amendment. Parcel lines are from county GIS and may differ slightly from the recorded plat; shoreline edge follows the parcel polygons.",
+ "recovered": "Recovered 2026-11 from public/data/local-areas.geojson (the original source files were lost); geometry carries that layer's 30% simplification."
+}

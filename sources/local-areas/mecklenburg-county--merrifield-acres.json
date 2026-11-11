@@ -1,0 +1,10 @@
+{
+ "id": "mecklenburg-county--merrifield-acres",
+ "jurisdiction": "county:Mecklenburg",
+ "section": "Sec. 46-124",
+ "ordinance_area_text": "(a) It shall be unlawful for any person to discharge, hunt or attempt to hunt with any gun, or to hunt or attempt to hunt any game animal or game bird with a firearm, or other weapon except bows, in the Merrifield Acres Subdivision, including lands immediately adjacent to such subdivision which are owned and under the control of the U.S. Army Corps of Engineers. Hunting within the Merrifield Acres Subdivision using bows is not prohibited hereby.",
+ "method": "Subdivision: the \"Merifield Acres\" polygon (OBJECTID 1248, FIPS 51117, 1,205 ac) from the Southside Planning District Commission regional GIS subdivision layer, unioned with the 677 assessor tax parcels (Mecklenburg County parcel layer hosted by Southside PDC) whose interior point falls inside it (assessor subdivision code 287 \"ROANOKE POINT\"; ten legal descriptions say \"MERIFIELD\"). Adjacent USACE land: no USACE fee-boundary layer for Kerr Lake was found (PAD-US 4.1 fee layers have none here), so it is approximated as non-water land (TIGER 2023 area water) with no tax parcel within 120 m of the subdivision polygon, kept only where touching it. Simplified 0.0001 deg, rounded to 5 decimals.",
+ "confidence": "medium",
+ "notes": "Ordinance spells \"Merrifield\"; local data and street names use \"Merifield\". The subdivision feature is high confidence (regional GIS subdivision polygon agrees with assessor lots; only ~2.4 ha of lots stick out). The USACE feature is a low-confidence approximation: Corps land around Kerr Lake typically runs from the lot lines to the shoreline (largely already inside the PDC polygon, which follows the shoreline) and the actual Corps tract extent beyond 120 m is not mapped. Bow hunting is not prohibited by this section (firearms/other weapons only). The county outline used by the app is coarse; geometry was not clipped to it.",
+ "recovered": "Recovered 2026-11 from public/data/local-areas.geojson (the original source files were lost); geometry carries that layer's 30% simplification."
+}

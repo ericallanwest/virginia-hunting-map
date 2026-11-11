@@ -1,0 +1,10 @@
+{
+ "id": "albemarle-county--residential-districts",
+ "jurisdiction": "county:Albemarle",
+ "section": "Sec. 10-107",
+ "ordinance_area_text": "\"residential district\" shall mean any district described as Village Residential - VR, Residential R-1, Residential R-2, Residential R-4, Residential R-6, Residential R-10, Residential R-15, Neighborhood Model - NMD, Planned Unit Development - PUD or Planned Residential Development - PRD on the official zoning map of the county.",
+ "method": "Downloaded with ArcGIS REST query (outSR=4326, paged); selected features by attribute; union in a local equal-distance plane; clipped to the Census 2023 cartographic-boundary (cb_2023_us_county_500k) polygon for the jurisdiction's FIPS (sources/geo/cb_2023_us_county_500k) rather than the heavily simplified public/data/jurisdictions.geojson outline, so land near the boundary is not cut off; simplified (Douglas-Peucker, preserve topology), snapped to 1e-5 deg, single MultiPolygon feature. Script: scratchpad scripts/proc.py. Parcel-based zoning polygons dissolved; morphological closing of 12 m (buffer +12 m / -12 m) to fill street rights-of-way between zoned parcels inside a district; holes < 2000 m2 and parts < 200 m2 dropped; tolerance 0.0001 deg.",
+ "confidence": "high",
+ "notes": "Result 82.6 km2 = 4.4% of the county. Codes map one-to-one to the ordinance list. The layer is parcel-based, so public road rights-of-way are not zoned in the data; the 12 m closing fills most interior streets but wide highway ROW at district edges may show small gaps (discharge on/across roads is separately unlawful under state law). Town of Scottsville (own zoning) and Downtown Crozet District, Monticello Historic District and commercial/industrial districts are not on the ordinance's list and were excluded. The City of Charlottesville is a separate jurisdiction (hole in the county) and is not covered.",
+ "recovered": "Recovered 2026-11 from public/data/local-areas.geojson (the original source files were lost); geometry carries that layer's 30% simplification."
+}

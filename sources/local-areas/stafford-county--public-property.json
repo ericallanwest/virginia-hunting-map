@@ -1,0 +1,10 @@
+{
+ "id": "stafford-county--public-property",
+ "jurisdiction": "county:Stafford",
+ "section": "Sec. 26-10",
+ "ordinance_area_text": "It shall be unlawful to shoot or hunt on any public property including, but not limited to, schools, parks, pools, the courthouse and other county offices.",
+ "method": "Stafford County GIS parcel layer with owner names (gismapping.stafford.va.us WebApp/WebApp_Parcels/MapServer/0). Selected parcels whose Owner1 is the county or its school board; the exact SQL filter is in raw/stafford_owner_filter.txt (e.g. 'STAFFORD COUNTY VIRGINIA', 'COUNTY OF STAFFORD%', 'BOARD OF SUPERVISORS OF STAFFORD%', 'STAFFORD COUNTY SCHOOL BOARD%', 'COMMONWEALTH OF VIRGINIA & COUNTY OF%'). That is 759 parcels. Names come from the county's 2017 parks layer, school and facility points (WebApp_Misc); other parcels are grouped as 'County-owned property' or 'School Board property'. Dissolved by name.",
+ "confidence": "medium",
+ "notes": "61 features (759 parcels). 'Public property' is read as county and school-board land. NOT included: federal land (Quantico, NPS), state land (Widewater State Park, Crow's Nest NAP state-only parcels, VDOT), City of Fredericksburg riverfront tracts in Stafford, Stafford Regional Airport Authority land, and volunteer fire/rescue company land. These are arguably 'public property' too, but this county ordinance likely cannot govern state/federal land. Included: the ~1,790 ac Crow's Nest tract recorded as 'COMMONWEALTH OF VIRGINIA & COUNTY OF...' (co-owned), and the R-Board landfill co-owned with Fredericksburg. Also included: utility land (Abel/Smith Lake reservoirs, Lake Mooney), stormwater ponds and small open-space lots, plus 2 parcels the county co-owns with Fredericksburg. County land that is leased, or titled to unusual owner strings, may be missing.",
+ "recovered": "Recovered 2026-11 from public/data/local-areas.geojson (the original source files were lost); geometry carries that layer's 30% simplification."
+}

@@ -1,0 +1,10 @@
+{
+ "id": "henrico-county--res-ind-com-districts",
+ "jurisdiction": "county:Henrico",
+ "section": "Sec. 13-59 (firearms); Sec. 13-61 (bows)",
+ "ordinance_area_text": "upon, from or across any land located within the boundaries of any residential or industrial district as so classified and defined by chapter 24 or any commercial district.",
+ "method": "Downloaded with ArcGIS REST query (outSR=4326, paged); selected features by attribute; union in a local equal-distance plane; clipped to the Census 2023 cartographic-boundary (cb_2023_us_county_500k) polygon for the jurisdiction's FIPS (sources/geo/cb_2023_us_county_500k) rather than the heavily simplified public/data/jurisdictions.geojson outline, so land near the boundary is not cut off; simplified (Douglas-Peucker, preserve topology), snapped to 1e-5 deg, single MultiPolygon feature. Script: scratchpad scripts/proc.py. Zoning district polygons dissolved; morphological closing of 10 m; holes < 2000 m2 and parts < 200 m2 dropped; tolerance 0.0001 deg.",
+ "confidence": "medium",
+ "notes": "Result 311.9 km2 = 49.4% of the county (eastern Henrico/Varina is largely A-1, so it is less than 'most of the county'). Henrico's C-1 is the Conservation district, not commercial, so it is excluded. Judgment calls: office districts (O-1..O-3, O/S) were treated as commercial; mixed-use/planned districts (UMU, SMX, CMU) contain residential and commercial uses and were included. Interstate/major-road ROW appears unzoned or A-1 in the data and is left out (discharge on/across roads is prohibited anyway by the same section). Not represented: the section's separate bans on public land/public places/streets; the deer exemption (13-59(b): >=5 ac zoned agricultural; 13-61(d): >=2 ac agricultural for bows) only applies in agricultural zoning, which is outside this polygon. Conditional suffix 'C' and labels with '*' are the same base districts.",
+ "recovered": "Recovered 2026-11 from public/data/local-areas.geojson (the original source files were lost); geometry carries that layer's 30% simplification."
+}

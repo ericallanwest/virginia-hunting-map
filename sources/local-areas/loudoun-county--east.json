@@ -1,0 +1,10 @@
+{
+ "id": "loudoun-county--east",
+ "jurisdiction": "county:Loudoun",
+ "section": "684.03(a)(1)",
+ "ordinance_area_text": "The area within a line following State Route 620 (Braddock Road) from the boundary with Fairfax County west to its intersection with State Route 659, then along State Route 659 north to its terminus at State Route 7, then following State Route 7 west to the corporate limits of the Town of Leesburg, then following the corporate limit line of the Town of Leesburg north and west to the Potomac River, then east along the Potomac River boundary with Maryland to the Fairfax County line, then southwest along the Fairfax County line to its intersection with State Route 620.",
+ "method": "official layer",
+ "confidence": "high",
+ "notes": "Official county polygon; its west edge follows Rte 659, south edge Braddock Rd (Rte 620), north edge Rte 7 to the Leesburg town limits then the Potomac, matching TIGER 2023 lines within a few tens of meters. Clipped to the app's generalized county outline (lost 0.4% of the official polygon area, mostly along the Potomac/Fairfax edges). The layer dates from 2019; the Leesburg corporate-limit segment reflects the town limits at that time. Inside this area firearms discharge is prohibited except the hunting uses in 684.03(a)(2) (deer with handguns, shotguns or muzzleloaders using a single projectile; other hunting with .22 rimfire or smaller rifles, handguns, shotguns, muzzleloaders). Note a separate county service FIREARMS_PROHIBITED_POLY (services1.arcgis.com/MxjRokvPm7bjslyR, edited 2026) models the remaining lawful-discharge area county-wide net of 100-yd building/park/school and 50-yd road buffers; it was not used because it mixes in the buffer rules, but its eastern edge is consistent with this polygon.",
+ "recovered": "Recovered 2026-11 from public/data/local-areas.geojson (the original source files were lost); geometry carries that layer's 30% simplification."
+}

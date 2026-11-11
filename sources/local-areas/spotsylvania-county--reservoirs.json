@@ -1,0 +1,10 @@
+{
+ "id": "spotsylvania-county--reservoirs",
+ "jurisdiction": "county:Spotsylvania",
+ "section": "Sec. 22-241",
+ "ordinance_area_text": "NI RIVER AND HUNTING RUN RESERVOIRS - Hunting. Hunting is prohibited on the premises.",
+ "method": "Reservoir water from the Spotsylvania Waterbodies layer (NAME 'Ni River Reservoir', 'Hunting Run Reservoir'), unioned with county-owned parcels (County_Parcels_WFL1, FULLNAME 'Spotsylvania County%' or 'County of Spotsylvania%', school board excluded) that touch or lie within ~10 m of the water, or whose legal description names the reservoir. Ni River: parcel 33-A-3 ('Ni River Treatment Plant', ~519 ac). Hunting Run: 4-A-51 ('Hunting Run Reservoir', ~535 ac) plus 20 smaller buffer parcels (Milldale, Dulin, Bishop's Manor, Groves, Harrison/Hargrove, etc.). Manually excluded adjacent but separate parks: Hilldrup Park (20-A-18B), Fortunes Landing park parcel, and a Rt 610 lot.",
+ "confidence": "medium",
+ "notes": "2 features. 'Premises' is read as the impoundment plus surrounding county-owned reservoir land. Some small buffer lots may be general county property rather than reservoir premises. The City of Fredericksburg's Rappahannock River tracts near Hunting Run, and the Motts Run Reservoir (city/county co-owned), are not included.",
+ "recovered": "Recovered 2026-11 from public/data/local-areas.geojson (the original source files were lost); geometry carries that layer's 30% simplification."
+}

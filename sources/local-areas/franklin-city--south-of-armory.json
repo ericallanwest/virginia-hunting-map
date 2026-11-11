@@ -1,0 +1,10 @@
+{
+ "id": "franklin-city--south-of-armory",
+ "jurisdiction": "city:Franklin",
+ "section": "§ 31-4(a)(5)",
+ "ordinance_area_text": "that portion of the City south of Armory Drive and Second Avenue",
+ "method": "constructed from TIGER",
+ "confidence": "medium",
+ "notes": "Dividing line = Armory Dr from its west end (-76.9578,36.6663) east to W 2nd Ave, then W/E 2nd Ave northeast to its end near the Blackwater River (-76.9185,36.6806); both ends extended straight along the road bearing to the city outline (gaps of only ~40-70 m in the app's outline). Area kept = the part of the city south(-east) of that line, including downtown south of 2nd Ave. Firearm discharge is prohibited city-wide except listed exceptions; in this south area hunting is limited to deer on two of three December days (third Tuesday + following Wed/Thu, 8:30-13:00) or still-hunting deer with written landowner permits (max 6/day, access via private gate road off South St or Amber St); north of the line legal hunting is allowed with landowner permission (shotgun, pistol or <=.22 rifle, 150 yd from buildings/school/park lines). Doubts: the app's city outline is generalized (Census 1:500k), so edges are approximate; land west of Armory Dr's western terminus is assigned by straight extension of the road.",
+ "recovered": "Recovered 2026-11 from public/data/local-areas.geojson (the original source files were lost); geometry carries that layer's 30% simplification."
+}

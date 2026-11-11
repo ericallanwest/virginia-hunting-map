@@ -1,0 +1,10 @@
+{
+ "id": "middlesex-county--piankatank-shores",
+ "jurisdiction": "county:Middlesex",
+ "section": "Sec. 22-51",
+ "ordinance_area_text": "It shall be unlawful to shoot or discharge any firearm in the following described area of the county: Piankatank Shores Subdivision. All those certain lots or parcels of land lying along each side and at the end of State Route 690, shown on Tax Map 37A, and recorded within the deed books of the circuit court clerk's office of the county, at the following pages: Section A-Book 80, page 294; Section B-Book 81, page 290; Section C-Book 81, page 301; Section D-Book 84, page 83; Section E-Book 85, page 442; Section G-Book 86, page 166; Section H-Book 86, page 171.",
+ "method": "Downloaded all Middlesex County tax parcels (county ArcGIS Online layer taxparcels_cama). Selected every parcel whose TaxMapNo begins with 37A (the tax map named in the ordinance; legal descriptions read \"P SHORES LOT n SEC A..H\"), plus parcel 37-42C described as \"PIANKATANK SHORES LOTS\". Unioned, 25 m morphological closing to absorb internal roads, holes < 2 ha filled, clipped to county outline, simplified 0.0001 deg, rounded to 5 decimals.",
+ "confidence": "high",
+ "notes": "643 parcels. Every section named in the ordinance (A,B,C,D,E,G,H) is found in the assessor legal descriptions on Tax Map 37A blocks 1-8. Parcel-derived outline; road rights-of-way between lots are approximated by the closing step. The adjacent Piankatank Golf & Country Club lots (map 37 block 15) are NOT included.",
+ "recovered": "Recovered 2026-11 from public/data/local-areas.geojson (the original source files were lost); geometry carries that layer's 30% simplification."
+}

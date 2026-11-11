@@ -1,0 +1,10 @@
+{
+ "id": "norfolk-city--cemeteries",
+ "jurisdiction": "city:Norfolk",
+ "section": "Sec. 12-34",
+ "ordinance_area_text": "No person shall fish or hunt or shoot within the grounds of the cemeteries or to discharge any firearms or fireworks on or over the same.",
+ "method": "City of Norfolk OpenData RPOS FeatureServer/1 (Parks), features with PARK_TYPE='CEM': the 8 city-run cemeteries (Calvary, Cedar Grove, Elmwood, Forest Lawn, Hebrew, Magnolia, Riverside, West Point).",
+ "confidence": "high",
+ "notes": "8 cemeteries. These match the 8 cemeteries of Norfolk's Bureau of Cemeteries. Private and church cemeteries are excluded; Chapter 12 governs city cemeteries.",
+ "recovered": "Recovered 2026-11 from public/data/local-areas.geojson (the original source files were lost); geometry carries that layer's 30% simplification."
+}

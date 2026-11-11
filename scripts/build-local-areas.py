@@ -1,6 +1,6 @@
 """Combine mapped local-ordinance areas into one layer + metadata.
 
-Inputs: sources/geo/local-areas/<id>.geojson and <id>.json (manifest with the
+Inputs: sources/local-areas/<id>.geojson and <id>.json (committed; manifest with the
 ordinance wording, method, sources, confidence, and notes), produced by reading
 each locality's ordinance and its county/city GIS (see the manifests).
 
@@ -22,7 +22,7 @@ from shapely.geometry import mapping, shape
 from shapely.ops import unary_union
 
 ROOT = Path(__file__).resolve().parent.parent
-SRC = ROOT / "sources/geo/local-areas"
+SRC = ROOT / "sources/local-areas"
 OUT_GEO = ROOT / "sources/geo/_local_areas.geojson"
 OUT_META = ROOT / "src/regs/local-areas.json"
 

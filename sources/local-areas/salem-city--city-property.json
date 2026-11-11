@@ -1,0 +1,10 @@
+{
+ "id": "salem-city--city-property",
+ "jurisdiction": "city:Salem",
+ "section": "Sec. 14-4(15)",
+ "ordinance_area_text": "15. No person shall hunt on city owned or leased property. Law enforcement agencies are exempt from this section while in the performance of their work-related duties.",
+ "method": "City of Salem tax parcels (SalemVA_GIS TaxParcels FeatureServer/5). Selected owner IN ('CITY OF SALEM','CITY SCHOOL BOARD OF SALEM VA','ROANOKE COUNTY & CITY OF SALEM'), 210 parcels. Names come from the regional Park Site Areas layer where a parcel is at least 30% covered by a named Salem park; others are grouped as 'City of Salem property' or 'City School Board property'. Dissolved by name.",
+ "confidence": "medium",
+ "notes": "14 features. Leased property cannot be identified from assessor data and is NOT included. City-owned land outside the city limits is not covered by the parcel layer. School Board parcels are included as city property (an interpretation). Note that Sec. 14-4 is part of the urban archery rules, and Sec. 58-141 already bans firearm discharge city-wide, so hunting in Salem is archery-only anyway. Item 10 of the same section also bars bow discharge within 100 ft of public land; that buffer is not modeled.",
+ "recovered": "Recovered 2026-11 from public/data/local-areas.geojson (the original source files were lost); geometry carries that layer's 30% simplification."
+}

@@ -1,0 +1,10 @@
+{
+ "id": "petersburg-city--agricultural-zoning",
+ "jurisdiction": "city:Petersburg",
+ "section": "Sec. 74-208 / 74-209",
+ "ordinance_area_text": "It shall be lawful to trap and hunt, with shotgun using shotgun shells, wildlife, as defined in Code of Virginia, tit. 29.1, except freshwater fish, in those areas of the city zoned agricultural; except that it shall not be lawful to hunt or attempt to hunt in such areas on or within 100 yards of any public highway or public street.",
+ "method": "Downloaded with ArcGIS REST query (outSR=4326, paged); selected features by attribute; union in a local equal-distance plane; clipped to the Census 2023 cartographic-boundary (cb_2023_us_county_500k) polygon for the jurisdiction's FIPS (sources/geo/cb_2023_us_county_500k) rather than the heavily simplified public/data/jurisdictions.geojson outline, so land near the boundary is not cut off; simplified (Douglas-Peucker, preserve topology), snapped to 1e-5 deg, single MultiPolygon feature. Script: scratchpad scripts/proc.py. District polygons dissolved; parts < 100 m2 dropped, holes < 1000 m2 filled; tolerance 0.00005 deg.",
+ "confidence": "medium",
+ "notes": "This is the area where shotgun hunting is ALLOWED (everywhere else in the city discharge is prohibited by 74-208). Result 9.6 km2 = 16% of the city. The city's sources disagree: assessor parcels coded A cover 5.6 km2 (95% within this output); the draft-map '86 Base' layer 10.8 km2; a 2023 UVA copy 6.6 km2. The official viewer layer used here is mostly a superset of the assessor parcels, so some edges may be over-generous for an 'allowed' area; hunters should confirm a parcel's zoning with Petersburg Planning. About 3 km2 of this polygon lies inside Petersburg National Battlefield (NPS), where hunting is not allowed regardless of zoning. The 100-yard setback from public highways/streets in 74-209 is NOT applied to this polygon and must be applied separately. Shotgun with shotgun shells only.",
+ "recovered": "Recovered 2026-11 from public/data/local-areas.geojson (the original source files were lost); geometry carries that layer's 30% simplification."
+}

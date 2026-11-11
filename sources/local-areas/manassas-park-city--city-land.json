@@ -1,0 +1,10 @@
+{
+ "id": "manassas-park-city--city-land",
+ "jurisdiction": "city:Manassas Park",
+ "section": "Sec. 17-39.1",
+ "ordinance_area_text": "(a) The city council hereby declares that all land owned by the city, and all land under option to purchase by the city, located within the city and Prince William County, Virginia (specifically the Signal Hill Tract, the Bull Run Tract, the Bobby Tract, the Conner Tract and all other unnamed land owned by the city) shall be posted to all hunting of birds and mammals (game and nongame) and it shall be unlawful for any person to carry or have in his possession any weapons legal in Virginia for hunting purposes on such land.",
+ "method": "City of Manassas Park parcel layer (Parcel_PublicView FeatureServer/0). Selected OWNERS_NAME_1 IN ('CITY OF MANASSAS PARK','CITY OF MANASSAS PARK, VIRGINIA','CITY OF MANASSSAS PARK'), 79 records. Plus Prince William County parcels (CountyMapper/LandRecords/MapServer/4) with CAMA_OWNER_CUR = 'CITY OF MANASSAS PARK' (1 parcel, ~1 ac). Signal Hill Park is named where parcels overlap the DCR Signal Hill Park polygon or have a Signal View Dr address.",
+ "confidence": "medium",
+ "notes": "3 features (~490 ac). Only ~1 ac of city-owned land was found in Prince William County. The named Bull Run, Bobby and Conner tracts appear to be inside the city now (Conner Dr parcels; the 270 ac parcel at 9701 Manassas Dr) or were sold. Land 'under option to purchase' cannot be mapped. School Board parcels are excluded (not city-titled). City-wide, Sec. 26-3 already bans firearm discharge.",
+ "recovered": "Recovered 2026-11 from public/data/local-areas.geojson (the original source files were lost); geometry carries that layer's 30% simplification."
+}

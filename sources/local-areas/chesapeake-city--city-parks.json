@@ -1,0 +1,10 @@
+{
+ "id": "chesapeake-city--city-parks",
+ "jurisdiction": "city:Chesapeake",
+ "section": "Sec. 50-14",
+ "ordinance_area_text": "No person shall hunt, trap or pursue wildlife at any time. No person shall use in any way firearms of any description, or air rifles, spring-guns, bow and arrows, slings or any other form of weapons potentially inimical to wildlife and dangerous to human safety, or any instrument that can be loaded with and fire blank cartridges, or any kind of trapping device. Shooting into park areas from beyond park boundaries is forbidden.",
+ "method": "City of Chesapeake OpenData MapServer layer 16 'Parks' (92 polygons), minus the Great Dismal Swamp National Wildlife Refuge. Ownership was checked against parcels with owner 'CITY OF CHESAPEAKE%' (QuickSearch/MapServer/0; filter in raw/chesapeake_owner_filter.txt). Added 2 city-owned DCR 'Local Park' polygons that are absent from the city layer (River Crest Community Center, a Western Branch Trail segment). Dissolved by name.",
+ "confidence": "medium",
+ "notes": "92 features. About 80 of the 91 city-layer parks are at least 90% on city-owned parcels. Exceptions are kept but flagged: Great Bridge Lock Park, Battlefield Park, Battlefield Park South and Deep Creek Lock Park are mostly US Army Corps of Engineers land operated as city parks (they carry a 'note' property). Crestwood Park/Crestwood Middle Fields are School Board land. The Dismal Swamp Canal Trail and the US 17 boat ramp sit on former highway right-of-way with no parcel. The DWR note says the ordinance is for city-owned park property, so the Corps-owned parks are an interpretation. Not included: city 'Open Space Holding' conservation lands and the city-owned 'Gees Group Property' (~630 ac, DCR calls it a Local Park, but the city parks layer does not list it). Separately, city-wide discharge limits in Sec. 46-42 apply.",
+ "recovered": "Recovered 2026-11 from public/data/local-areas.geojson (the original source files were lost); geometry carries that layer's 30% simplification."
+}

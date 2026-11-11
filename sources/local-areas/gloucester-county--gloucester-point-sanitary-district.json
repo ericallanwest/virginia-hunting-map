@@ -1,0 +1,10 @@
+{
+ "id": "gloucester-county--gloucester-point-sanitary-district",
+ "jurisdiction": "county:Gloucester",
+ "section": "Gloucester County Code §13-15",
+ "ordinance_area_text": "It shall be unlawful for any person to fire or discharge any pistol, rifle, shotgun, or any other firearms within the Gloucester Point sanitary district, including any and all weapons which propel a projectile by pneumatic means, as pellet guns or B-B guns, unless said firearm is being fired or discharged while a person is protecting life or property.",
+ "method": "Gloucester Point Sanitary District polygon taken from Gloucester County GIS \"Special Tax Districts\" layer (feature SPTXDTDSCRP = 'Gloucester Point Sanitary District'), queried with outSR=4326&f=geojson; clipped to the app county outline, simplified 0.0001°, rounded to 5 decimals.",
+ "confidence": "medium",
+ "notes": "Area ≈ 686 acres, 0.43% of the county. The polygon is published by county GIS staff but only inside a 2020 sanitary-district analysis web map (no standalone authoritative layer was found; the county GIS server maps.gloucesterva.info was unreachable). It could not be checked against the 1967 plat (Plat Book 4 p.35) and 1973 enlargement cited in the ordinance's editor's note. Shape matches the Gloucester Point peninsula south of the Hayes area, bounded by the York River and Sarah Creek. ~4 acres along the southern shore fall outside the app's generalized county outline and were clipped.",
+ "recovered": "Recovered 2026-11 from public/data/local-areas.geojson (the original source files were lost); geometry carries that layer's 30% simplification."
+}

@@ -1,0 +1,10 @@
+{
+ "id": "cumberland-county--rifle-area",
+ "jurisdiction": "county:Cumberland",
+ "section": "Sec. 46-111",
+ "ordinance_area_text": "in the area of the county bordered to the north by the James River, to the west by Route 602 from the Willis River, and to the south by Route 45 and Route 684 to the county line",
+ "method": "constructed from TIGER",
+ "confidence": "medium",
+ "notes": "Interpreted as the small Cartersville-area wedge in the NE corner: Route 602 from its crossing of the Willis River (-78.1136,37.6854) south to Route 45 (-78.1188,37.6603); Route 45 east to Route 684 (-78.0998,37.6580); Route 684 southeast to the Powhatan County line (-78.0841,37.6472); county line north to the James; the James River upstream (west) to the mouth of the Willis River, and the Willis River briefly back up to the Route 602 crossing. This is the only reading in which all named features close a polygon. Alternative reading not mapped: the lobe east of the northern part of Route 602 (north of the Willis River, up to the James) - 602 does not reach the James there, so it cannot close on its own. The app's county outline is generalized (Census 1:500k) and cuts inside the true James River bank, so a thin strip of real land along the river is missing. The ordinance's other area - all public lands in the county - is not part of this polygon. Rule: no deer hunting in the regular season with rifles .23 cal or larger unless from a tree stand at least 10 ft high.",
+ "recovered": "Recovered 2026-11 from public/data/local-areas.geojson (the original source files were lost); geometry carries that layer's 30% simplification."
+}
