@@ -4,3 +4,4 @@ sources/geo/
 !sources/geo/README.md
 .env.local
 .env.*.local
+__pycache__/
