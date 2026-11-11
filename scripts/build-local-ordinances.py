@@ -73,7 +73,7 @@ def main(paths):
     out.sort(key=lambda l: l["jurisdiction"])
     for msg in problems:
         print("PROBLEM:", msg)
-    json.dump(out, open(OUT, "w"), indent=1, ensure_ascii=False)
+    json.dump(out, open(OUT, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     entire = sum(1 for l in out for r in l["restrictions"] if r["scope"] == "entire")
     print(f"{len(out)} localities, {sum(len(l['restrictions']) for l in out)} restrictions ({entire} locality-wide) -> {OUT}")
     return 1 if problems else 0

@@ -88,7 +88,7 @@ def main():
             changed.append((name, url, diff))
             if args.update:
                 path.parent.mkdir(parents=True, exist_ok=True)
-                path.write_text(html)
+                path.write_text(html, encoding="utf-8")
         time.sleep(0.5)  # be polite
 
     out = [f"Checked {len(pages)} DWR pages against the snapshots in `sources/regs/`.\n"]
@@ -101,7 +101,7 @@ def main():
         out.append("No changes.\n")
     if failed:
         out.append("Could not fetch:\n" + "\n".join(failed) + "\n")
-    Path(args.report).write_text("\n".join(out))
+    Path(args.report).write_text("\n".join(out), encoding="utf-8")
 
     if os.environ.get("GITHUB_OUTPUT"):
         with open(os.environ["GITHUB_OUTPUT"], "a") as f:

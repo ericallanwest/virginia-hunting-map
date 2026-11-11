@@ -64,8 +64,8 @@ def main():
         meta.append({**src, "id": "petersburg-city--non-agricultural",
                      "method": "City outline minus the agricultural zoning area", "notes": "Derived: " + src["notes"]})
 
-    json.dump({"type": "FeatureCollection", "features": features}, open(OUT_GEO, "w"))
-    json.dump(sorted(meta, key=lambda x: x["id"]), open(OUT_META, "w"), indent=1, ensure_ascii=False)
+    json.dump({"type": "FeatureCollection", "features": features}, open(OUT_GEO, "w", encoding="utf-8"))
+    json.dump(sorted(meta, key=lambda x: x["id"]), open(OUT_META, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     print(f"{len(meta)} areas, {len(features)} features -> {OUT_GEO.name}, {OUT_META.name}")
 
 

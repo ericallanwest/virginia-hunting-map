@@ -34,6 +34,7 @@ out.write_text(
     "// Counties and cities entirely west of I-95. Jurisdictions I-95 crosses are split into\n"
     "// 'w95'/'e95' pieces in the map data and listed here with the '/w95' suffix.\n"
     f"export const WEST_OF_I95_COUNTIES = {json.dumps(sorted(west['county']) + sorted(j.split(':')[1] + '/w95' for j in crossing if j.startswith('county:')))};\n"
-    f"export const WEST_OF_I95_CITIES = {json.dumps(sorted(west['city']) + sorted(j.split(':')[1] + '/w95' for j in crossing if j.startswith('city:')))};\n"
+    f"export const WEST_OF_I95_CITIES = {json.dumps(sorted(west['city']) + sorted(j.split(':')[1] + '/w95' for j in crossing if j.startswith('city:')))};\n",
+    encoding="utf-8",
 )
 print(out, len(west["county"]), "counties and", len(west["city"]), "cities wholly west")

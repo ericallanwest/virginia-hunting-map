@@ -455,7 +455,7 @@ def main():
             out.append({"type": "Feature", "properties": {**f["properties"], "subArea": tok}, "geometry": mapping(g)})
             print(f"{jid} {tok}: {len(polys)} piece(s), {g.area / poly.area:.0%} of area")
     fc["features"] = out
-    json.dump(fc, open(JUR, "w"), separators=(",", ":"))
+    json.dump(fc, open(JUR, "w", encoding="utf-8"), separators=(",", ":"))
 
 
 if __name__ == "__main__":
