@@ -2,18 +2,27 @@
 # Builds the simplified GeoJSON layers the app loads from public/data/.
 # Inputs live in sources/geo (see scripts/fetch-sources.sh).
 set -euo pipefail
+# Git Bash on Windows rewrites arguments that look like Unix paths (e.g. the regex
+# "!/Trail|.../.test(...)") before passing them to node; turn that off. No effect elsewhere.
+export MSYS_NO_PATHCONV=1
 cd "$(dirname "$0")/.."
 SRC=sources/geo
 OUT=public/data
 MS="npx mapshaper"
 mkdir -p "$OUT"
 
+# Simplification tolerance (meters) for all map layers: fine enough that boundaries
+# match parcel- and road-based ordinance areas, small enough to load quickly.
+TOL=${TOL:-15}
+
 # 1. Counties + independent cities (Census county equivalents). LSAD 06 = county, 25 = city.
-$MS "$SRC/cb_2023_us_county_500k/cb_2023_us_county_500k.shp" \
-  -filter "STATEFP === '51'" \
+#    Detailed TIGER/Line boundaries, coast clipped to the 1:500k shoreline (see the script).
+python3 scripts/build-county-outlines.py
+$MS "$SRC/_counties_detailed.geojson" \
   -each "type = LSAD === '25' ? 'city' : 'county'; name = NAME.replace(/ city$/, ''); id = type + ':' + name; fips = GEOID" \
   -filter-fields id,name,type,fips \
-  -simplify 12% keep-shapes \
+  -simplify interval=$TOL keep-shapes \
+  -clean \
   -o "$OUT/jurisdictions.geojson" precision=0.00001 format=geojson
 
 # Split counties along the lines the regulations use (Rts. 613/731, Dismal Swamp line, I-81,
@@ -24,12 +33,12 @@ python3 scripts/i95-sides.py
 # Virginia outline used to clip statewide layers.
 $MS "$OUT/jurisdictions.geojson" -dissolve -o "$SRC/va-outline.geojson" format=geojson
 
-# 2. Incorporated towns (place LSAD 43).
-$MS "$SRC/cb_2023_51_place_500k/cb_2023_51_place_500k.shp" \
+# 2. Incorporated towns (place LSAD 43), detailed TIGER/Line boundaries.
+$MS "$SRC/tl_2023_51_place/tl_2023_51_place.shp" \
   -filter "LSAD === '43'" \
   -each "name = NAME; id = 'town:' + NAME; fips = GEOID" \
   -filter-fields id,name,fips \
-  -simplify 20% keep-shapes \
+  -simplify interval=$TOL keep-shapes \
   -o "$OUT/towns.geojson" precision=0.00001 format=geojson
 
 # 3. Public lands with their own deer rules.
@@ -70,7 +79,7 @@ $MS -i "$SRC/_public.geojson" "$OUT/jurisdictions.geojson" combine-files \
   -filter "!!land && !!id" \
   -each "jurisdiction = id; name = name_1; subArea = subArea || null" \
   -dissolve fields=name,jurisdiction,subArea copy-fields=land \
-  -simplify 25% keep-shapes \
+  -simplify interval=$TOL keep-shapes \
   -filter "this.area > 20000" \
   -o "$OUT/public-lands.geojson" precision=0.00001 format=geojson
 
@@ -82,7 +91,7 @@ $MS -i "$SRC/_local_areas.geojson" "$OUT/jurisdictions.geojson" combine-files \
   -filter "!!area && !!id" \
   -each "jurisdiction = id; subArea = subArea || null; name = name_1 || ''" \
   -dissolve fields=area,name,jurisdiction,subArea \
-  -simplify 30% keep-shapes \
+  -simplify interval=$TOL keep-shapes \
   -filter "this.area > 2000" \
   -o "$OUT/local-areas.geojson" precision=0.00001 format=geojson
 

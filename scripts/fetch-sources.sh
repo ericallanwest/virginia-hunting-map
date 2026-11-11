@@ -6,19 +6,28 @@ cd "$(dirname "$0")/.."
 mkdir -p sources/geo sources/regs
 
 # --- DWR regulation pages (re-run each license year and diff) ---
-for p in "" deer bear elk turkey general; do
-  f=${p:-index}
-  curl -sSL "https://dwr.virginia.gov/hunting/regulations/$p/" -o "sources/regs/$f.html"
-done
-curl -sSL "https://dwr.virginia.gov/wildlife/elk/hunting/" -o sources/regs/elk-hunting.html
-curl -sSL "https://dwr.virginia.gov/wildlife/elk/hunting/elk-lottery/" -o sources/regs/elk-lottery.html
+# Skipped with --geo-only: the snapshots are what scripts/check-dwr-changes.py compares against.
+if [ "${1:-}" != "--geo-only" ]; then
+  for p in "" deer bear elk turkey general; do
+    f=${p:-index}
+    curl -sSL "https://dwr.virginia.gov/hunting/regulations/$p/" -o "sources/regs/$f.html"
+  done
+  curl -sSL "https://dwr.virginia.gov/wildlife/elk/hunting/" -o sources/regs/elk-hunting.html
+  curl -sSL "https://dwr.virginia.gov/wildlife/elk/hunting/elk-lottery/" -o sources/regs/elk-lottery.html
+fi
 
-# --- Census cartographic boundaries (counties/independent cities, places/towns) ---
+# --- Census cartographic boundaries (shoreline-clipped state outline, coast) ---
 cd sources/geo
 for f in cb_2023_us_county_500k cb_2023_51_place_500k; do
   curl -sSLO "https://www2.census.gov/geo/tiger/GENZ2023/shp/$f.zip"
   mkdir -p "$f" && (cd "$f" && unzip -oq "../$f.zip")
 done
+
+# --- Census TIGER/Line full-resolution counties and places (the boundaries used on the map) ---
+curl -sSL -o tl_2023_us_county.zip "https://www2.census.gov/geo/tiger/TIGER2023/COUNTY/tl_2023_us_county.zip"
+mkdir -p tl_2023_us_county && (cd tl_2023_us_county && unzip -oq ../tl_2023_us_county.zip)
+curl -sSL -o tl_2023_51_place.zip "https://www2.census.gov/geo/tiger/TIGER2023/PLACE/tl_2023_51_place.zip"
+mkdir -p tl_2023_51_place && (cd tl_2023_51_place && unzip -oq ../tl_2023_51_place.zip)
 
 # --- Census TIGER roads and rivers for split lines (see scripts/split-jurisdictions.py) ---
 # Rockingham 51165, Suffolk 51800, Carroll 51035, Grayson 51077, Montgomery 51121,
