@@ -95,4 +95,11 @@ $MS -i "$SRC/_local_areas.geojson" "$OUT/jurisdictions.geojson" combine-files \
   -filter "this.area > 2000" \
   -o "$OUT/local-areas.geojson" precision=0.00001 format=geojson
 
+# ---- 6. TopoJSON copies for the app (shared borders stored once; a 1e5 grid is ~3-7 m
+#         across Virginia, well under the simplification tolerance). The GeoJSON stays as
+#         the working copy for the scripts and tests; the deploy leaves it out.
+for n in jurisdictions towns public-lands local-areas; do
+  $MS "$OUT/$n.geojson" name="$n" -o "$OUT/$n.topojson" format=topojson quantization=100000
+done
+
 ls -la "$OUT"

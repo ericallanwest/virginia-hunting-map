@@ -1,5 +1,7 @@
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import type { Feature, FeatureCollection, MultiPolygon, Polygon } from 'geojson';
+import { feature } from 'topojson-client';
+import type { Topology } from 'topojson-specification';
 import type { Land, Place } from './regs/types';
 import { CITY_PARENT, regionOf, sideLabel } from './regs/virginia';
 
@@ -12,9 +14,14 @@ export interface Layers {
   localAreas: Poly[];
 }
 
-const load = async (name: string) =>
-  ((await (await fetch(`${import.meta.env.BASE_URL}data/${name}.geojson`)).json()) as FeatureCollection<Polygon | MultiPolygon>)
-    .features as Poly[];
+/**
+ * Layers ship as TopoJSON (shared borders stored once, integer coordinates): about a third
+ * the size of the GeoJSON the build works with. Each file holds one object named after it.
+ */
+const load = async (name: string) => {
+  const topo = (await (await fetch(`${import.meta.env.BASE_URL}data/${name}.topojson`)).json()) as Topology;
+  return (feature(topo, topo.objects[name]) as unknown as FeatureCollection<Polygon | MultiPolygon>).features as Poly[];
+};
 
 export async function loadLayers(): Promise<Layers> {
   const [jurisdictions, towns, publicLands, localAreas] = await Promise.all([
