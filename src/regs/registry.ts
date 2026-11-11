@@ -23,8 +23,21 @@ import { FURBEARERS_2024 } from './furbearer-2024';
 import { SMALL_GAME_2024 } from './small-game-2024';
 import { turkey2024 } from './turkey-2024';
 import type { Species, SpeciesRegs } from './types';
+// DRAFT-IMPORTS (managed by scripts/new-license-year.mjs)
 
-export const ALL_REGS: SpeciesRegs[] = [
+/**
+ * Regulations for an upcoming license year while they're being entered and checked.
+ * scripts/new-license-year.mjs adds entries here; they appear only with ?draft=1 in
+ * the URL, under a "draft" banner. To publish a year, move its entries into PUBLISHED.
+ */
+export const DRAFT_REGS: SpeciesRegs[] = [
+  // DRAFT-ENTRIES
+];
+
+export const draftMode = typeof location !== 'undefined' && new URLSearchParams(location.search).has('draft');
+export const isDraft = (r: SpeciesRegs) => DRAFT_REGS.includes(r);
+
+const PUBLISHED: SpeciesRegs[] = [
   // 2026–27
   deer2026, bear2026, turkey2026, elk2026, ...SMALL_GAME, ...FURBEARERS,
   // 2025–26 (archived)
@@ -32,6 +45,8 @@ export const ALL_REGS: SpeciesRegs[] = [
   // 2024–25 (archived)
   deer2024, bear2024, turkey2024, elk2024, ...SMALL_GAME_2024, ...FURBEARERS_2024,
 ];
+
+export const ALL_REGS: SpeciesRegs[] = draftMode ? [...PUBLISHED, ...DRAFT_REGS] : PUBLISHED;
 
 export function regsFor(species: Species, iso: string): SpeciesRegs | undefined {
   const ly = licenseYearOf(iso);

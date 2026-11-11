@@ -7,6 +7,7 @@ import { createMap, RegulationLayers } from './map';
 import { dayOfLicenseYear, licenseYearOf, resolve, todayISO } from './regs/dates';
 import { nextDay } from './regs/engine';
 import { availableYears, GROUPS, regsFor, SPECIES, speciesInfo, yearLabel, type Group } from './regs/index';
+import { draftMode, isDraft } from './regs/registry';
 import type { Species } from './regs/types';
 
 // ---------------------------------------------------------------------------
@@ -36,6 +37,7 @@ function syncUrl() {
   if (state.includeYouth) p.set('youth', '1');
   if (state.point) p.set('at', state.point.map((n) => n.toFixed(5)).join(','));
   if (state.subArea) p.set('side', state.subArea);
+  if (draftMode) p.set('draft', '1');
   history.replaceState(null, '', `${location.pathname}${p.size ? '?' + p : ''}`);
 }
 
@@ -79,6 +81,9 @@ function refresh() {
     banner.innerHTML = years.length && ly < Math.min(...years)
       ? `<strong>Prior-year regulations (${yearLabel(ly)}) aren’t available in this app.</strong>${covers}`
       : `<strong>${yearLabel(ly)} regulations aren’t available in this app yet.</strong> DWR usually posts a new license year’s regulations in early summer — check <a href="https://dwr.virginia.gov/hunting/regulations/" target="_blank" rel="noopener">DWR’s regulations page</a>.${covers}`;
+  } else if (isDraft(regs)) {
+    banner.hidden = false;
+    banner.innerHTML = `<strong>DRAFT: ${yearLabel(ly)} regulations being entered.</strong> Dates may still be last year’s and are not verified. Don’t rely on them.`;
   } else if (ly < licenseYearOf(todayISO())) {
     // A past license year that is loaded (once more than one year is in the app).
     banner.hidden = false;

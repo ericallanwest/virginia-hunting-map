@@ -5,3 +5,4 @@ sources/geo/
 .env.local
 .env.*.local
 __pycache__/
+.claude/worktrees/

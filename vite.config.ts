@@ -1,5 +1,7 @@
+/// <reference types="vitest/config" />
 import { readdirSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
+import { configDefaults } from 'vitest/config';
 import { defineConfig } from 'vite';
 
 // base './' so the built site works from any path (e.g. GitHub Pages project sites).
@@ -17,4 +19,6 @@ export default defineConfig({
       },
     },
   ],
+  // Claude Code worktrees live under .claude/; don't run their copies of the tests.
+  test: { exclude: [...configDefaults.exclude, '.claude/**'] },
 });
