@@ -97,3 +97,33 @@ encoded with the literal reading noted. Resolve these (ideally with DWR), then a
 
 19. **Norton.** The Elk Management Zone is "Buchanan, Dickenson, and Wise counties"; the independent
     city of Norton (inside Wise) is treated as outside the zone. *Encoded:* literally.
+
+## Local ordinances
+
+The text of all 101 DWR local ordinance pages is in `src/regs/local-ordinances.json` and shown in the
+location panel. Only the hand-reviewed entries in `src/regs/local-effects.ts` change the map. Readings
+to confirm:
+
+20. **Muzzleloaders count as firearms**, so "no firearm discharge" (Arlington and ~25 cities/towns) makes
+    muzzleloader and firearms seasons archery-only there.
+21. **Rifles "larger than .22" + the state .23-caliber minimum** = no legal rifle for deer, bear, or elk
+    (Charles City, Southampton, Virginia Beach, Caroline [bear/elk], York, Poquoson, Prince William,
+    King and Queen, Franklin city, Fairfax County). Turkey can still be hunted with a .22.
+22. **Virginia Beach Sec. 38-3(c)** bans firearms "greater than .22-caliber" citywide. Read literally that
+    includes shotguns; it is read as rifles/pistols because 38-3(a) expressly allows shotguns.
+23. **Fairfax County 6-1-2(e)**: nothing larger than .224 caliber, and no slugs; firearm deer hunting only
+    with buckshot on Appendix J exempted parcels. Shown as "firearms, no rifles"; muzzleloader seasons
+    show as archery-only.
+24. **Buchanan County Sec. 22-28** bans killing elk with any weapon, which conflicts with DWR's lottery
+    elk hunt in the county. Shown as a warning, not applied.
+25. **County ordinances are applied inside towns** in that county (plus any town ordinance).
+26. **Not applied (partial or conditional):** zoning-district or subdivision bans (Albemarle, Henrico,
+    Stafford, Gloucester, Warren, James City, Essex, Greene, Mecklenburg, Prince William restricted
+    areas), area bans (Chesapeake north, Virginia Beach north of the trace line, eastern Loudoun),
+    elevated-stand rifle rules (Caroline, Essex, Richmond County, Lancaster, Northumberland, Sussex,
+    Cumberland, King George, Goochland, Dinwiddie, Hanover, Isle of Wight, Buckingham, Westmoreland,
+    James City, Prince George, Surry), setbacks, and permit-only exceptions. All are listed with their
+    text in the location panel.
+27. **Inferred, not stated:** Lancaster and Northumberland rifle bans for bear (their ordinances list
+    only the uses rifles are allowed for). Southampton bans muzzleloading *rifles*; muzzleloading
+    shotguns remain, so its muzzleloader season is not closed.
