@@ -52,9 +52,57 @@ export function createMap(el: HTMLElement): L.Map {
     }),
   };
   (basemaps.Light ?? basemaps.Streets).addTo(map);
-  L.control.layers(basemaps, undefined, { position: 'topright' }).addTo(map);
+  const layersControl = L.control.layers(basemaps, undefined, { position: 'topright' }).addTo(map);
+
+  // Regulation layers draw in their own panes (counties < towns < public lands), so the
+  // regulations opacity slider can fade all of them with one CSS property.
+  for (const [pane, z] of REG_PANES) map.createPane(pane).style.zIndex = z;
+  addOpacitySliders(map, layersControl, Object.values(basemaps));
   map.fitBounds([[36.54, -83.68], [39.47, -75.24]]);
   return map;
+}
+
+const REG_PANES: [string, string][] = [['jur', '410'], ['town', '420'], ['pub', '430']];
+
+/**
+ * "Basemap" and "Regulations" opacity sliders inside the layers control (with the
+ * basemap picker). Basemap opacity fades the tiles; regulations opacity fades the
+ * regulation panes as a whole. Values are remembered per browser.
+ */
+function addOpacitySliders(map: L.Map, control: L.Control.Layers, tiles: L.TileLayer[]) {
+  const list = control.getContainer()!.querySelector('.leaflet-control-layers-list')!;
+  const box = L.DomUtil.create('div', 'opacity-sliders', list as HTMLElement);
+  box.innerHTML = `<div class="leaflet-control-layers-separator"></div>
+    <label>Basemap<input type="range" min="0" max="100" step="5" data-k="basemap" aria-label="Basemap opacity"></label>
+    <label>Regulations<input type="range" min="10" max="100" step="5" data-k="regs" aria-label="Regulations opacity"></label>`;
+  // Dragging a slider must not pan the map.
+  L.DomEvent.disableClickPropagation(box);
+  L.DomEvent.disableScrollPropagation(box);
+
+  const apply: Record<string, (v: number) => void> = {
+    basemap: (v) => tiles.forEach((t) => t.setOpacity(v)),
+    regs: (v) => REG_PANES.forEach(([pane]) => (map.getPane(pane)!.style.opacity = String(v))),
+  };
+  box.querySelectorAll<HTMLInputElement>('input[type=range]').forEach((input) => {
+    const k = input.dataset.k!;
+    const key = `va-hunt-map:opacity:${k}`;
+    let stored: string | null = null;
+    try {
+      stored = localStorage.getItem(key);
+    } catch {
+      /* storage unavailable: use the default */
+    }
+    input.value = stored ?? '100';
+    apply[k](Number(input.value) / 100);
+    input.addEventListener('input', () => {
+      apply[k](Number(input.value) / 100);
+      try {
+        localStorage.setItem(key, input.value);
+      } catch {
+        /* not remembered, still applied */
+      }
+    });
+  });
 }
 
 export class RegulationLayers {
@@ -73,9 +121,6 @@ export class RegulationLayers {
       }
       return group;
     };
-    map.createPane('jur').style.zIndex = '410';
-    map.createPane('town').style.zIndex = '420';
-    map.createPane('pub').style.zIndex = '430';
     this.groups = {
       jurisdictions: add(layers.jurisdictions, 'jurisdictions', 'jur').addTo(map),
       towns: add(layers.towns, 'towns', 'town').addTo(map),

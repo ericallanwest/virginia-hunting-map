@@ -153,6 +153,8 @@ h4 { margin: 0 0 2px; font-size: 0.85rem; }
 footer { padding: 12px 20px 18px; font-size: 0.72rem; color: var(--muted); border-top: 1px solid var(--line); }
 
 .reg-tip { font-size: 0.8rem; }
+.opacity-sliders label { display: grid; grid-template-columns: 78px 120px; align-items: center; font-size: 0.78rem; margin-top: 6px; }
+.opacity-sliders input[type=range] { width: 120px; accent-color: var(--accent); margin: 0; }
 .leaflet-container { background: #eef0ec; font: inherit; }
 
 /* Phone: map on top, controls + details scroll below */
