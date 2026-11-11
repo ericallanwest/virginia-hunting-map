@@ -9,6 +9,24 @@
   "notes": "Result 82.6 km2 = 4.4% of the county. Codes map one-to-one to the ordinance list. The layer is parcel-based, so public road rights-of-way are not zoned in the data; the 12 m closing fills most interior streets but wide highway ROW at district edges may show small gaps (discharge on/across roads is separately unlawful under state law). Town of Scottsville (own zoning) and Downtown Crozet District, Monticello Historic District and commercial/industrial districts are not on the ordinance's list and were excluded. The City of Charlottesville is a separate jurisdiction (hole in the county) and is not covered."
  },
  {
+  "id": "amherst-county--county-parks",
+  "jurisdiction": "county:Amherst",
+  "section": "Sec. 12-26(B)(3),(C)",
+  "text": "(3) Park visitors shall not hunt, trap, or pursue wildlife while within the park. ... (1) Only law enforcement officers engaged in professional duties may discharge in any park any pistol, revolver, shotgun, BB gun, air gun, slingshot, bow and arrow, dart device, or other weapon in which the propelling force is gunpowder, a spring, or air.",
+  "method": "Amherst County official GIS (MapInsights 'Amherst_WL_P' FeatureServer) layer 68 'County Owned Parcels'; selected the parcels whose assessor description (MDESC1) identifies a county park: Coolwell Rec Park (125 A 37), Riveredge/Riversedge Park (160A3 A 158), Thrashers Creek Park (49 A 29, 29A, 29B), Stonehouse Lake (50 A 1, 50 A 2), Mill Creek Lake/Park (51 A 12, 22A, 23, 23A, 36A, 36B), Seminole Park (155D A 44A, 101 High St). Monacan Park is county-run on land owned by Eagle Creek Reusens Hydro LLC (parcel 135 A 7, layer 30 'Parcels', legal 'MONACAN PARK'); included. Dissolved per park, simplified 0.0001 deg, 5-decimal coords.",
+  "confidence": "medium",
+  "notes": "7 parks. The county's own 'Parks' layer (53) has 7 unnamed, schematic ~35-acre blobs that do not line up with parcels (one sits on private 'Madison Heights Youth Baseball' land), so it was used only to identify parks, not for geometry. Not included: Buffalo River watershed-dam properties (48 A 11/11A/15/16), Graham Creek Reservoir (Service Authority), the county-owned Virginia Blue Ridge Railway Trail parcel (42 A 1) and Leets Spur bike trail parcel (161 A 150), and the old Seminole pool lot - none is clearly designated a county park. Sec. 12-26(C)(4) also bars shooting INTO a park from outside its boundary; this layer does not buffer for that. DCR lists only 'Stone House' for Amherst County."
+ },
+ {
+  "id": "chesapeake-city--city-parks",
+  "jurisdiction": "city:Chesapeake",
+  "section": "Sec. 50-14",
+  "text": "No person shall hunt, trap or pursue wildlife at any time. No person shall use in any way firearms of any description, or air rifles, spring-guns, bow and arrows, slings or any other form of weapons potentially inimical to wildlife and dangerous to human safety, or any instrument that can be loaded with and fire blank cartridges, or any kind of trapping device. Shooting into park areas from beyond park boundaries is forbidden.",
+  "method": "City of Chesapeake OpenData MapServer layer 16 'Parks' (92 polygons), minus the Great Dismal Swamp National Wildlife Refuge. Ownership was checked against parcels with owner 'CITY OF CHESAPEAKE%' (QuickSearch/MapServer/0; filter in raw/chesapeake_owner_filter.txt). Added 2 city-owned DCR 'Local Park' polygons that are absent from the city layer (River Crest Community Center, a Western Branch Trail segment). Dissolved by name.",
+  "confidence": "medium",
+  "notes": "92 features. About 80 of the 91 city-layer parks are at least 90% on city-owned parcels. Exceptions are kept but flagged: Great Bridge Lock Park, Battlefield Park, Battlefield Park South and Deep Creek Lock Park are mostly US Army Corps of Engineers land operated as city parks (they carry a 'note' property). Crestwood Park/Crestwood Middle Fields are School Board land. The Dismal Swamp Canal Trail and the US 17 boat ramp sit on former highway right-of-way with no parcel. The DWR note says the ordinance is for city-owned park property, so the Corps-owned parks are an interpretation. Not included: city 'Open Space Holding' conservation lands and the city-owned 'Gees Group Property' (~630 ac, DCR calls it a Local Park, but the city parks layer does not list it). Separately, city-wide discharge limits in Sec. 46-42 apply."
+ },
+ {
   "id": "chesapeake-city--north",
   "jurisdiction": "city:Chesapeake",
   "section": "Sec. 46-42(a)",
@@ -99,6 +117,15 @@
   "notes": "Result 0.19 km2 (~47 acres), 0.05% of the county, near Midway/US-33 west of Stanardsville around 38.24 N, -78.383 W. The ordinance's exhibit was not available, so the boundary is reconstructed from parcel legal descriptions. The lots along Locust Lane are a single numbered sequence (lots 4-53, sections 1-4); lots 13-14 and 18-53 are described 'LOCUST LANE (ADD)', while lots 4-11 and 15-17 and lettered lots A-E at the southwest end are described 'MIDWAY'. All of them were included as the Locust Lane subdivision (this may overstate it by ~10 small lots at the southwest end). The 'adjoining R-2 zoning district in Midway Acres' was taken to be the only R-2 polygon in the area: block 60A-12, which also holds 'MIDWAY ACRES L1-L3'. Today those Locust Lane lots are zoned A-1 in the parcel records. Also note exception (b)(2): discharge on private property with the owner's permission, with reasonable care to keep projectiles on the property, is not a violation."
  },
  {
+  "id": "greensville-county--meherrin-dam",
+  "jurisdiction": "county:Greensville",
+  "section": "Sec. 20-4(a)",
+  "text": "(a) It shall be unlawful for any person to hunt while on any portion of the Meherrin River which lies closer to the Emporia Hydroelectric Project Dam than four thousand eight hundred (4,800) feet, which is a point generally south of the terminus of Riverview Road. The property on which hunting is hereby prohibited constitutes impounded water of the Meherrin River and real property resulting from the geologic process of accretion which is commonly known as the Emporia Water Reservoir.",
+  "method": "Built from Census TIGER 2023 AREAWATER 'Meherrin River Reservoir' polygons (Greensville 51081 + Emporia 51595). Dam located at the downstream (east) end of the reservoir, about 36.69595 N, 77.55695 W. Took the reservoir water within a 4,800 ft (1,463 m) straight-line radius of that point and clipped it to the Census cb_2023 Greensville County boundary. Check: the Riverview Rd terminus is ~5,100 ft from that point, consistent with the ordinance's '4,800 ft ... generally south of the terminus of Riverview Road'.",
+  "confidence": "medium",
+  "notes": "1 feature (~82 ac in Greensville). Another ~18 ac within the radius lies inside the City of Emporia and is excluded from this county area. The dam point is inferred from TIGER water geometry, not a surveyed dam location (+/- ~50 m). Distance is measured straight-line; measuring along the river would shift the upstream cutoff slightly. 'Accreted' land around the reservoir cannot be delineated and is not included; TIGER shorelines are approximate."
+ },
+ {
   "id": "henrico-county--res-ind-com-districts",
   "jurisdiction": "county:Henrico",
   "section": "Sec. 13-59 (firearms); Sec. 13-61 (bows)",
@@ -117,6 +144,15 @@
   "notes": "Result 130.3 km2 = 32% of the county (incl. buffer). The county layer is a named-subdivision/neighborhood inventory; it does NOT necessarily include every small post-1964 recorded subdivision (e.g. 2-5 lot divisions along rural roads), and petitioned subdivisions (c) cannot be identified, so the true prohibited area is LARGER than this polygon. Of the 57 pre-1964 subdivisions named in (b), about 48 match layer names (some by variant spelling, e.g. Canterbury Hills, Sadie Lee Taylor, Schulyer and Troy Smith, Belen and Carriage Heights Parker, Lakewood for Marl Hills; 'Tom and Hazel Kearney' may be Thomas & Hattie Kearney). I could not find D. Warren Marston, Dandridge Davenport & Piggott, Frank Anderson, James Wesley Jones (Estate), Levi & Lettie Wallace, Rado Banks, Signor Bradby, Washington Jones (Estate) or Yearda Lee Smith, and the 2011 pre-1964 map was not found online. Some layer entries (e.g. Busch Gardens, Eastern State Hospital, JCC Riverfront Park campground, airport) may not meet the legal definition but were kept, which is the cautious choice. Not modeled: the 300 ft dwelling/commercial building/animal shelter rule, the 800 ft Colonial Heritage dwelling rule, and the 'ammunition crossing such areas' clause."
  },
  {
+  "id": "loudoun-county--county-parks",
+  "jurisdiction": "county:Loudoun",
+  "section": "684.04(a)(2)",
+  "text": "(2) Any public park owned or operated by the County, or by any authority or local governmental entity created or controlled by the County;",
+  "method": "Loudoun County official GIS layer COL/PRCSbuildings/MapServer/1 'Parks and Recreation Areas' (140 polygons). Kept features whose PR_LMIS_OWN owner is Loudoun County (any spelling, incl. School Board) or an authority (Northern Virginia Regional Park Authority; Loudoun County Sanitation Authority/Loudoun Water for Beaverdam Reservoir). Dropped libraries (PR_TYPE 'LB'), status 'FUT' (future) parks, and parks owned by towns (Leesburg, Round Hill, Hamilton, Purcellville), NPS, the state (Sweet Run SP, DGIF boat launch) or private/HOA bodies. Added 2 county parcels from COL/CountyOwnedLeased ('Part of Trailside Park', 'Arcola Community Center'). Dissolved by name.",
+  "confidence": "medium",
+  "notes": "90 named parks. 684.04 is a firearm POSSESSION ban (which in practice bars firearm hunting); archery is not addressed by this section. Each feature carries an 'operator' property: 'Loudoun County', 'NVRPA' (e.g. Algonkian, Temple Hall, Balls Bluff, Red Rock, W&OD Trail), or Loudoun Water/NVRPA (Beaverdam Reservoir). Including NVRPA parks is an interpretation: NVRPA is a multi-jurisdiction authority Loudoun belongs to, not one Loudoun controls by itself. Excluded but worth knowing: Leesburg/Round Hill/Hamilton/Purcellville town parks (town rules apply), Morven Park, Broadlands Nature Center, Rust Sanctuary, Middleburg Community Center, and future/unopened county parks (Goose Creek Pointe, Ashburn Farm, Avonlea Reserve, Lerner, Western Loudoun Rec Center, Springdale Regional Park). DCR lists some older park polygons (Lansdowne Sports, Evergreen Conservancy, Harper, Cardinal Park, Broadlands Parcel, Round Hill CC) that are missing from the county's current layer; they were not added. Separately, 684.03(c) bans discharge within 100 yd of any public park; that buffer is not modeled here."
+ },
+ {
   "id": "loudoun-county--east",
   "jurisdiction": "county:Loudoun",
   "section": "684.03(a)(1)",
@@ -124,6 +160,15 @@
   "method": "official layer",
   "confidence": "high",
   "notes": "Official county polygon; its west edge follows Rte 659, south edge Braddock Rd (Rte 620), north edge Rte 7 to the Leesburg town limits then the Potomac, matching TIGER 2023 lines within a few tens of meters. Clipped to the app's generalized county outline (lost 0.4% of the official polygon area, mostly along the Potomac/Fairfax edges). The layer dates from 2019; the Leesburg corporate-limit segment reflects the town limits at that time. Inside this area firearms discharge is prohibited except the hunting uses in 684.03(a)(2) (deer with handguns, shotguns or muzzleloaders using a single projectile; other hunting with .22 rimfire or smaller rifles, handguns, shotguns, muzzleloaders). Note a separate county service FIREARMS_PROHIBITED_POLY (services1.arcgis.com/MxjRokvPm7bjslyR, edited 2026) models the remaining lawful-discharge area county-wide net of 100-yd building/park/school and 50-yd road buffers; it was not used because it mixes in the buffer rules, but its eastern edge is consistent with this polygon."
+ },
+ {
+  "id": "manassas-park-city--city-land",
+  "jurisdiction": "city:Manassas Park",
+  "section": "Sec. 17-39.1",
+  "text": "(a) The city council hereby declares that all land owned by the city, and all land under option to purchase by the city, located within the city and Prince William County, Virginia (specifically the Signal Hill Tract, the Bull Run Tract, the Bobby Tract, the Conner Tract and all other unnamed land owned by the city) shall be posted to all hunting of birds and mammals (game and nongame) and it shall be unlawful for any person to carry or have in his possession any weapons legal in Virginia for hunting purposes on such land.",
+  "method": "City of Manassas Park parcel layer (Parcel_PublicView FeatureServer/0). Selected OWNERS_NAME_1 IN ('CITY OF MANASSAS PARK','CITY OF MANASSAS PARK, VIRGINIA','CITY OF MANASSSAS PARK'), 79 records. Plus Prince William County parcels (CountyMapper/LandRecords/MapServer/4) with CAMA_OWNER_CUR = 'CITY OF MANASSAS PARK' (1 parcel, ~1 ac). Signal Hill Park is named where parcels overlap the DCR Signal Hill Park polygon or have a Signal View Dr address.",
+  "confidence": "medium",
+  "notes": "3 features (~490 ac). Only ~1 ac of city-owned land was found in Prince William County. The named Bull Run, Bobby and Conner tracts appear to be inside the city now (Conner Dr parcels; the 270 ac parcel at 9701 Manassas Dr) or were sold. Land 'under option to purchase' cannot be mapped. School Board parcels are excluded (not city-titled). City-wide, Sec. 26-3 already bans firearm discharge."
  },
  {
   "id": "mecklenburg-county--merrifield-acres",
@@ -144,6 +189,15 @@
   "notes": "643 parcels. Every section named in the ordinance (A,B,C,D,E,G,H) is found in the assessor legal descriptions on Tax Map 37A blocks 1-8. Parcel-derived outline; road rights-of-way between lots are approximated by the closing step. The adjacent Piankatank Golf & Country Club lots (map 37 block 15) are NOT included."
  },
  {
+  "id": "norfolk-city--cemeteries",
+  "jurisdiction": "city:Norfolk",
+  "section": "Sec. 12-34",
+  "text": "No person shall fish or hunt or shoot within the grounds of the cemeteries or to discharge any firearms or fireworks on or over the same.",
+  "method": "City of Norfolk OpenData RPOS FeatureServer/1 (Parks), features with PARK_TYPE='CEM': the 8 city-run cemeteries (Calvary, Cedar Grove, Elmwood, Forest Lawn, Hebrew, Magnolia, Riverside, West Point).",
+  "confidence": "high",
+  "notes": "8 cemeteries. These match the 8 cemeteries of Norfolk's Bureau of Cemeteries. Private and church cemeteries are excluded; Chapter 12 governs city cemeteries."
+ },
+ {
   "id": "petersburg-city--agricultural-zoning",
   "jurisdiction": "city:Petersburg",
   "section": "Sec. 74-208 / 74-209",
@@ -162,6 +216,51 @@
   "notes": "Derived: This is the area where shotgun hunting is ALLOWED (everywhere else in the city discharge is prohibited by 74-208). Result 9.6 km2 = 16% of the city. The city's sources disagree: assessor parcels coded A cover 5.6 km2 (95% within this output); the draft-map '86 Base' layer 10.8 km2; a 2023 UVA copy 6.6 km2. The official viewer layer used here is mostly a superset of the assessor parcels, so some edges may be over-generous for an 'allowed' area; hunters should confirm a parcel's zoning with Petersburg Planning. About 3 km2 of this polygon lies inside Petersburg National Battlefield (NPS), where hunting is not allowed regardless of zoning. The 100-yard setback from public highways/streets in 74-209 is NOT applied to this polygon and must be applied separately. Shotgun with shotgun shells only."
  },
  {
+  "id": "portsmouth-city--cemeteries",
+  "jurisdiction": "city:Portsmouth",
+  "section": "Sec. 9-54",
+  "text": "It shall be unlawful for any person to hunt or fish within the grounds of any city cemetery. (Code 1973, § 7-46; Code 1988, § 9-58) Sec. 24-67. - Discharging firearm across or within streets. ( reference ) (a) If any person discharges a firearm in or across any road, or within the right-of-way thereof, or in any street, he shall, for each offense, be guilty of a class 4 misdemeanor. (b) The provisions of this section shall not apply to firing ranges or shooting matches maintained, and supervised or approved, by law enforcement officers and military personnel in performance of their lawful duties. (Code 1973, § 21-37; Code 1988, § 24-70; Ord. No. 1993-51, § 1, 6-22-1993) Cross reference— Penalty for class 4 misdemeanor, § 1-11. State Law reference— Authority of city to adopt above section, Code of Virginia, § 15.2-113; discharging firearms in or across street, Code of Virginia, § 18.2-286. Sec. 24-68. - Discharging bows, crossbows, slingshots in public places. ( reference ) If any person willfully discharges or causes to be discharged any arrows, nails or bullets from a bow or crossbow, or stones from a sling or any other similar implement in any public place or place of public gathering he shall be guilty of a class 1 misdemeanor. (Code 1973, § 21-32; Code 1988, § 24-71) Cross reference— Penalty for class 1 misdemeanor, § 1-11. Sec. 24-69. - Hunting with firearms while under influence of intoxicant or narcotic drug. ( reference ) It shall be unlawful for any person to hunt with firearms in the city while under the influence of alcohol, or while under the influence of any narcotic drug or any other self-administered intoxicant or drug of whatsoever nature. Any person violating the provisions of this section shall be guilty of a class 2 misdemeanor. Game wardens, sheriffs and all other law enforcement officers shall enforce the provisions of this section. (Code 1973, § 21-36; Code 1988, § 24-73) Cross reference— Penalty for class 3 misdemeanor, § 1-11. State Law reference— Similar provisions, Code of Virginia, § 18.2-285.",
+  "method": "City of Portsmouth assessor parcels (Parcels_Real_Estate_View FeatureServer/3), owner 'CITY OF PORTSMOUTH'. Cemetery parcels were identified by geocoded cemetery locations and legal descriptions: Oak Grove (CPN 00400010, 225 Peninsula Ave), Cedar Grove (00200010, 305 Fort Ln), and two parcels with legal 'CEMETARY' on Pulaski St/Columbus Ave (02090020, 02090030; Mount Calvary/Mount Olive area).",
+  "confidence": "medium",
+  "notes": "3 features (4 parcels). Olive Branch Cemetery (Clifford St at City Park Ave) appears to lie inside the 68-ac city 'City Park' parcel and cannot be separated, so it is NOT mapped. Lincoln Memorial Cemetery appears privately owned. Whole Oak Grove parcel (27 ac) is used and may include non-burial grounds. No official city list of municipal cemeteries was found to confirm completeness."
+ },
+ {
+  "id": "roanoke-county--county-parks",
+  "jurisdiction": "county:Roanoke",
+  "section": "Sec. 15-7(5)",
+  "text": "(5) Hunting and firearms. No person in a park shall hunt, trap or pursue wildlife. Trapping may be authorized, by permit, when it is deemed by the director that said activity is in the best interest of public health, safety and/or welfare. No person shall within a park use, brandish or discharge any firearm, air rifle, spring gun, pellet gun, paintball gun, bow and arrow, sling or any other form of weapon potentially dangerous to wildlife or to human safety or any instrument that can be loaded with and fire blank cartridges. Shooting into park areas from beyond park property boundaries is forbidden.",
+  "method": "Roanoke County open-data 'Park Site Areas' (Park_Site_Areas_Hosted, a regional managed-areas layer). Selected features where OWNER or MAAGENCY starts with 'Roanoke County' (incl. VRFA-owned Explore Park and Mayflower Hills, which county parks operates). Dropped MATYPE 'Reservoir' (Carvins Cove is City of Roanoke) and MATYPE 'School' features unless the label names a park. Added 2 DCR Conservation Lands polygons (Hinchee Park; 2nd Jae Valley Park tract) that are missing from the county layer. Clipped to Census cb_2023 Roanoke County boundary (drops county-owned Arnold R. Burton Complex in Salem and slivers in Salem/Botetourt). Dissolved by name.",
+  "confidence": "medium",
+  "notes": "43 parks. Camp Roanoke and Spring Hollow share one identical polygon in the source, so they are merged as 'Camp Roanoke / Spring Hollow'. That polygon (~600 ac) may include Western Virginia Water Authority reservoir land rather than only county park land. Hinchee Park comes from DCR only. School-ground recreation sites (e.g. Cave Spring MS, Northside HS tennis courts) are excluded, but Sec. 13-5.3 already bars hunting within 100 yd of schools and parks; that buffer is not modeled. Parks inside the Town of Vinton are included because county ordinances apply in towns. The app's coarse jurisdiction outline differs from the Census boundary, so a few parks may plot slightly outside it."
+ },
+ {
+  "id": "salem-city--city-property",
+  "jurisdiction": "city:Salem",
+  "section": "Sec. 14-4(15)",
+  "text": "15. No person shall hunt on city owned or leased property. Law enforcement agencies are exempt from this section while in the performance of their work-related duties.",
+  "method": "City of Salem tax parcels (SalemVA_GIS TaxParcels FeatureServer/5). Selected owner IN ('CITY OF SALEM','CITY SCHOOL BOARD OF SALEM VA','ROANOKE COUNTY & CITY OF SALEM'), 210 parcels. Names come from the regional Park Site Areas layer where a parcel is at least 30% covered by a named Salem park; others are grouped as 'City of Salem property' or 'City School Board property'. Dissolved by name.",
+  "confidence": "medium",
+  "notes": "14 features. Leased property cannot be identified from assessor data and is NOT included. City-owned land outside the city limits is not covered by the parcel layer. School Board parcels are included as city property (an interpretation). Note that Sec. 14-4 is part of the urban archery rules, and Sec. 58-141 already bans firearm discharge city-wide, so hunting in Salem is archery-only anyway. Item 10 of the same section also bars bow discharge within 100 ft of public land; that buffer is not modeled."
+ },
+ {
+  "id": "spotsylvania-county--reservoirs",
+  "jurisdiction": "county:Spotsylvania",
+  "section": "Sec. 22-241",
+  "text": "NI RIVER AND HUNTING RUN RESERVOIRS - Hunting. Hunting is prohibited on the premises.",
+  "method": "Reservoir water from the Spotsylvania Waterbodies layer (NAME 'Ni River Reservoir', 'Hunting Run Reservoir'), unioned with county-owned parcels (County_Parcels_WFL1, FULLNAME 'Spotsylvania County%' or 'County of Spotsylvania%', school board excluded) that touch or lie within ~10 m of the water, or whose legal description names the reservoir. Ni River: parcel 33-A-3 ('Ni River Treatment Plant', ~519 ac). Hunting Run: 4-A-51 ('Hunting Run Reservoir', ~535 ac) plus 20 smaller buffer parcels (Milldale, Dulin, Bishop's Manor, Groves, Harrison/Hargrove, etc.). Manually excluded adjacent but separate parks: Hilldrup Park (20-A-18B), Fortunes Landing park parcel, and a Rt 610 lot.",
+  "confidence": "medium",
+  "notes": "2 features. 'Premises' is read as the impoundment plus surrounding county-owned reservoir land. Some small buffer lots may be general county property rather than reservoir premises. The City of Fredericksburg's Rappahannock River tracts near Hunting Run, and the Motts Run Reservoir (city/county co-owned), are not included."
+ },
+ {
+  "id": "stafford-county--public-property",
+  "jurisdiction": "county:Stafford",
+  "section": "Sec. 26-10",
+  "text": "It shall be unlawful to shoot or hunt on any public property including, but not limited to, schools, parks, pools, the courthouse and other county offices.",
+  "method": "Stafford County GIS parcel layer with owner names (gismapping.stafford.va.us WebApp/WebApp_Parcels/MapServer/0). Selected parcels whose Owner1 is the county or its school board; the exact SQL filter is in raw/stafford_owner_filter.txt (e.g. 'STAFFORD COUNTY VIRGINIA', 'COUNTY OF STAFFORD%', 'BOARD OF SUPERVISORS OF STAFFORD%', 'STAFFORD COUNTY SCHOOL BOARD%', 'COMMONWEALTH OF VIRGINIA & COUNTY OF%'). That is 759 parcels. Names come from the county's 2017 parks layer, school and facility points (WebApp_Misc); other parcels are grouped as 'County-owned property' or 'School Board property'. Dissolved by name.",
+  "confidence": "medium",
+  "notes": "61 features (759 parcels). 'Public property' is read as county and school-board land. NOT included: federal land (Quantico, NPS), state land (Widewater State Park, Crow's Nest NAP state-only parcels, VDOT), City of Fredericksburg riverfront tracts in Stafford, Stafford Regional Airport Authority land, and volunteer fire/rescue company land. These are arguably 'public property' too, but this county ordinance likely cannot govern state/federal land. Included: the ~1,790 ac Crow's Nest tract recorded as 'COMMONWEALTH OF VIRGINIA & COUNTY OF...' (co-owned), and the R-Board landfill co-owned with Fredericksburg. Also included: utility land (Abel/Smith Lake reservoirs, Lake Mooney), stormwater ponds and small open-space lots, plus 2 parcels the county co-owns with Fredericksburg. County land that is leased, or titled to unusual owner strings, may be missing."
+ },
+ {
   "id": "stafford-county--shooting-prohibited",
   "jurisdiction": "county:Stafford",
   "section": "Stafford County Code §26-17, §26-18 (also §26-4 pneumatic guns)",
@@ -178,6 +277,15 @@
   "method": "Queried the Surry County public parcel layer (CivQuest-hosted county GIS) around Surry Landing Drive. Every parcel with legal description \"LOT n SURRY LANDING (SUB.)\" carries tax-map PIN 14-3-*; their recorded plat references (PLAT-120-785, PLAT-7-267, PLAT-8-23, PLAT-11-55) match the plats cited in the ordinance. Selected all 10 parcels 14-3-1 ... 14-3-9 and 14-3-1A (lots 1-10), unioned with a 15 m closing to absorb the internal road, simplified 0.0001 deg, rounded to 5 decimals.",
   "confidence": "high",
   "notes": "All ten parcels whose legal description names Surry Landing are on one tax-map block (14-3) and cite the ordinance's plats. Lot 1 (14-3-1, ~89.5 ac, PLAT-8-23 of 2011) is a large residual tract that holds the \"future\" lots; it is included because the ordinance expressly covers future lots and the 2011 plat amendment. Parcel lines are from county GIS and may differ slightly from the recorded plat; shoreline edge follows the parcel polygons."
+ },
+ {
+  "id": "tazewell-county--county-parks",
+  "jurisdiction": "county:Tazewell",
+  "section": "Sec. 14-32",
+  "text": "It is hereby declared to be unlawful for any person to do any of the acts set forth in this section within the limits of the facilities and lands located within any public park or parkway or lands used by the county for related purposes within the limits of the county; (1) To carry or discharge any firearms, firecrackers, rockets, torpedoes or fireworks of any kind without written consent of the administrator, with the exception of duly authorized law enforcement officials on official duty and with the exception of persons legally permitted to carry a firearm as a concealed weapon, pursuant to Code of Virginia, § 18.2-308 et seq. as amended, while in compliance with any laws or regulations appertaining to such permit.",
+  "method": "Tazewell County has no public parcel/park GIS (its viewer needs a login). Cavitt's Creek Park (Lake Witten) was built from VGIN statewide parcel geometry for tax maps 75-A-1A, 75-A-2A, 75-A-3, 75-A-3A, 75-A-4A (757 Recreation Dr) and 74-A-143A. Each was confirmed as 'TAZEWELL COUNTY (BD OF SUPERVISORS)' in the county's Vision (VGSI) assessment database. This was unioned with the DCR Conservation Lands 'Cavitts Creek Park' polygon (MAAGENCY Tazewell County), which adds the lake/northern section missing from VGIN.",
+  "confidence": "low",
+  "notes": "Only 1 area mapped. The ordinance also covers 'any public park or parkway or lands used by the county for related purposes', which may include other county recreation sites that could not be identified. A full owner search of VGSI was not possible (results paginate unreliably). The ordinance names the Tazewell County Fairgrounds, but the parcel at 515 Fairground Rd (94-A-52) is assessed to a private owner (Peery), so it was NOT mapped; it should be verified. Several Tazewell parks (e.g. Lotito Park) appear to be town parks. Treat this as incomplete."
  },
  {
   "id": "virginia-beach-city--north-of-trace-line",

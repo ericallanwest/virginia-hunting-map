@@ -151,3 +151,26 @@ to confirm:
 35. **Local ordinances for small game and furbearers:** citywide firearm bans and "bowhunting for deer
     only" rules (e.g. Richmond, Salem) close these seasons in those cities; Buena Vista's wild-bird ban
     covers grouse, quail, pheasant, and crow, and Williamsburg's bird sanctuary covers game birds.
+
+## Mapped local-ordinance areas
+
+34 areas are mapped (`public/data/local-areas.geojson`; per-area source, method, confidence, and
+notes in `src/regs/local-areas.json`, shown in the location panel). Effects are in
+`src/regs/local-effects.ts`. Points to review:
+
+36. **Not mapped:** Prince William's 12 restricted areas (Sec. 31-26–31-28); Suffolk "densely populated
+    areas" (computed from parcel layout); Louisa *posted* subdivisions; Lynchburg permitted farmland;
+    Roanoke city / Portsmouth "public places"; Norton "in any street". All remain as text in the panel.
+37. **Low confidence:** Greene (Locust Lane / Midway Acres, rebuilt from parcel legal descriptions;
+    hunters with the owner's permission are exempt, so it's shown as information only) and Tazewell
+    parks (no public parcel GIS; only Cavitt's Creek mapped).
+38. **Under-mapped:** James City "recorded subdivisions" — the county layer misses small rural and
+    petitioned subdivisions and ~9 of 57 named pre-1964 subdivisions; the real restricted area is larger.
+39. **Judgment calls:** Henrico office/mixed-use districts counted as commercial; Essex "R-2 Limited
+    Residential" taken to be today's R-2 "Low Density Residential"; Petersburg agricultural zoning (city
+    sources disagree, 5.6–10.8 km²); Chesapeake north boundary follows I-664 north from Bowers Hill;
+    Virginia Beach "Point Creek" read as Hell Point Creek; Cumberland read as the wedge near Cartersville;
+    Loudoun parks include regional-authority parks (firearm *possession* ban, so archery still allowed);
+    Stafford "public property" = county and school-board land.
+40. **Fairfax Appendix J** restricted/exempt areas come from county GIS; the countywide .224-caliber rule
+    is applied everywhere except the exempted parcels.
