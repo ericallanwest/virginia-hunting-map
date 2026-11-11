@@ -39,7 +39,10 @@ encoded with the literal reading noted. Resolve these (ideally with DWR), then a
    rules" for firearms; state parks other than those named → "check" for everything (most parks
    are closed or special-hunt only).
 
-9. **Department of Defense lands** (Prince William exceptions, EAB exception) are not mapped yet.
+9. **Department of Defense lands** are mapped (src/regs/military.ts): the five bases DWR lists with hunting
+   programs show the state framework as "check posted rules"; other DoD land is closed to public hunting.
+   Not encoded: base-specific seasons and days (e.g. Quantico buck-only firearms, no Tue/Wed), Fauquier fox
+   open on Quantico (shown as text), and Camp Peary's longer fall turkey season (no public access).
 
 10. **Name matching.** DCR's layer names some state forests without "State Forest" ("Cumberland",
     "Big Woods", "The Channels", "Prince Edward-Gallion"); these are assumed to be the forests in
@@ -165,9 +168,15 @@ notes in `src/regs/local-areas.json`, shown in the location panel). Effects are 
     kept on today's Rt 234). Gainesville is medium (railroad distance 17,850-18,100 ft vs 18,401 in the text). The county's "Restricted Firearm Discharge
     Zone" GIS layer is a different rule (100-yard buffers). **Fairfax Appendix J** was traced from the
     county's 2018 "No Shooting Areas" map PDF (no vector layer is published).
-    **Not mapped:** Suffolk "densely populated
-    areas" (computed from parcel layout); Louisa *posted* subdivisions; Lynchburg permitted farmland;
-    Roanoke city / Portsmouth "public places"; Norton "in any street". All remain as text in the panel.
+    **Suffolk "densely populated areas"** (Sec. 54-122, medium) are computed from city parcels, buildings and
+    address points: 5+ touching lots of 1 acre or less, each with a building, plus 200 yards. Lots across a
+    street aren't counted as adjacent; the literal "adjacent to at least one other" reading would give 15%
+    of the city instead of 11%. The citywide setbacks aren't mapped. **Lynchburg permitted farmland**
+    (Sec. 27-67.1, low) uses the assessor's land-use (farm) program, so farms outside it are missed; the
+    permit and 100-yard setback can't be mapped.
+    **Not mapped:** Louisa *posted* subdivisions (no published list or GIS layer); Ashland 50-acre permitted
+    parcels (Hanover parcel server unavailable); Suffolk cemeteries; Roanoke city / Portsmouth "public
+    places"; Norton "in any street". All remain as text in the panel.
 37. **Greene (low confidence):** Locust Lane / Midway Acres now follows full-resolution county parcels,
     but today's only R-2 district there doesn't adjoin Locust Lane (business parcels between). The 1990
     "adjoining R-2" may be the since-rezoned New Life Drive tracts (unmapped); needs the county's exhibit.
