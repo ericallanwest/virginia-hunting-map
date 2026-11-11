@@ -158,7 +158,13 @@ to confirm:
 notes in `src/regs/local-areas.json`, shown in the location panel). Effects are in
 `src/regs/local-effects.ts`. Points to review:
 
-36. **Not mapped:** Prince William's 12 restricted areas (Sec. 31-26–31-28); Suffolk "densely populated
+36. **Prince William's restricted areas** (Sec. 31-26–31-28) were hand-built from the metes-and-bounds
+    descriptions (11 of 12; the Courthouse complex lies outside the map's county outline). Ridgewood
+    Estates, Woodbine Woods, and Gainesville are low confidence; the text itself has inconsistencies
+    (unnamed Felkins Branch, Woodbine Woods leg lengths). The county's "Restricted Firearm Discharge
+    Zone" GIS layer is a different rule (100-yard buffers). **Fairfax Appendix J** was traced from the
+    county's 2018 "No Shooting Areas" map PDF (no vector layer is published).
+    **Not mapped:** Suffolk "densely populated
     areas" (computed from parcel layout); Louisa *posted* subdivisions; Lynchburg permitted farmland;
     Roanoke city / Portsmouth "public places"; Norton "in any street". All remain as text in the panel.
 37. **Low confidence:** Greene (Locust Lane / Midway Acres, rebuilt from parcel legal descriptions;

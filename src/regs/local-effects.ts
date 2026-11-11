@@ -183,6 +183,7 @@ LOCAL_EFFECTS.push(
   inArea('surry-county--surry-landing', 'county:Surry', ALL, 'Sec. 20-99(a)', 'Surry Landing on the James: no hunting.'),
   inArea('warren-county--designated-subdivisions', 'county:Warren', ALL, '§ 110-1', 'Designated subdivision/area: no hunting.'),
   inArea('fairfax-county--appendix-j-restricted', 'county:Fairfax', FIREARMS, 'Section 6-1-2(a)', 'Appendix J heavily populated area: no firearm discharge.'),
+  inArea('prince-william-county--restricted-areas', 'county:Prince William', FIREARMS, 'Sec. 31-26, 31-27, 31-28', 'Restricted area: no firearm discharge (owners, family, and permittees on tracts of 5+ acres excepted).'),
   inArea('stafford-county--shooting-prohibited', 'county:Stafford', FIREARMS, 'Sec. 26-17, 26-18', 'Shooting-prohibited area: no firearm discharge.'),
   inArea('gloucester-county--wicomico-hayes', 'county:Gloucester', FIREARMS, 'Sec. 13-14', 'Wicomico/Hayes area: no firearm discharge.'),
   inArea('gloucester-county--gloucester-point-sanitary-district', 'county:Gloucester', FIREARMS, 'Sec. 13-15', 'Gloucester Point sanitary district: no firearm discharge.'),
