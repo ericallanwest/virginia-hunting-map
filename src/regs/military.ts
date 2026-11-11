@@ -9,10 +9,14 @@
  * licenses; the base's own seasons, days, areas and bag limits apply within the state's.
  * Other DoD land has no public hunting.
  *
+ * Where a base's own seasons for a license year are encoded (military-2026.ts), those replace
+ * the state framework for that species on the base.
+ *
  * Boundaries: DoD MIRTA installation layer (FY2020), checked against Census TIGER; see
  * sources/military/README.md.
  */
-import type { Place } from './types';
+import { MILITARY_2026, type BaseYear } from './military-2026';
+import type { Place, SeasonRule, Species } from './types';
 
 export interface Installation {
   url: string;
@@ -48,6 +52,34 @@ export const HUNTING_PROGRAMS: Record<string, Installation> = {
 
 export const militaryProgram = (place: Place): Installation | undefined =>
   place.land === 'military' && place.property ? HUNTING_PROGRAMS[place.property] : undefined;
+
+/**
+ * Bases' own seasons, by license year (military-<year>.ts). Add a year's file here; a year
+ * with no entry for a base (e.g. an archived year) falls back to the state framework.
+ */
+export const BASE_REGS: BaseYear[] = [...MILITARY_2026];
+
+/** The base's own regulations for a program base and license year, if encoded. */
+export const baseYear = (place: Place, licenseYear: number): BaseYear | undefined =>
+  militaryProgram(place)
+    ? BASE_REGS.find((b) => b.installation === place.property && b.licenseYear === licenseYear)
+    : undefined;
+
+/**
+ * The base's own seasons for a species, or undefined to fall back to the state framework.
+ * A species the base closes gets an empty list.
+ */
+export function baseSeasons(place: Place, species: Species, licenseYear: number): { year: BaseYear; rules: SeasonRule[] } | undefined {
+  const year = baseYear(place, licenseYear);
+  if (!year) return undefined;
+  if (year.closed?.includes(species)) return { year, rules: [] };
+  const rules = year.seasons.filter((s) => s.species === species);
+  return rules.length ? { year, rules } : undefined;
+}
+
+/** Note on each season taken from a base's regulation. */
+export const baseSeasonNote = (year: BaseYear) =>
+  `Base season from ${year.source}. Installation permit and iSportsman check-in required.`;
 
 export const MILITARY_PROGRAM_NOTE =
   'Military installation: hunting only with an installation permit (register on its iSportsman site); ' +

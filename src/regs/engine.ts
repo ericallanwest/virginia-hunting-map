@@ -3,7 +3,7 @@ import type { DateRange, InfoRule, Land, Place, SeasonRule, SeasonType, Selector
 import { CITY_PARENT, splitFor } from './virginia';
 import { localEffect, type LocalEffect } from './local';
 import { regsFor } from './registry';
-import { MILITARY_CLOSED_NOTE, MILITARY_PROGRAM_NOTE, militaryProgram } from './military';
+import { MILITARY_CLOSED_NOTE, MILITARY_PROGRAM_NOTE, baseSeasonNote, baseSeasons, baseYear, militaryProgram } from './military';
 
 // ---------------------------------------------------------------------------
 // Selector matching
@@ -171,6 +171,12 @@ function militarySeasons(regs: SpeciesRegs, place: Place): PlaceSeason[] {
   const program = militaryProgram(place);
   if (!program) return [];
   const asPrivate: Place = { ...place, land: 'private', property: undefined };
+  // The base's own seasons for this species and year, when encoded (military-<year>.ts).
+  const base = baseSeasons(place, regs.species, regs.licenseYear);
+  if (base) {
+    const note = baseSeasonNote(base.year);
+    return base.rules.filter((rule) => matches(rule.where, asPrivate)).map((rule) => ({ ...toPlaceSeason(regs, rule, asPrivate), note }));
+  }
   return regs.seasons
     .filter((rule) => matches(rule.where, asPrivate))
     .map((rule) => ({ ...toPlaceSeason(regs, rule, asPrivate), take: 'check' as const, note: MILITARY_PROGRAM_NOTE }));
@@ -180,9 +186,17 @@ function militarySeasons(regs: SpeciesRegs, place: Place): PlaceSeason[] {
 function militaryInfo(regs: SpeciesRegs, place: Place): InfoRule[] {
   if (place.land !== 'military') return [];
   const program = militaryProgram(place);
-  const text = program
-    ? `${MILITARY_PROGRAM_NOTE} ${program.note} Installation hunting site: ${program.url}`
-    : MILITARY_CLOSED_NOTE;
+  const year = baseYear(place, regs.licenseYear);
+  const base = baseSeasons(place, regs.species, regs.licenseYear);
+  let text = MILITARY_CLOSED_NOTE;
+  if (program && year && base) {
+    const what = base.rules.length ? 'Seasons shown are the base’s own' : 'Closed on this base';
+    text = `Military installation: hunting only with an installation permit (register on its iSportsman site). ${what}, from ${year.source} (${year.url}). ${year.note} Installation hunting site: ${program.url}`;
+  } else if (program && year) {
+    text = `${MILITARY_PROGRAM_NOTE} ${year.note} Installation hunting site: ${program.url}`;
+  } else if (program) {
+    text = `${MILITARY_PROGRAM_NOTE} ${program.note} Installation hunting site: ${program.url}`;
+  }
   return [{ id: `${regs.species}-military`, species: regs.species, topic: 'access', text, where: {} }];
 }
 
@@ -213,10 +227,10 @@ export function evaluate(regs: SpeciesRegs, place: Place, iso: string, opts: { i
   const open: OpenSeason[] = [];
   if (licenseYearOf(iso) === ly) {
     for (const s of seasonsForPlace(regs, place)) {
-      if (!inRanges(iso, s.dates, ly)) continue;
-      if (s.rule.weekdays && !s.rule.weekdays.includes(weekday(iso))) continue;
+      if (!inRanges(iso, s.dates, ly) || !openOnDay(s.rule, iso, ly)) continue;
       const eff = localEffect(place, regs.species, s.rule);
-      const o: OpenSeason = { rule: s.rule, take: dayTake(s, iso, ly), note: s.note, weapon: s.rule.type === 'chase' ? 'none' : eff.weapon, local: eff.applied };
+      const weapon = s.rule.type === 'chase' ? 'none' : s.rule.noRifles && eff.weapon === 'firearms' ? 'shotgun' : eff.weapon;
+      const o: OpenSeason = { rule: s.rule, take: dayTake(s, iso, ly), note: s.note, weapon, local: eff.applied };
       if (s.rule.dogs && o.take !== 'check') Object.assign(o, dogStatus(regs, s.rule, place, iso));
       open.push(o);
     }
@@ -231,6 +245,13 @@ export function evaluate(regs: SpeciesRegs, place: Place, iso: string, opts: { i
   if (closedLand) return { open, info: info.filter((i) => i.topic === 'access'), summary: { status: 'closed' } };
   const counted = open.filter((o) => opts.includeYouth || !o.rule.youthOnly);
   return { open, info, summary: summarize(counted) };
+}
+
+/** Within a rule's dates: is this day open, after `weekdays`, `extraDays` and `closedDays`? */
+export function openOnDay(rule: SeasonRule, iso: string, ly: number): boolean {
+  if (rule.closedDays && inRanges(iso, rule.closedDays, ly)) return false;
+  if (rule.weekdays && !rule.weekdays.includes(weekday(iso))) return !!rule.extraDays && inRanges(iso, rule.extraDays, ly);
+  return true;
 }
 
 export function dayTake(s: PlaceSeason, iso: string, ly: number): DayTake {
@@ -299,7 +320,7 @@ export function nextChange(regs: SpeciesRegs, place: Place, iso: string): string
   for (const s of seasonsForPlace(regs, place)) {
     // Day-of-week seasons change status from one day to the next.
     if (s.rule.weekdays && inRanges(nextDay(iso), s.dates, ly)) edges.add(nextDay(iso));
-    for (const [a, b] of s.dates) {
+    for (const [a, b] of [...s.dates, ...(s.rule.extraDays ?? []), ...(s.rule.closedDays ?? [])]) {
       edges.add(resolve(a, ly));
       edges.add(nextDay(resolve(b, ly)));
     }
@@ -319,7 +340,7 @@ function deerFirearmsOpen(place: Place, iso: string): boolean {
   const deer = regsFor('deer', iso);
   if (!deer) return false;
   return seasonsForPlace(deer, place).some(
-    (s) => (s.rule.type === 'firearms' || s.rule.type === 'antlerless_firearms') && s.take !== 'check' && inRanges(iso, s.dates, deer.licenseYear),
+    (s) => (s.rule.type === 'firearms' || s.rule.type === 'antlerless_firearms') && s.take !== 'check' && inRanges(iso, s.dates, deer.licenseYear) && openOnDay(s.rule, iso, deer.licenseYear),
   );
 }
 

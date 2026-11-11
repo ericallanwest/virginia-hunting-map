@@ -121,6 +121,12 @@ export interface SeasonRule {
   youthOnly?: boolean;
   /** Open only on these days of the week (0 = Sunday … 6 = Saturday), e.g. crow. */
   weekdays?: number[];
+  /** Days open even though `weekdays` excludes them (e.g. Quantico hunts Veterans Day, a Wednesday). */
+  extraDays?: DateRange[];
+  /** Days closed within `dates` (e.g. a military base's holiday closures). */
+  closedDays?: DateRange[];
+  /** Rifles (and handguns) may not be used: firearms means shotguns and muzzleloaders (military base rules). */
+  noRifles?: boolean;
   /** Hunting with dogs is allowed in this season (subject to the species' DogRules and Sundays). */
   dogs?: boolean;
   /** Legal hours when they differ from the species' usual hours (see sun.ts). */
