@@ -22,6 +22,8 @@ const state = {
   subArea: params.get('side') || undefined,
   selected: undefined as Located | undefined,
   point: params.get('at')?.split(',').map(Number) as [number, number] | undefined,
+  /** Where to compute sun times when a place was picked from search (no clicked point). */
+  center: undefined as [number, number] | undefined,
 };
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string) => document.querySelector(sel) as T;
@@ -105,7 +107,14 @@ function renderPanel() {
     panel.innerHTML = '';
     return;
   }
-  panel.innerHTML = renderDetails({ located: state.selected, regs, iso: state.iso, includeYouth: state.includeYouth, subArea: state.subArea });
+  panel.innerHTML = renderDetails({
+    located: state.selected,
+    regs,
+    iso: state.iso,
+    includeYouth: state.includeYouth,
+    subArea: state.subArea,
+    latLng: state.point ?? state.center,
+  });
   panel.querySelectorAll<HTMLButtonElement>('[data-subarea]').forEach((b) =>
     b.addEventListener('click', () => {
       state.subArea = b.dataset.subarea;
@@ -146,7 +155,9 @@ function selectFeature(f: Poly, kind: keyof Layers) {
   state.point = undefined;
   state.subArea = undefined;
   marker?.remove();
-  map.fitBounds(L.geoJSON(f as any).getBounds(), { maxZoom: 12, padding: [20, 20] });
+  const bounds = L.geoJSON(f as any).getBounds();
+  state.center = [bounds.getCenter().lat, bounds.getCenter().lng];
+  map.fitBounds(bounds, { maxZoom: 12, padding: [20, 20] });
   openSheet();
   renderPanel();
   syncUrl();

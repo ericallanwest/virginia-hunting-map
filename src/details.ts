@@ -1,8 +1,9 @@
 import { dayOfLicenseYear, fmt, fmtRange, resolve } from './regs/dates';
 import { evaluate, nextChange, seasonsForPlace, WEAPON_OF, type DayTake, type PlaceSeason } from './regs/engine';
-import type { InfoTopic, Place, SpeciesRegs } from './regs/types';
+import type { InfoTopic, Place, SeasonRule, SpeciesRegs } from './regs/types';
 import { splitFor } from './regs/virginia';
 import { LOCAL_AREAS, localConflicts, localFor } from './regs/local';
+import { fmtTime, hoursFor, legalWindow, sunDay, zoneName, type Hours } from './sun';
 import { jurisdictionLabel, type Located } from './geo';
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
@@ -60,9 +61,11 @@ export interface DetailsInput {
   iso: string;
   includeYouth: boolean;
   subArea?: string;
+  /** [lat, lng] for sunrise/sunset and legal hours. */
+  latLng?: [number, number];
 }
 
-export function renderDetails({ located, regs, iso, includeYouth, subArea }: DetailsInput): string {
+export function renderDetails({ located, regs, iso, includeYouth, subArea, latLng }: DetailsInput): string {
   const jurId: string = located.jurisdiction?.properties.id;
   const split = splitFor(jurId);
   // Mapped splits: the side comes from the map. Unmapped ones: ask (default to the first side).
@@ -169,6 +172,7 @@ export function renderDetails({ located, regs, iso, includeYouth, subArea }: Det
     ${splitHtml}
     <section>
       <h3>${fmtDate(iso)}</h3>
+      ${latLng ? sunHtml(iso, latLng, ev.open.filter((o) => o.weapon !== 'none').map((o) => o.rule)) : ''}
       ${conflictHtml}
       ${chaseMsg}
       ${openHtml}
@@ -189,6 +193,40 @@ export function renderDetails({ located, regs, iso, includeYouth, subArea }: Det
 
 const DAY = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const weekdayText = (days: number[]) => days.map((d) => DAY[d]).join(', ');
+
+const HOURS_LABEL: Record<Hours, string> = {
+  'half-hour': '½ hour before sunrise to ½ hour after sunset',
+  'until-noon': '½ hour before sunrise until noon',
+  'until-sunset': '½ hour before sunrise until sunset',
+  'any-time': 'day or night',
+};
+
+/** Sunrise/sunset at the selected spot, and legal hunting hours for the seasons open there. */
+function sunHtml(iso: string, [lat, lng]: [number, number], open: SeasonRule[]): string {
+  const sun = sunDay(iso, lat, lng);
+  const sunLine = `<p class="sun">Sunrise <strong>${fmtTime(sun.sunrise)}</strong> · Sunset <strong>${fmtTime(sun.sunset)}</strong> <span class="small">${zoneName(sun.sunrise)}</span></p>`;
+
+  // Group the open seasons by their legal-hours rule.
+  const groups = new Map<Hours, string[]>();
+  for (const rule of open) {
+    const h = hoursFor(rule);
+    if (h) groups.set(h, [...(groups.get(h) ?? []), rule.label]);
+  }
+  if (groups.size === 0) return sunLine;
+  const windowText = (h: Hours) => {
+    const w = legalWindow(h, iso, sun);
+    return w === 'any' ? 'Day or night' : `${fmtTime(w.start)} – ${fmtTime(w.end)}`;
+  };
+  const hoursLine =
+    groups.size === 1
+      ? `<p class="sun">Legal hours: <strong>${windowText([...groups.keys()][0])}</strong>${
+          groups.has('any-time') ? '' : ` <span class="small">(${HOURS_LABEL[[...groups.keys()][0]]})</span>`
+        }</p>`
+      : `<p class="sun">Legal hours:</p><ul class="hours">${[...groups.entries()]
+          .map(([h, labels]) => `<li><strong>${windowText(h)}</strong> — ${esc([...new Set(labels)].join(', '))}</li>`)
+          .join('')}</ul>`;
+  return sunLine + hoursLine;
+}
 
 export function fmtDate(iso: string): string {
   const [y, m, d] = iso.split('-').map(Number);
