@@ -6,12 +6,13 @@ const ALL = ALL_REGS;
 
 export type ViewId = 'weapon' | 'take' | 'dogs';
 
-export type Group = 'big' | 'small' | 'fur';
+export type Group = 'big' | 'small' | 'fur' | 'mig';
 
 export const GROUPS: { id: Group; label: string }[] = [
   { id: 'big', label: 'Big Game' },
   { id: 'small', label: 'Small Game' },
   { id: 'fur', label: 'Furbearer' },
+  { id: 'mig', label: 'Migratory Birds' },
 ];
 
 export interface SpeciesInfo {
@@ -67,6 +68,12 @@ export const SPECIES: SpeciesInfo[] = [
   { id: 'raccoon', group: 'fur', label: 'Raccoon', available: true, views: [WEAPON] },
   { id: 'opossum', group: 'fur', label: 'Opossum', available: true, views: [WEAPON] },
   { id: 'skunk', group: 'fur', label: 'Skunk', available: true, views: [WEAPON] },
+  // Migratory game birds (2026–27 only). Crow stays in Small Game (see migratory-2026.ts).
+  { id: 'dove', group: 'mig', label: 'Dove', available: true, views: [WEAPON] },
+  { id: 'duck', group: 'mig', label: 'Duck', available: true, views: [WEAPON] },
+  { id: 'goose', group: 'mig', label: 'Goose & Swan', available: true, views: [WEAPON] },
+  { id: 'woodcock', group: 'mig', label: 'Woodcock & Snipe', available: true, views: [WEAPON] },
+  { id: 'rail', group: 'mig', label: 'Rail & Gallinule', available: true, views: [WEAPON] },
 ];
 
 export const speciesInfo = (s: Species) => SPECIES.find((x) => x.id === s)!;

@@ -104,7 +104,11 @@ function renderPanel() {
     return;
   }
   if (!regs) {
-    panel.innerHTML = '';
+    // No regulations for this species in the date's license year (e.g. migratory birds before 2026–27).
+    const years = availableYears(state.species);
+    panel.innerHTML = `<p class="hint">This app has no ${label(state.species).toLowerCase()} regulations for the ${yearLabel(licenseYearOf(state.iso))} license year${
+      years.length ? ` (it covers ${years.map(yearLabel).join(', ')})` : ''
+    }. See <a href="https://dwr.virginia.gov/hunting/regulations/" target="_blank" rel="noopener">DWR’s regulations</a>.</p>`;
     return;
   }
   panel.innerHTML = renderDetails({
@@ -172,7 +176,7 @@ function openSheet() {
 // ---------------------------------------------------------------------------
 // Controls
 // ---------------------------------------------------------------------------
-/** Group row (Big Game / Small Game / Furbearer) above that group's species buttons. */
+/** Group row (Big Game / Small Game / Furbearer / Migratory Birds) above that group's species buttons. */
 function buildSpeciesPicker() {
   const groupEl = $('#group');
   const speciesEl = $('#species');

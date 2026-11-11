@@ -7,7 +7,7 @@ antler point restrictions, bonus-permit validity, and dog rules.
 
 ![Deer seasons on Nov 27: National Forest bucks-only (gold) next to either-sex private land (green)](docs/screenshots/deer-nov27.png)
 
-**Status:** Big game, small game, and furbearers for the 2026–27 license year, with 2025–26 and 2024–25 archived, plus local firearm ordinances and mapped ordinance areas. See [docs/ROADMAP.md](docs/ROADMAP.md).
+**Status:** Big game, small game, furbearers, and migratory game birds for the 2026–27 license year (migratory birds 2026–27 only), with 2025–26 and 2024–25 archived, plus local firearm ordinances and mapped ordinance areas. See [docs/ROADMAP.md](docs/ROADMAP.md).
 
 > Unofficial. Regulations are summarized from
 > [Virginia DWR's published regulations](https://dwr.virginia.gov/hunting/regulations/). Always

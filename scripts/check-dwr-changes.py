@@ -34,6 +34,7 @@ PAGES = {
     "general.html": f"{BASE}/hunting/regulations/general/",
     "smallgame.html": f"{BASE}/hunting/regulations/smallgame/",
     "furbearerhunting.html": f"{BASE}/hunting/regulations/furbearerhunting/",
+    "migratory-gamebirds.html": f"{BASE}/hunting/regulations/migratory-gamebirds/",
     "legal-use.html": f"{BASE}/hunting/regulations/legal-use-of-firearms-and-archery-tackle/",
     "local-ordinances.html": f"{BASE}/hunting/regulations/local-ordinances/",
     "elk-hunting.html": f"{BASE}/wildlife/elk/hunting/",

@@ -196,3 +196,28 @@ notes in `src/regs/local-areas.json`, shown in the location panel). Effects are 
     misprint for Dec 14; encoded as printed (Dec 5–14 antlered only) with a note.
 42. **Local ordinances in archived years** use the current (2026) ordinance data; the archived notice
     says so.
+
+## Migratory game birds (2026–27)
+
+43. **Youth & veterans days, AP Zone Canada goose bag.** DWR's migratory page lists the youth/veterans
+    days twice: once with "2 Canada geese in the Atlantic Population Zone", once with "1 Canada goose".
+    The AP Zone daily bag is 2 (DWR and the federal memorandum MGBHM–2026–02). *Encoded:* a fact that
+    says 2 and flags the discrepancy.
+44. **Light goose hours when other waterfowl seasons are closed.** DWR's general "Shooting Hours"
+    paragraph lists the regular light goose season (when all other waterfowl seasons are closed) as an
+    exception to the sunset close, but the light goose section and the federal memorandum give
+    "one half-hour before sunrise to sunset" and only allow electronic calls and unplugged shotguns.
+    *Encoded:* until sunset.
+45. **Tundra swan area and independent cities.** The area is "all counties and portions of counties
+    lying east of I-95 and south of the Prince William/Stafford County line". *Encoded:* includes the
+    independent cities east of I-95 (Chesapeake, Virginia Beach, Suffolk, …).
+46. **Canada goose zone line.** Jurisdictions were classified against I-64, I-95, US 460 and VA 32 from
+    Census TIGER/Line 2023 roads. Ten localities the line crosses get both zones with a note (Albemarle,
+    Goochland, Henrico west of I-95, Louisa; Isle of Wight, Prince George and Sussex east of I-95,
+    Southampton, Petersburg east of I-95; western Suffolk). Where the line only grazes a locality
+    (Nelson at Rockfish Gap, Fluvanna near Zion Crossroads, Richmond west of I-95 near the I-64
+    interchange; each under 1% of the area) it is encoded as RP with a note. US 460 has business and
+    bypass routes in Petersburg and Suffolk; the mainline route was used.
+47. **Hampton** bans hunting and firearm discharge except waterfowl hunting from state-licensed blinds
+    over water (Sec. 40-18, 40-20). *Encoded:* ducks/geese shotgun-only with that note; all other
+    migratory birds closed.
