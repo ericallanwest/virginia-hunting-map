@@ -27,6 +27,9 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
+        env:
+          # Optional: CARTO basemap key (repo secret). Without it the map falls back to OpenStreetMap tiles.
+          VITE_CARTO_KEY: ${{ secrets.CARTO_KEY }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

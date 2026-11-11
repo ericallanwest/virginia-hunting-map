@@ -29,7 +29,19 @@ export function createMap(el: HTMLElement): L.Map {
   const map = L.map(el, { zoomControl: false, minZoom: 6, maxBounds: [[34.5, -86], [41.5, -73]] });
   L.control.zoom({ position: 'topright' }).addTo(map);
   const esri = 'https://server.arcgisonline.com/ArcGIS/rest/services';
-  const basemaps = {
+  // CARTO's light basemap needs an API key, supplied at build time (VITE_CARTO_KEY; see README).
+  const cartoKey = import.meta.env.VITE_CARTO_KEY as string | undefined;
+  const basemaps: Record<string, L.TileLayer> = {
+    ...(cartoKey
+      ? {
+          Light: L.tileLayer(`https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png?key=${encodeURIComponent(cartoKey)}`, {
+            attribution:
+              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 19,
+          }),
+        }
+      : {}),
     Streets: L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19,
@@ -43,7 +55,7 @@ export function createMap(el: HTMLElement): L.Map {
       maxZoom: 19,
     }),
   };
-  basemaps.Streets.addTo(map);
+  (basemaps.Light ?? basemaps.Streets).addTo(map);
   L.control.layers(basemaps, undefined, { position: 'topright' }).addTo(map);
   map.fitBounds([[36.54, -83.68], [39.47, -75.24]]);
   return map;

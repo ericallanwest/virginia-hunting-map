@@ -23,6 +23,12 @@ npm test           # rules-engine + data-integrity tests
 npm run build      # static site in dist/ (deployable anywhere, e.g. GitHub Pages)
 ```
 
+**Basemap key (optional).** The default "Light" basemap is CARTO's, which needs an API key. Put it in
+`.env.local` (git-ignored) as `VITE_CARTO_KEY=...` for local development, and as a repository secret
+named `CARTO_KEY` for the GitHub Pages build. Without a key the map uses OpenStreetMap tiles. The key
+is visible to anyone using the deployed site (tile keys are sent from the browser), so restrict it
+to your site's domain in the CARTO dashboard.
+
 The processed map layers in `public/data/` are committed, so you don't need to rebuild them to
 run the app. To refresh them from the source agencies:
 

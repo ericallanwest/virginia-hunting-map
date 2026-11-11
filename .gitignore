@@ -2,3 +2,5 @@ node_modules/
 dist/
 sources/geo/
 !sources/geo/README.md
+.env.local
+.env.*.local
