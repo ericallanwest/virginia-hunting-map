@@ -1,0 +1,36 @@
+name: Check links
+
+# Every link the app shows or cites (DWR pages, local ordinances, installation and refuge
+# sites). Links can break any time of year, so this runs weekly year-round and opens or
+# updates an issue when any link is broken.
+on:
+  schedule:
+    - cron: '41 14 * * 2' # Tuesdays 14:41 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - id: check
+        run: python3 scripts/check-links.py --report links.md
+      - name: Open or update the tracking issue
+        if: steps.check.outputs.broken == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh label create broken-links --color d4622a --description "Links in the app are broken" 2>/dev/null || true
+          issue=$(gh issue list --label broken-links --state open --json number --jq '.[0].number')
+          if [ -n "$issue" ]; then
+            gh issue comment "$issue" --body-file links.md
+          else
+            gh issue create --title "Broken links in the app" --label broken-links --body-file links.md
+          fi
