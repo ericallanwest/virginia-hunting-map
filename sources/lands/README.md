@@ -7,7 +7,8 @@ decimals. The rules are in `src/regs/other-lands.ts` and `src/regs/state-parks.t
 
 | File | What | Source |
 |---|---|---|
-| army-corps | John H. Kerr Reservoir (Corps land, minus lake water, flowage easements and state parks) | DCR Conservation Lands + DWR management units |
+| army-corps | John H. Kerr Reservoir (Corps land, minus lake water, flowage easements, state parks and developed recreation areas) | DCR Conservation Lands + DWR management units |
+| kerr-recreation-areas | 19 developed recreation areas at Kerr in Virginia (campgrounds, day-use areas, ramps, marinas, visitor centers), cut from army-corps; not read by the build | USACE Recreation Areas layer (researched 2026-11-12) |
 | powrr | CF Highlands Breaks, Dante, Vansant; TNC Big Caney; no-hunting and elk-restoration zones | DWR POWRR property pages and maps |
 | pals | Coalfields PALS; James City County PALS (Jolly Pond) | DWR public lands / PALS rules |
 | dof-lands | New Kent Forestry Center (quota hunts only) | DWR quota hunts |
@@ -19,7 +20,10 @@ decimals. The rules are in `src/regs/other-lands.ts` and `src/regs/state-parks.t
 
 ## Known doubts
 - **Franklin:** the city archery area is sketched by hand from the city's map.
-- **Kerr:** the polygon still includes developed recreation areas, which are closed to hunting.
+- **Kerr recreation areas:** boundaries are USACE's (2022 layer). Buffalo Park's polygon is
+  labelled "Wildlife Areas (Gated)" in that layer. The Willow Grove Marina polygon (212 ac) also
+  names Rochichi Wildlife Management Area and may cut out huntable woods. Liberty Hill, Island
+  Creek, Staunton View and Clover overlap DWR WMU polygons.
 - **Out-of-date rule sheets:**
   - The Coalfields PALS rules are the 2023-24 sheet.
   - Crow's Nest's rules print "2025" dates.
@@ -29,3 +33,5 @@ decimals. The rules are in `src/regs/other-lands.ts` and `src/regs/state-parks.t
   - Fairfax County's archer program (approved archers only).
   - Banshee Reeks (unconfirmed).
   - DWR Wildlife Conservation Sites (not checked).
+  - Kerr areas with no boundary found: group camps on Corps land (Camp Jean Short, Presbyterian
+    Point), Hyco and Buffalo Access ramps, and the picnic area by the dam outside Tailrace Park.
