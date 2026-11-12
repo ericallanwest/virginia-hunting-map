@@ -44,6 +44,7 @@ for (const f of files) {
 const word = (name) => new RegExp(`(?<![\\w$/.-])${name.replace(/\$/g, '\\$')}(?![\\w$/-])`, 'g');
 
 const draftExports = [];
+const baseExports = [];
 const today = new Date().toISOString().slice(0, 10);
 for (const f of files) {
   const out = f.replace(`-${prev}.ts`, `-${next}.ts`);
@@ -58,11 +59,16 @@ for (const f of files) {
     `// almost always move. Remove this header when the file has been fully verified.\n`;
   writeFileSync(join(dir, out), header + src);
 
-  // SpeciesRegs exports: `export const x: SpeciesRegs`, `= regs(`, `= deriveElk(`, and arrays of them.
-  for (const m of src.matchAll(/^export const ([\w$]+)(?::\s*SpeciesRegs\b|\s*=\s*(?:regs\w*|deriveElk)\(|\s*=\s*\[)/gm)) {
-    const isArray = /=\s*\[/.test(m[0]);
-    // Arrays of regs (FURBEARERS, SMALL_GAME) cover their members; skip members also listed in one.
-    draftExports.push({ name: m[1], file: out.replace(/\.ts$/, ''), isArray });
+  // SpeciesRegs exports: `export const x: SpeciesRegs`, `= regs(`, `= deriveElk(`, and arrays of
+  // them (`= [` or `: SpeciesRegs[] = [`). Arrays of BaseYear are bases' own seasons (military).
+  for (const m of src.matchAll(/^export const ([\w$]+)\s*(?::\s*([\w$]+)(\[\])?\s*)?=\s*(\[|regs\w*\(|deriveElk\(|\{)/gm)) {
+    const [, name, type, typeIsArray, init] = m;
+    const file = out.replace(/\.ts$/, '');
+    if (type === 'BaseYear' && typeIsArray) baseExports.push({ name, file });
+    else if (type === 'SpeciesRegs' || init !== '{' && (!type || typeIsArray)) {
+      if (type && type !== 'SpeciesRegs') continue;
+      draftExports.push({ name, file, isArray: init === '[' });
+    }
   }
   console.log(`wrote src/regs/${out}`);
 }
@@ -71,7 +77,7 @@ for (const f of files) {
 const regsNames = new Set(draftExports.filter((e) => !e.isArray).map((e) => e.name));
 const members = (e) =>
   readFileSync(join(dir, `${e.file}.ts`), 'utf8')
-    .match(new RegExp(`export const ${e.name}\\s*=\\s*\\[([^\\]]*)\\]`))?.[1]
+    .match(new RegExp(`export const ${e.name}\\s*(?::[^=]*)?=\\s*\\[([^\\]]*)\\]`))?.[1]
     .split(/[,\s.]+/)
     .filter((n) => regsNames.has(n)) ?? [];
 const regsArrays = draftExports.filter((e) => e.isArray && members(e).length);
@@ -89,4 +95,21 @@ registry = registry
   .replace('  // DRAFT-ENTRIES', `  // DRAFT-ENTRIES\n  // ${label(next)} (draft)\n  ${list},`);
 writeFileSync(reg, registry);
 console.log(`registered in DRAFT_REGS: ${list}`);
+
+// Bases' own seasons (military-<year>.ts) go in DRAFT_BASES in military.ts.
+if (baseExports.length) {
+  const mil = join(dir, 'military.ts');
+  let src = readFileSync(mil, 'utf8');
+  const imp = baseExports.map((e) => `import { ${e.name} } from './${e.file}';`).join('\n');
+  src = src
+    .replace('// DRAFT-BASE-IMPORTS (managed by scripts/new-license-year.mjs)', `// DRAFT-BASE-IMPORTS (managed by scripts/new-license-year.mjs)\n${imp}`)
+    .replace('  // DRAFT-BASE-ENTRIES', `  // DRAFT-BASE-ENTRIES\n  // ${label(next)} (draft)\n  ${baseExports.map((e) => `...${e.name}`).join(', ')},`);
+  writeFileSync(mil, src);
+  console.log(`registered in DRAFT_BASES (military.ts): ${baseExports.map((e) => e.name).join(', ')}`);
+}
+
+console.log(`
+Also for ${label(next)} (not copied; see docs/NEW-LICENSE-YEAR.md):
+- src/regs/state-parks.ts: add CLOSED[${next}] from DCR's ${label(next)} hunt chart (until then no park shows as closed).
+- sources/rule-sources.json: bump each source's url and year as you move rules to new sheets.`);
 console.log(`\nNext: npx tsc, then open the app with ?draft=1 and a ${label(next)} date. See docs/NEW-LICENSE-YEAR.md.`);

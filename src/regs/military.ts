@@ -16,7 +16,9 @@
  * sources/military/README.md.
  */
 import { MILITARY_2026, type BaseYear } from './military-2026';
+import { draftMode } from './draft';
 import type { Place, SeasonRule, Species } from './types';
+// DRAFT-BASE-IMPORTS (managed by scripts/new-license-year.mjs)
 
 export interface Installation {
   url: string;
@@ -54,10 +56,18 @@ export const militaryProgram = (place: Place): Installation | undefined =>
   place.land === 'military' && place.property ? HUNTING_PROGRAMS[place.property] : undefined;
 
 /**
+ * Bases' own seasons for a license year being drafted (shown only with ?draft=1);
+ * scripts/new-license-year.mjs adds entries here. Move them to BASE_REGS to publish.
+ */
+const DRAFT_BASES: BaseYear[] = [
+  // DRAFT-BASE-ENTRIES
+];
+
+/**
  * Bases' own seasons, by license year (military-<year>.ts). Add a year's file here; a year
  * with no entry for a base (e.g. an archived year) falls back to the state framework.
  */
-export const BASE_REGS: BaseYear[] = [...MILITARY_2026];
+export const BASE_REGS: BaseYear[] = [...MILITARY_2026, ...(draftMode ? DRAFT_BASES : [])];
 
 /** The base's own regulations for a program base and license year, if encoded. */
 export const baseYear = (place: Place, licenseYear: number): BaseYear | undefined =>

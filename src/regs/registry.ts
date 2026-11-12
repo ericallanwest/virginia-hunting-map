@@ -5,6 +5,7 @@
  */
 import { bear2026 } from './bear-2026';
 import { licenseYearOf } from './dates';
+import { draftMode } from './draft';
 import { deer2026 } from './deer-2026';
 import { elk2026 } from './elk-2026';
 import { FURBEARERS } from './furbearer-2026';
@@ -35,7 +36,7 @@ export const DRAFT_REGS: SpeciesRegs[] = [
   // DRAFT-ENTRIES
 ];
 
-export const draftMode = typeof location !== 'undefined' && new URLSearchParams(location.search).has('draft');
+export { draftMode };
 export const isDraft = (r: SpeciesRegs) => DRAFT_REGS.includes(r);
 
 const PUBLISHED: SpeciesRegs[] = [
