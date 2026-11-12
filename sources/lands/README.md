@@ -9,7 +9,7 @@ are in `src/regs/other-lands.ts` and `src/regs/state-parks.ts`.
 | File | What | Source |
 |---|---|---|
 | army-corps | John H. Kerr Reservoir (Corps land, minus lake water, flowage easements, state parks and developed recreation areas) | DCR Conservation Lands + DWR management units |
-| kerr-recreation-areas | 19 developed recreation areas at Kerr in Virginia (campgrounds, day-use areas, ramps, marinas, visitor centers), cut from army-corps; not read by the build | USACE Recreation Areas layer (researched 2026-11-12) |
+| kerr-recreation-areas | 19 developed recreation areas at Kerr in Virginia (campgrounds, day-use areas, ramps, marinas, visitor centers), cut from army-corps and mapped as closed land ("<name> (Kerr Reservoir recreation area)") | USACE Recreation Areas layer (researched 2026-11-12) |
 | powrr | CF Highlands Breaks, Dante, Vansant; TNC Big Caney; no-hunting and elk-restoration zones | DWR POWRR property pages and maps |
 | pals | Coalfields PALS; James City County PALS (Jolly Pond) | DWR public lands / PALS rules |
 | dof-lands | New Kent Forestry Center (quota hunts only) | DWR quota hunts |

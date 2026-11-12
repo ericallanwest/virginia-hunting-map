@@ -88,9 +88,10 @@ $MS sources/refuges/refuges.geojson \
 $MS -i sources/lands/army-corps.geojson sources/lands/dof-lands.geojson sources/lands/local-hunting.geojson \
   sources/lands/pals.geojson sources/lands/powrr.geojson sources/lands/natural-area-preserves.geojson \
   sources/lands/state-parks.geojson sources/lands/banshee-reeks.geojson sources/lands/fairfax-deer-program.geojson \
-  sources/lands/dwr-wcs.geojson combine-files \
+  sources/lands/dwr-wcs.geojson sources/lands/kerr-recreation-areas.geojson combine-files \
   -merge-layers force \
   -each "land = land === 'state_park' ? 'state_park' : 'other_public'" \
+  -each "if (kind && /^USACE Recreation Areas/.test(source || '')) name = name + ' (Kerr Reservoir recreation area)'" \
   -filter-fields land,name -o "$SRC/_lands.geojson" format=geojson
 
 $MS -i "$SRC/_nf.geojson" "$SRC/_wma.geojson" "$SRC/_state.geojson" "$SRC/_nps.geojson" "$SRC/_mil.geojson" "$SRC/_nwr.geojson" "$SRC/_lands.geojson" combine-files \

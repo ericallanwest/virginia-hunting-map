@@ -89,3 +89,11 @@ describe('state parks not on DCR’s 2026-27 hunting list are closed', () => {
     expect(e.info.some((i) => i.text.includes('not on DCR’s state park hunting list'))).toBe(false);
   });
 });
+
+describe('Kerr Reservoir developed recreation areas', () => {
+  it('are closed (cut from the open Corps land)', () => {
+    const e = ev('deer', '2026-11-21', at('other_public', 'North Bend Park (Kerr Reservoir recreation area)', 'Mecklenburg'));
+    expect(e.summary.status).toBe('closed');
+    expect(e.info.some((i) => i.text.includes('Developed Army Corps recreation area'))).toBe(true);
+  });
+});

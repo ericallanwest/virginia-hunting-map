@@ -146,8 +146,17 @@ const FAIRFAX_CLOSED: OtherLand = {
   url: 'https://www.fairfaxcounty.gov/wildlife/archery-program',
 };
 
+/** Developed Corps recreation areas at Kerr Reservoir (sources/lands/kerr-recreation-areas.geojson). */
+const KERR_RECREATION: OtherLand = {
+  status: 'check',
+  species: [],
+  note: 'Developed Army Corps recreation area at Kerr Reservoir (campground, day-use area, ramp, marina or visitor center): closed to hunting.',
+  url: 'https://dwr.virginia.gov/hunting/regulations/publiclands/',
+};
+
 function otherLand(property: string): OtherLand | undefined {
   if (OTHER_LANDS[property]) return OTHER_LANDS[property];
+  if (property.endsWith('(Kerr Reservoir recreation area)')) return KERR_RECREATION;
   if (property.endsWith('(Fairfax County deer archery program)')) return FAIRFAX_ARCHERY;
   if (property.includes('(Fairfax County deer program:')) return FAIRFAX_CLOSED;
   return undefined;
