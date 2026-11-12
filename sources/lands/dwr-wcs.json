@@ -1,0 +1,68 @@
+[
+  {
+    "name": "Jones Cove WCS (Mockhorn Island WMA)",
+    "open_to_hunting": "restricted",
+    "species": ["deer (archery)", "turkey", "others per WMA rules"],
+    "method": "Mockhorn Island WMA rules; GATR Tract: deer archery only, spring turkey by quota, closed Mon-Sat during muzzleloader season except to quota hunters, no trapping",
+    "dates": "",
+    "url": "https://dwr.virginia.gov/wma/mockhorn-island/",
+    "notes": "DWR's WMA list has 'Mockhorn Island WMA/Jones Cove WCS' (7,642 ac; DWR's GIS has Mockhorn 7,377 + Jones Cove 325) and DWR's huntable-lands layer labels this polygon 'Mockhorn WMA'. That it is the GATR Tract (reached by Jones Cove Road from Seaside Road) is an inference from the Mockhorn page, not stated by DWR. Shown as 'check'.",
+    "sources": [
+      "https://dwr.virginia.gov/wma/mockhorn-island/",
+      "https://dwr.virginia.gov/wp-content/uploads/wmarules.pdf",
+      "https://services.dwr.virginia.gov/arcgis/rest/services/HUB_Layers/DWR_WMA_Boundaries/FeatureServer/0",
+      "https://services.dwr.virginia.gov/arcgis/rest/services/HUB_Layers/DWR_Public_Huntable_Lands/FeatureServer/0"
+    ]
+  },
+  {
+    "name": "Goochland Marsh WCS (Powhatan WMA Goochland Tract)",
+    "open_to_hunting": "unconfirmed",
+    "species": [],
+    "method": "unknown; shown as 'check'",
+    "dates": "",
+    "url": "https://dwr.virginia.gov/wma/powhatan/",
+    "notes": "49 ac in Goochland County. DWR's huntable-lands layer labels it 'Goochland Tract - Powhatan WMA' (with deer and turkey ratings), but DWR's Powhatan WMA page does not mention a Goochland tract.",
+    "sources": [
+      "https://services.dwr.virginia.gov/arcgis/rest/services/HUB_Layers/DWR_WMA_Boundaries/FeatureServer/0",
+      "https://services.dwr.virginia.gov/arcgis/rest/services/HUB_Layers/DWR_Public_Huntable_Lands/FeatureServer/0",
+      "https://dwr.virginia.gov/wma/powhatan/"
+    ]
+  },
+  {
+    "name": "Weston Wildlife Conservation Site",
+    "open_to_hunting": false,
+    "species": [],
+    "method": "closed: chase-only area (dog training Sept 1 - Mar 31, daylight hours); no firearms",
+    "dates": "",
+    "url": "https://dwr.virginia.gov/wma/weston/",
+    "notes": "271-ac DWR site in Fauquier County, owned since 1959 (a 10-ac private parcel lies inside). Not in DWR's huntable-lands layer.",
+    "sources": ["https://dwr.virginia.gov/wma/weston/", "https://services.dwr.virginia.gov/arcgis/rest/services/HUB_Layers/DWR_WMA_Boundaries/FeatureServer/0"]
+  },
+  {
+    "name": "Bear Garden WCS (mapped as part of Cavalier WMA in scripts/build-geo.sh)",
+    "open_to_hunting": true,
+    "species": ["per Cavalier WMA rules"],
+    "method": "Cavalier WMA rules",
+    "dates": "",
+    "url": "https://dwr.virginia.gov/wma/cavalier/",
+    "notes": "DWR's WMA list has 'Cavalier WMA/Bear Garden WCS' (4,485 ac; DWR's GIS has Cavalier 3,770 + Bear Garden 757). The GIS record links the old Dismal Swamp WMA page ('Renamed to Cavalier from Dismal Swamp') and DWR's huntable-lands layer labels it 'Dismal Swamp Tract'. DWR's Cavalier page does not mention it by name.",
+    "sources": [
+      "https://dwr.virginia.gov/wp-content/uploads/wmarules.pdf",
+      "https://services.dwr.virginia.gov/arcgis/rest/services/HUB_Layers/DWR_WMA_Boundaries/FeatureServer/0",
+      "https://services.dwr.virginia.gov/arcgis/rest/services/HUB_Layers/DWR_Public_Huntable_Lands/FeatureServer/0"
+    ]
+  },
+  {
+    "name": "Other WCSs (NOT MAPPED): Massanutten, Kittewan, Balthrope Marsh, Johnson Marsh, Greensprings, Lake Shenandoah, Lake Frederick, Piney Mountain, Nottoway River, Woodvale Wetlands",
+    "open_to_hunting": "unconfirmed",
+    "species": [],
+    "method": "unknown",
+    "dates": "",
+    "url": "https://services.dwr.virginia.gov/arcgis/rest/services/HUB_Layers/DWR_WMA_Boundaries/FeatureServer/0",
+    "notes": "Small DWR holdings (40-293 ac; Kittewan and Johnson Marsh are flagged as not promoted to the public). None is in DWR's huntable-lands layer or WMA list, and no DWR page found gives hunting rules (Lake Frederick and Lake Shenandoah are public fishing lakes). Left unmapped, so the map shows the surrounding private-land rules there. Lake Robertson is already mapped as a WMA.",
+    "sources": [
+      "https://services.dwr.virginia.gov/arcgis/rest/services/HUB_Layers/DWR_WMA_Boundaries/FeatureServer/0",
+      "https://services.dwr.virginia.gov/arcgis/rest/services/HUB_Layers/DWR_Public_Huntable_Lands/FeatureServer/0"
+    ]
+  }
+]

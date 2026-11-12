@@ -415,10 +415,11 @@
   "method": "closed",
   "dates": "",
   "url": "https://www.dcr.virginia.gov/natural-heritage/natural-area-preserves/",
-  "notes": "DCR: hunting (with camping, fires, unleashed pets, off-road vehicles, etc.) is 'prohibited on all Virginia Natural Area Preserves' (Code of Virginia / 4VAC5-30) except DCR-authorized hunts. Owned by Fairfax County Park Authority; check whether it is in the Fairfax County deer-management archery program (restricted to qualified archers).",
+  "notes": "DCR: hunting (with camping, fires, unleashed pets, off-road vehicles, etc.) is 'prohibited on all Virginia Natural Area Preserves' (Code of Virginia / 4VAC5-30) except DCR-authorized hunts. Owned by Fairfax County Park Authority; Fairfax County's Deer Management Areas layer puts 99% of this preserve inside its 'Elklick 1' archery area (see fairfax-deer-program.json); the preserve polygon is smaller and wins, so it stays closed. DCR's page (owned by the Fairfax County Park Authority, access by arrangement) does not mention hunting. Unresolved.",
   "sources": [
    "https://www.dcr.virginia.gov/natural-heritage/spevents",
-   "https://www.dcr.virginia.gov/natural-heritage/natural-area-preserves/"
+   "https://www.dcr.virginia.gov/natural-heritage/natural-area-preserves/",
+   "https://www.dcr.virginia.gov/natural-heritage/natural-area-preserves/elklick"
   ]
  },
  {
@@ -870,15 +871,20 @@
  },
  {
   "name": "The Channels Natural Area Preserve",
-  "open_to_hunting": false,
-  "species": [],
-  "method": "closed",
+  "open_to_hunting": "unconfirmed",
+  "species": [
+   "all (state forest rules)"
+  ],
+  "method": "shown as 'check': The Channels State Forest rules (State Forest Use Permit + hunting license) appear to apply",
   "dates": "",
-  "url": "https://www.dcr.virginia.gov/natural-heritage/natural-area-preserves/",
-  "notes": "DCR: hunting (with camping, fires, unleashed pets, off-road vehicles, etc.) is 'prohibited on all Virginia Natural Area Preserves' (Code of Virginia / 4VAC5-30) except DCR-authorized hunts. Entirely inside The Channels State Forest (719 ac overlap), which the app shows as open with DWR's public-lands season. DOF says the 721-ac NAP is jointly managed by DOF and allows hunting with a State Forest Use Permit on 'state forest lands', but does not say whether the NAP part is open. UNRESOLVED: ask DOF (276-236-2322) before marking it closed.",
+  "url": "https://www.dof.virginia.gov/wp-content/uploads/Channels-SF-Hunting-Map.pdf",
+  "notes": "Entirely inside The Channels State Forest (719 ac overlap); the preserve polygon has the smaller bounding box, so the app uses this entry rather than the forest's. DCR's preserve page says the preserve is part of the 4,836-ac state forest and is 'owned and managed by the Virginia Department of Forestry'; it says nothing about hunting. DCR's park regulations (4VAC5-30-30 and -240, no hunting except in designated areas) cover natural area preserves under DCR's management or control, which this one is not. DOF's Channels hunting map (8/14/23) shows the preserve inside the forest with no closed area and says DWR regulations for Washington/Russell counties apply with a State Forest Use Permit; DOF's 2026-27 season brief (updated 09/10/2026) covers the whole forest and does not mention the preserve. 4VAC10-30-200 allows state-forest hunting only in areas the State Forests Superintendent designates. No source says outright that the preserve is open, so it is 'check', not 'open'.",
   "sources": [
-   "https://www.dcr.virginia.gov/natural-heritage/spevents",
-   "https://www.dcr.virginia.gov/natural-heritage/natural-area-preserves/"
+   "https://www.dcr.virginia.gov/natural-heritage/natural-area-preserves/thechannels",
+   "https://www.dof.virginia.gov/wp-content/uploads/Channels-SF-Hunting-Map.pdf",
+   "https://www.dof.virginia.gov/wp-content/uploads/Channels-SF-Hunting-Season-Brief.pdf",
+   "https://law.lis.virginia.gov/admincode/title4/agency5/chapter30/section30/",
+   "https://law.lis.virginia.gov/admincode/title4/agency10/chapter30/section200/"
   ]
  },
  {

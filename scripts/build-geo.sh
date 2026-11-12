@@ -47,9 +47,11 @@ $MS "$SRC/usfs.geojson" -clip "$SRC/va-outline.geojson" \
   -each "land = 'national_forest'; name = 'George Washington & Jefferson National Forest'" \
   -filter-fields land,name -o "$SRC/_nf.geojson" format=geojson
 
+# Bear Garden is a Wildlife Conservation Site (WCS) that DWR lists and hunts as part of Cavalier
+# WMA ("Cavalier WMA/Bear Garden WCS"); other WCSs are in sources/lands (see its README).
 $MS "$SRC/wma.geojson" \
-  -filter "Property_Type === 'WMA' || WMA_NAME === 'Crooked Creek' || WMA_NAME === 'Lake Robertson'" \
-  -each "land = 'dwr'; name = WMA_NAME.replace('Mountian','Mountain').replace(/^Coastal Forest - .*/, 'Coastal Forest').replace(/^Mockhorn$/, 'Mockhorn Island') + ' WMA'" \
+  -filter "Property_Type === 'WMA' || WMA_NAME === 'Crooked Creek' || WMA_NAME === 'Lake Robertson' || WMA_NAME === 'Bear Garden'" \
+  -each "land = 'dwr'; name = WMA_NAME.replace(/^Bear Garden$/, 'Cavalier').replace('Mountian','Mountain').replace(/^Coastal Forest - .*/, 'Coastal Forest').replace(/^Mockhorn$/, 'Mockhorn Island') + ' WMA'" \
   -dissolve fields=name copy-fields=land \
   -o "$SRC/_wma.geojson" format=geojson
 
@@ -85,7 +87,8 @@ $MS sources/refuges/refuges.geojson \
 # its README). Land types there: other_public, state_park.
 $MS -i sources/lands/army-corps.geojson sources/lands/dof-lands.geojson sources/lands/local-hunting.geojson \
   sources/lands/pals.geojson sources/lands/powrr.geojson sources/lands/natural-area-preserves.geojson \
-  sources/lands/state-parks.geojson combine-files \
+  sources/lands/state-parks.geojson sources/lands/banshee-reeks.geojson sources/lands/fairfax-deer-program.geojson \
+  sources/lands/dwr-wcs.geojson combine-files \
   -merge-layers force \
   -each "land = land === 'state_park' ? 'state_park' : 'other_public'" \
   -filter-fields land,name -o "$SRC/_lands.geojson" format=geojson

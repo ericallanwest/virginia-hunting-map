@@ -28,25 +28,5 @@
     "url": "https://urban-archery.franklinva.gov/",
     "notes": "Elevated stand at least 10 ft with full-body harness; no dogs; no field dressing on city land. Virginia driver's license and hunting license required. The polygon is a hand-drawn sketch in the city's public web map, not a parcel layer (low positional confidence, 90 ac). Not checked by me directly; from the research sub-agent.",
     "sources": ["https://urban-archery.franklinva.gov/", "https://cofva.maps.arcgis.com/sharing/rest/content/items/71e1baaee78a40a3877ac738e9db711e/data?f=json"]
-  },
-  {
-    "name": "Fairfax County Deer Management Archery Program (NOT MAPPED)",
-    "open_to_hunting": "restricted",
-    "species": ["deer"],
-    "method": "approved archers only: apply individually, pass an archery qualification, IBEP course and background check; police staff select and assign archers to groups",
-    "dates": "Sept 12, 2026-Feb 13, 2027; no hunting in county parks on Sundays; archery ends Jan 9, 2027 at Lake Fairfax, Huntley Meadows and Dogue Creek. Applications ran June 1-28, 2026.",
-    "url": "https://www.fairfaxcounty.gov/wildlife/archery-program",
-    "notes": "Not public hunting in the usual sense, so not mapped. GIS exists if wanted: https://www.fairfaxcounty.gov/gispub2/rest/services/FCPA/DeerManagement/FeatureServer/1 with MANAGEMENT_METHOD IN ('Archery','Archery/Sharpshooting','Archery/Managed Hunt') (sub-agent tested: about 147 features). Useful as 'closed except program archers'.",
-    "sources": ["https://www.fairfaxcounty.gov/wildlife/archery-program", "https://www.fairfaxcounty.gov/wildlife/how-apply"]
-  },
-  {
-    "name": "Banshee Reeks Nature Preserve, Loudoun County (NOT MAPPED)",
-    "open_to_hunting": "unconfirmed",
-    "species": ["deer"],
-    "method": "county lottery deer hunt and novice workshop (registration via loudoun.gov/webtrac), per DWR's managed-hunts page",
-    "dates": "No 2026-27 dates found; DWR's workshop text still shows 2023 dates and Loudoun's preserve page does not mention hunting.",
-    "url": "https://dwr.virginia.gov/hunting/managed-hunts/",
-    "notes": "Confirm with Loudoun PRCS (703-777-0343) before mapping.",
-    "sources": ["https://dwr.virginia.gov/hunting/managed-hunts/", "https://www.loudoun.gov/bansheereeks"]
   }
 ]

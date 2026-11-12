@@ -2,12 +2,14 @@
  * Other public hunting land (land type 'other_public'): Corps of Engineers land not in DCR's
  * layer, POWRR (Public Opportunities for Wildlife-Related Recreation) and PALS (Public Access
  * Lands for Sportsmen) properties, DWR quota-hunt sites, DCR Natural Area Preserves, and
- * city land with hunting programs. Researched 2026-11-11; details and sources in
+ * city and county land with hunting programs, and DWR Wildlife Conservation Sites. Researched
+ * 2026-11-11 and 2026-11-12; details and sources in
  * sources/lands/*.json and sources/lands/README.md.
  *
  * - 'open': state (private-land) seasons for the county, plus any note (e.g. a permit).
  * - 'check': hunting only by lottery, permit or managed hunt; state seasons shown as "check".
- * - Any 'other_public' property not listed here is closed (e.g. Natural Area Preserves).
+ * - Any 'other_public' property not listed here is closed (e.g. Natural Area Preserves); `species: []`
+ *   marks a listed property closed to every species, with its note.
  */
 import type { Place, Species } from './types';
 
@@ -98,17 +100,68 @@ export const OTHER_LANDS: Record<string, OtherLand> = {
     note: 'DCR lottery waterfowl hunts only (with Dameron Marsh). Closed otherwise.',
     url: 'https://www.dcr.virginia.gov/natural-heritage/natural-area-preserves/hughlett',
   },
+  // Inside The Channels State Forest and owned and managed by DOF; DOF's hunting map shows the
+  // preserve inside the forest with no closed area marked, but no source says it is open.
+  'The Channels Natural Area Preserve': {
+    status: 'check',
+    note: 'Natural Area Preserve owned and managed by the Department of Forestry inside The Channels State Forest. DOF’s hunting map shows no closure here (State Forest Use Permit and hunting license required; DWR rules for Washington/Russell counties), but neither DOF nor DCR says outright that the preserve is open. Confirm with DOF before hunting the preserve.',
+    url: 'https://www.dof.virginia.gov/wp-content/uploads/Channels-SF-Hunting-Map.pdf',
+  },
+  'Banshee Reeks Nature Preserve': {
+    status: 'check',
+    species: ['deer'],
+    note: 'Loudoun County lottery managed deer hunts only (antlerless only; hunts in October, December and February; lottery Oct 1–31 for December and Dec 1–31 for February; permit and orientation if drawn). Closed to other hunting. Contact BansheeReeks@loudoun.gov.',
+    url: 'https://prcsinfo.loudoun.gov/view/1005298707/65/',
+  },
+  // DWR Wildlife Conservation Sites (WCS) not already in the WMA layer the app uses.
+  'Jones Cove WCS (Mockhorn Island WMA)': {
+    status: 'check',
+    note: 'DWR Wildlife Conservation Site listed with Mockhorn Island WMA; appears to be its mainland GATR Tract (reached by Jones Cove Road): deer archery only, spring turkey by quota, quota-only during muzzleloader season (Mon–Sat), no trapping. Check DWR’s Mockhorn Island page.',
+    url: 'https://dwr.virginia.gov/wma/mockhorn-island/',
+  },
+  'Goochland Marsh WCS (Powhatan WMA Goochland Tract)': {
+    status: 'check',
+    note: 'DWR Wildlife Conservation Site that DWR’s huntable-lands layer labels "Goochland Tract - Powhatan WMA". DWR publishes no rules for it; check with DWR before hunting.',
+    url: 'https://dwr.virginia.gov/wma/powhatan/',
+  },
+  'Weston Wildlife Conservation Site': {
+    status: 'check',
+    species: [],
+    note: 'DWR Weston Wildlife Conservation Site is a chase-only area (dog training Sept 1 – Mar 31, daylight only); no firearms and no hunting.',
+    url: 'https://dwr.virginia.gov/wma/weston/',
+  },
 };
+
+/** Fairfax County deer management areas (sources/lands/fairfax-deer-program.geojson), by name suffix. */
+export const FAIRFAX_ARCHERY: OtherLand = {
+  status: 'check',
+  species: ['deer'],
+  note: 'Fairfax County archery program: approved, qualified archers only (county screening, qualification and assignment). Sept 12, 2026 – Feb 13, 2027, no Sunday hunting in county parks; ends Jan 9, 2027 at Lake Fairfax, Huntley Meadows and Dogue Creek. Closed to other hunting.',
+  url: 'https://www.fairfaxcounty.gov/wildlife/archery-program',
+};
+const FAIRFAX_CLOSED: OtherLand = {
+  status: 'check',
+  species: [],
+  note: 'Fairfax County deer management area with no public hunting (county sharpshooters or no-hunting zone).',
+  url: 'https://www.fairfaxcounty.gov/wildlife/archery-program',
+};
+
+function otherLand(property: string): OtherLand | undefined {
+  if (OTHER_LANDS[property]) return OTHER_LANDS[property];
+  if (property.endsWith('(Fairfax County deer archery program)')) return FAIRFAX_ARCHERY;
+  if (property.includes('(Fairfax County deer program:')) return FAIRFAX_CLOSED;
+  return undefined;
+}
 
 /** The land's program for this species, or undefined if closed to it. */
 export function otherLandFor(place: Place, species: Species): OtherLand | undefined {
   if (place.land !== 'other_public' || !place.property) return undefined;
-  const land = OTHER_LANDS[place.property];
+  const land = otherLand(place.property);
   return land && (!land.species || land.species.includes(species)) ? land : undefined;
 }
 
 export const otherLandClosedNote = (place: Place, species: Species) => {
-  const land = place.property ? OTHER_LANDS[place.property] : undefined;
+  const land = place.property ? otherLand(place.property) : undefined;
   if (!land) {
     return /Natural Area Preserve/.test(place.property ?? '')
       ? 'Natural Area Preserve: closed to hunting.'

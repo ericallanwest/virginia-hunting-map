@@ -1,0 +1,27 @@
+[
+  {
+    "name": "* (Fairfax County deer archery program)",
+    "open_to_hunting": "restricted",
+    "species": ["deer"],
+    "method": "approved archers only: apply individually, pass an archery qualification, IBEP course and background check; Police Department staff select archers and assign them to groups",
+    "dates": "Sept 12, 2026 - Feb 13, 2027; Monday-Saturday (no Sunday hunting in county parks); archery ends Jan 9, 2027 at Lake Fairfax, Huntley Meadows and Dogue Creek Stream Valley. Applications ran June 1-28, 2026.",
+    "url": "https://www.fairfaxcounty.gov/wildlife/archery-program",
+    "notes": "118 named areas: every feature of the county's Deer Management Areas layer with MANAGEMENT_METHOD 'Archery' (143) or 'Archery/Sharpshooting' (4), dissolved by park name. Mostly Fairfax County Park Authority land, plus NOVA Parks regional parks (Bull Run, Bull Run Marina, Fountainhead, Sandy Run, Pohick Bay, Occoquan, Upper Potomac, Hemlock Overlook), BLM Meadowood, TNC Fraser Preserve and some Board of Supervisors land. The layer's 18 clusters match the 'Park List for the 2026-2027 Archery Program Season' on the program page exactly, and the page's map link is a web map of this layer. Shown as 'check' for deer only; the state firearms seasons the app still lists there are not part of the program (archery only).",
+    "sources": [
+      "https://www.fairfaxcounty.gov/wildlife/archery-program",
+      "https://www.fairfaxcounty.gov/wildlife/how-apply",
+      "https://www.fairfaxcounty.gov/gispub2/rest/services/FCPA/DeerManagement/FeatureServer/1",
+      "https://fairfaxcountygis.maps.arcgis.com/apps/webappviewer/index.html?id=409cc24c643d453387f752ce6e06bcad"
+    ]
+  },
+  {
+    "name": "* (Fairfax County deer program: sharpshooters only) / * (Fairfax County deer program: no-hunting area)",
+    "open_to_hunting": false,
+    "species": [],
+    "method": "closed: county sharpshooting (10 features) or no-hunting zones in and next to program parks (57 features)",
+    "dates": "",
+    "url": "https://www.fairfaxcounty.gov/wildlife/archery-program",
+    "notes": "Mapped so that the no-hunting parts of program parks are not shown with private-land seasons. Pieces under ~5 acres are dropped by the build's area filter.",
+    "sources": ["https://www.fairfaxcounty.gov/gispub2/rest/services/FCPA/DeerManagement/FeatureServer/1"]
+  }
+]
