@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Banshee Reeks Nature Preserve",
+    "open_to_hunting": "lottery only",
+    "species": ["deer"],
+    "method": "Loudoun County lottery managed deer hunts, part of the state Deer Management Assistance Program; licensed, skilled hunters 18+; if drawn, buy a permit and attend an in-person orientation; antlerless only",
+    "dates": "Hunts in October, December and February. Lottery registration Oct 1-31 for December hunts and Dec 1-31 for February hunts (Loudoun PRCS 2026 Fall Activity Guide). DWR's managed-hunts page also lists a novice deer-hunter workshop here (archery available at Banshee Reeks only), but its registration dates still read August 2023.",
+    "url": "https://prcsinfo.loudoun.gov/view/1005298707/65/",
+    "notes": "Loudoun County park (DCR layer: Local Park, owner Loudoun County BOS, 739 ac in 5 tracts). The activity guide does not state the weapons. Contact BansheeReeks@loudoun.gov.",
+    "sources": [
+      "https://prcsinfo.loudoun.gov/view/1005298707/65/",
+      "https://dwr.virginia.gov/hunting/managed-hunts/",
+      "https://services1.arcgis.com/PxUNqSbaWFvFgHnJ/arcgis/rest/services/VAConservationLands/FeatureServer/0"
+    ]
+  }
+]
