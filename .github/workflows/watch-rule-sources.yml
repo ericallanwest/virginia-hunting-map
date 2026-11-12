@@ -1,0 +1,38 @@
+name: Watch rule sources
+
+# Refuge, military base, state park, PALS, POWRR and preserve rules come from pages and sheets
+# that change on their own schedules (often late summer and fall). Weekly, year-round, check
+# them against sources/rule-sources-baseline.json and look for newer sheets; open or update an
+# issue when something changed. The issue also lists rules still taken from an older year's sheet.
+on:
+  schedule:
+    - cron: '23 15 * * 3' # Wednesdays 15:23 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install beautifulsoup4
+      - id: check
+        run: python3 scripts/check-rule-sources.py --report rule-sources.md
+      - name: Open or update the tracking issue
+        if: steps.check.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh label create rule-sources --color 5b8e7d --description "Refuge, base or other land rule sources changed" 2>/dev/null || true
+          issue=$(gh issue list --label rule-sources --state open --json number --jq '.[0].number')
+          if [ -n "$issue" ]; then
+            gh issue comment "$issue" --body-file rule-sources.md
+          else
+            gh issue create --title "Rule sources changed" --label rule-sources --body-file rule-sources.md
+          fi

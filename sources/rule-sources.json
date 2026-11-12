@@ -1,0 +1,40 @@
+{
+  "_comment": "Rule sources outside DWR's regulation pages (those are watched by scripts/check-dwr-changes.py). scripts/check-rule-sources.py checks each url against sources/rule-sources-baseline.json, probes `next` for a newer sheet (placeholders: {y} = license-year start, {y1} = y+1, {yy}/{yy1} = two-digit), and lists entries whose `year` (the license year the sheet is for) is older than the current one. Update `year` and `url` when you move a rule to a newer sheet, then run the script with --update.",
+  "sources": [
+    {"what": "State park hunting list", "used_in": "src/regs/state-parks.ts", "year": 2026, "url": "https://www.dcr.virginia.gov/state-parks/hunting", "next": ["https://www.dcr.virginia.gov/state-parks/document/vsp-huntchart-{yy}-{yy1}.pdf"]},
+    {"what": "State park hunt chart", "used_in": "src/regs/state-parks.ts", "year": 2026, "url": "https://www.dcr.virginia.gov/state-parks/document/vsp-huntchart-26-27.pdf"},
+    {"what": "DWR quota hunts (New Kent, Lone Star Lakes, Dutch Gap)", "used_in": "src/regs/other-lands.ts", "year": 2026, "url": "https://dwr.virginia.gov/hunting/quota-hunts/"},
+    {"what": "DWR public lands page (Kerr, PALS)", "used_in": "src/regs/other-lands.ts", "year": 2026, "url": "https://dwr.virginia.gov/hunting/regulations/publiclands/"},
+    {"what": "Coalfields PALS rules", "used_in": "src/regs/other-lands.ts", "year": 2023, "url": "https://dwr.virginia.gov/wp-content/uploads/media/Coalfields-PALS-Rules-2023-2024.pdf", "next": ["https://dwr.virginia.gov/wp-content/uploads/media/Coalfields-PALS-Rules-{y}-{y1}.pdf"]},
+    {"what": "James City County PALS rules", "used_in": "src/regs/other-lands.ts", "year": 2026, "url": "https://dwr.virginia.gov/wp-content/uploads/media/James-City-County-PALS-Rules-2026-2027.pdf", "next": ["https://dwr.virginia.gov/wp-content/uploads/media/James-City-County-PALS-Rules-{y}-{y1}.pdf"]},
+    {"what": "POWRR properties", "used_in": "src/regs/other-lands.ts", "year": 2026, "url": "https://dwr.virginia.gov/powrr/visit-powrr-properties/"},
+    {"what": "CF Highlands Breaks rules", "used_in": "src/regs/other-lands.ts", "year": 2026, "url": "https://dwr.virginia.gov/wp-content/uploads/media/CF-Highlands-Breaks-Rules.pdf"},
+    {"what": "CF Highlands Dante rules", "used_in": "src/regs/other-lands.ts", "year": 2026, "url": "https://dwr.virginia.gov/wp-content/uploads/media/CF-Highlands-Dante-Rules.pdf"},
+    {"what": "CF Highlands Vansant rules", "used_in": "src/regs/other-lands.ts", "year": 2026, "url": "https://dwr.virginia.gov/wp-content/uploads/media/CF-Highlands-Vansant-Rules.pdf"},
+    {"what": "Crow's Nest NAP deer hunt rules (prints 2025 dates)", "used_in": "src/regs/other-lands.ts", "year": 2025, "url": "https://www.dcr.virginia.gov/natural-heritage/document/cnnap-deerhuntrules2026.pdf", "next": ["https://www.dcr.virginia.gov/natural-heritage/document/cnnap-deerhuntrules{y1}.pdf"]},
+    {"what": "Crow's Nest NAP page", "used_in": "src/regs/other-lands.ts", "year": 2026, "url": "https://www.dcr.virginia.gov/natural-heritage/natural-area-preserves/crowsnest"},
+    {"what": "Dameron Marsh NAP page", "used_in": "src/regs/other-lands.ts", "year": 2026, "url": "https://www.dcr.virginia.gov/natural-heritage/natural-area-preserves/dameron"},
+    {"what": "Hughlett Point NAP page", "used_in": "src/regs/other-lands.ts", "year": 2026, "url": "https://www.dcr.virginia.gov/natural-heritage/natural-area-preserves/hughlett"},
+
+    {"what": "Fort Pickett regulations", "used_in": "src/regs/military-2026.ts", "year": 2026, "url": "https://barfoot.isportsman.net/files/Regulations/2627FtPickettRegulationsFinal.pdf", "next": ["https://barfoot.isportsman.net/files/Regulations/{yy}{yy1}FtPickettRegulationsFinal.pdf"]},
+    {"what": "Fort Belvoir hunting regulations", "used_in": "src/regs/military-2026.ts", "year": 2026, "url": "https://ftbelvoir.isportsman.net/files/WRHFM_20262027.pdf", "next": ["https://ftbelvoir.isportsman.net/files/WRHFM_{y}{y1}.pdf"]},
+    {"what": "Fort A.P. Hill big game cheat sheet", "used_in": "src/regs/military-2026.ts", "year": 2026, "url": "https://walker.isportsman.net/files/Hunting/BigGameCheatSheet2026.pdf", "next": ["https://walker.isportsman.net/files/Hunting/BigGameCheatSheet{y}.pdf"]},
+    {"what": "Fort A.P. Hill program regulations", "used_in": "src/regs/military-2026.ts", "year": 2026, "url": "https://walker.isportsman.net/files/Regulations%2F2026-27%20iSportsman%20Programs%20Final.pdf", "next": ["https://walker.isportsman.net/files/Regulations%2F{y}-{yy1}%20iSportsman%20Programs%20Final.pdf"]},
+    {"what": "Quantico season bulletin (scanned)", "used_in": "src/regs/military-2026.ts", "year": 2026, "url": "https://quantico.isportsman.net/files/Bulletins/MCINCR-MCBQBul%205-26_2026-2027%20FISCAL%20YEAR%20HUNTING%20AND%20TRAPPING%20SEASONS%20AND%20FISHING%20REGULATIONS%20UPDATE.pdf"},
+
+    {"what": "Chincoteague NWR hunting", "used_in": "src/regs/refuges.ts", "year": 2026, "url": "https://www.fws.gov/refuge/chincoteague/visit-us/activities/hunting"},
+    {"what": "Eastern Shore of Virginia NWR hunting", "used_in": "src/regs/refuges.ts", "year": 2026, "url": "https://www.fws.gov/refuge/eastern-shore-virginia/visit-us/activities/hunting"},
+    {"what": "Mason Neck NWR hunting", "used_in": "src/regs/refuges.ts", "year": 2026, "url": "https://www.fws.gov/refuge/elizabeth-hartwell-mason-neck/visit-us/activities/hunting"},
+    {"what": "Featherstone NWR hunting", "used_in": "src/regs/refuges.ts", "year": 2025, "url": "https://www.fws.gov/refuge/featherstone/visit-us/activities/hunting"},
+    {"what": "Fisherman Island NWR hunting", "used_in": "src/regs/refuges.ts", "year": 2026, "url": "https://www.fws.gov/refuge/fisherman-island/visit-us/activities/hunting"},
+    {"what": "Great Dismal Swamp NWR hunting (brochure is from 2021)", "used_in": "src/regs/refuges.ts", "year": 2021, "url": "https://www.fws.gov/refuge/great-dismal-swamp/visit-us/activities/hunting"},
+    {"what": "James River NWR hunting", "used_in": "src/regs/refuges.ts", "year": 2026, "url": "https://www.fws.gov/refuge/james-river/visit-us/activities/hunting"},
+    {"what": "Mackay Island NWR hunting", "used_in": "src/regs/refuges.ts", "year": 2026, "url": "https://www.fws.gov/refuge/mackay-island/visit-us/activities/hunting"},
+    {"what": "Occoquan Bay NWR hunting", "used_in": "src/regs/refuges.ts", "year": 2026, "url": "https://www.fws.gov/refuge/occoquan-bay/visit-us/activities/hunting"},
+    {"what": "Plum Tree Island NWR hunting", "used_in": "src/regs/refuges.ts", "year": 2026, "url": "https://www.fws.gov/refuge/plum-tree-island/visit-us/activities/hunting"},
+    {"what": "Presquile NWR hunting", "used_in": "src/regs/refuges.ts", "year": 2026, "url": "https://www.fws.gov/refuge/presquile/visit-us/activities/hunting"},
+    {"what": "Rappahannock River Valley NWR hunting", "used_in": "src/regs/refuges.ts", "year": 2026, "url": "https://www.fws.gov/refuge/rappahannock-river-valley/visit-us/activities/hunting"},
+    {"what": "Wallops Island NWR hunting", "used_in": "src/regs/refuges.ts", "year": 2026, "url": "https://www.fws.gov/refuge/wallops-island/visit-us/activities/hunting"},
+    {"what": "Back Bay NWR hunting (closed; no hunt since 2017)", "used_in": "src/regs/refuges.ts", "year": 2026, "url": "https://www.fws.gov/refuge/back-bay/visit-us/activities/hunting"}
+  ]
+}
